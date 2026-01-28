@@ -114,8 +114,8 @@ function Yatline.coloreds.get:symlink()
         return nil
     end
 
-    local link_target = ("-> " .. tostring(h.link_to))
-    table.insert(symlink, { link_target, th.tabs })
+    local link_target = ("symlink:" .. tostring(h.link_to))
+    table.insert(symlink, { link_target, th.mgr.cwd:fg() })
     return symlink
 end
 
