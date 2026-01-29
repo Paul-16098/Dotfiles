@@ -130,6 +130,7 @@ require("bunny"):setup({
         { key = "c",          path = "~/.config",      desc = "Config files" },
         { key = { "l", "s" }, path = "~/.local/share", desc = "Local share" },
         { key = { "l", "b" }, path = "~/.local/bin",   desc = "Local bin" },
+        { key = "t",          path = "~/tools/tools",  desc = "Tools" },
         -- key and path attributes are required, desc is optional
     },
     desc_strategy = "path", -- If desc isn't present, use "path" or "filename", default is "path"
