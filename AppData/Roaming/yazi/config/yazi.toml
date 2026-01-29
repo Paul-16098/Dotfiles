@@ -10,11 +10,12 @@
 
 [opener]
     edit = [
-       { run = "%EDITOR% %s", desc = "%EDITOR%", block = true },
+       { run = "%EDITOR% %s", desc = "$EDITOR", block = true },
     ]
 [open]
     prepend_rules = [
       { url = "*.jar", use = ["open", "extract", "reveal" ] },
+      { url = "*", use = [ "open", "edit", "reveal" ] },
     ]
 
 [[plugin.prepend_fetchers]]
