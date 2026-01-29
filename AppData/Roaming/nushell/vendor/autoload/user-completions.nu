@@ -245,7 +245,7 @@ export extern "chezmoi add" [
 ]
 export alias chad = chezmoi add
 def "nu-complete chezmoi managed" []: nothing -> list<string> {
-  (chezmoi managed) | lines
+  (chezmoi managed) | lines | par-each --keep-order { "~/" + ($in) }
 }
 # Ensure that target... are in the target state, updating them if necessary.
 # If no targets are specified, the state of all targets are ensured. If a
