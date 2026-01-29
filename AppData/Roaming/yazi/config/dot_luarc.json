@@ -1,7 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
   "runtime.version": "Lua 5.4",
-  "workspace.library": [
-    "~\\AppData\\Roaming\\yazi\\config\\plugins\\"
-  ]
+  "workspace.library": ["~\\AppData\\Roaming\\yazi\\config\\plugins\\"],
+  "codeLens.enable": true
 }

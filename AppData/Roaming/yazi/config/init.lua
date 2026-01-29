@@ -123,14 +123,12 @@ end
 ---- bunny ----
 require("bunny"):setup({
     hops = {
-        { key = "/",          path = "/", },
-        { key = "~",          path = "~",              desc = "Home" },
-        { key = "m",          path = "~/Music",        desc = "Music" },
-        { key = "D",          path = "~/Documents",    desc = "Documents" },
-        { key = "c",          path = "~/.config",      desc = "Config files" },
-        { key = { "l", "s" }, path = "~/.local/share", desc = "Local share" },
-        { key = { "l", "b" }, path = "~/.local/bin",   desc = "Local bin" },
-        { key = "t",          path = "~/tools/tools",  desc = "Tools" },
+        { key = "/", path = "/", },
+        { key = "~", path = "~",             desc = "Home" },
+        { key = "c", path = "~/.config",     desc = "Config files" },
+        { key = "t", path = "~/tools/tools", desc = "Tools" },
+        { key = "d", path = "~/Downloads",   desc = "Downloads" },
+        { key = "l", path = "~/.local",      desc = "Local" }
         -- key and path attributes are required, desc is optional
     },
     desc_strategy = "path", -- If desc isn't present, use "path" or "filename", default is "path"
