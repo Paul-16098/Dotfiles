@@ -24,7 +24,7 @@ alias "ya pack -a" = ya pkg add
 # chezmoi
 export alias chad = chezmoi add
 export alias chap = chezmoi apply
-export alias chd = chezmoi diff
+export alias chdf = chezmoi diff
 export alias chda = chezmoi data
 export alias chs = chezmoi status
 export alias ched = chezmoi edit
