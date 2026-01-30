@@ -15,7 +15,7 @@
     block = true
 
 [[open.prepend_rules]]
-    url = "*.jar"
+    mime = "application/java-archive"
     use = [
         "open",
         "extract",
@@ -53,10 +53,6 @@
 [[plugin.prepend_preloaders]]
     mime = "application/postscript"
     run  = "mediainfo"
-
-[[plugin.prepend_preloaders]]
-    mime = "text/csv"
-    run  = "noop"
 
 [[plugin.prepend_previewers]]
     mime = "{audio,video,image}/*"
