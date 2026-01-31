@@ -54,12 +54,3 @@ overlay use ($nu.data-dir | path join keybindings.nu)
 
 # nupm
 overlay use nupm/nupm/ --prefix
-
-# dirs
-use std/dirs
-alias n = dirs shells-aliases n
-
-dirs add ~/OneDrive/文件/git/
-dirs add ~/tools/tools
-dirs add ~/Downloads
-dirs goto 0
