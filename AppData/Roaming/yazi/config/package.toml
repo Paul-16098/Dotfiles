@@ -10,12 +10,12 @@ hash = "e954f3d314ba732336592101bb47dd03"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:piper"
-rev = "6f50636"
+rev = "230b9c6"
 hash = "1a983fd55fb94ca165f0d0fd9e1671b9"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:types"
-rev = "6f50636"
+rev = "230b9c6"
 hash = "279c336936f0cea7a2782ce2a84babcd"
 
 [[plugin.deps]]
@@ -55,7 +55,7 @@ hash = "417de633d0008580b386bd3358eea56f"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:jump-to-char"
-rev = "6f50636"
+rev = "230b9c6"
 hash = "a94dca872caafd80fc5302668a092cbd"
 
 [[plugin.deps]]
@@ -65,7 +65,7 @@ hash = "7d62f2eae04f77d13a21917c169b151b"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:mime-ext"
-rev = "6f50636"
+rev = "230b9c6"
 hash = "22dec1266e598eb7dba353436bc943cc"
 
 [flavor]
