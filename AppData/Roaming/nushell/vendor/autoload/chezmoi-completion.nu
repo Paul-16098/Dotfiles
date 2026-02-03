@@ -731,6 +731,8 @@ export extern "chezmoi forget" [
   --use-builtin-git: string@"nu-complete bool" # Use builtin git (default auto)
   --verbose (-v) # Make output more verbose
   --working-tree (-W): path # Set working tree directory
+
+  ...target: path@"nu-complete managed"
 ]
 
 # Generate a file for use with chezmoi

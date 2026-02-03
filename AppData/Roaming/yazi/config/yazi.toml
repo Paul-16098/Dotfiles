@@ -18,7 +18,7 @@
         { run = "xdg-open %s1", desc = "Open", for = "linux" },
         { run = "open %s", desc = "Open", for = "macos" },
         { run = 'start "" %s1', desc = "Open", for = "windows", orphan = true },
-        { run = '"C:\Program Files\Sandboxie-Plus\Start.exe" %s1', desc = "Open With Sandboxie", for = "windows" },
+        { run = '"C:\Program Files\Sandboxie-Plus\Start.exe" /box:__ask__ %s1', desc = "Open With Sandboxie", for = "windows" },
         { run = "termux-open %s1", desc = "Open", for = "android" },
     ]
 
