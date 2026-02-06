@@ -241,7 +241,8 @@
 
 [[mgr.keymap]]
     on   = "<S-Enter>"
-    run  = "plugin augment-command -- enter --interactive"
+    # run  = "plugin augment-command -- enter --interactive"
+    run  = "open --interactive"
     desc = "進入子目錄/以交互方式打開選定的文件"
 
 [[mgr.keymap]]

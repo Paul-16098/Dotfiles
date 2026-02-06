@@ -56,6 +56,13 @@
         "reveal",
     ]
 
+[[open.prepend_rules]]
+    url = "*/"
+    use = [
+        "edit",
+        "reveal",
+    ]
+
 [[plugin.prepend_fetchers]]
     id   = "mime"
     url  = "local://*"
