@@ -14,7 +14,6 @@ alias py = python
 alias pip = uv pip
 alias gs = git status
 alias cls = clear
-alias & = job spawn
 alias "decode url" = url decode
 alias "encode url" = url encode
 alias "ya pack -a" = ya pkg add
