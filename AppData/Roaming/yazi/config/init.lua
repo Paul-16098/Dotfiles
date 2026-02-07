@@ -186,3 +186,5 @@ require('spot'):setup {
         key_length = 15,
     },
 }
+--- git ---
+require("git"):setup()

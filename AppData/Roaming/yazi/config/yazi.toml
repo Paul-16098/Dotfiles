@@ -75,6 +75,16 @@
     run  = "mime-ext.remote"
     prio = "high"
 
+[[plugin.prepend_fetchers]]
+    id  = "git"
+    url = "*"
+    run = "git"
+
+[[plugin.prepend_fetchers]]
+    id  = "git"
+    url = "*/"
+    run = "git"
+
 [[plugin.prepend_preloaders]]
     mime = "{audio,video,image}/*"
     run  = "mediainfo"

@@ -436,10 +436,24 @@ export def "steamcmd" [
 }
 
 # https://yazi-rs.github.io/docs/quick-start#shell-wrapper
-@complete external
 export def --wrapped --env y [...args: string]: nothing -> nothing {
+  if ("YAZI_LEVEL" in $env) {
+    error make {
+      msg: "You are already running yazi."
+      labels: [
+        # {
+        #   text: "YAZI_LEVEL is set here"
+        #   span: (metadata $env.YAZI_LEVEL).span
+        # }
+        {
+          text: "call by here"
+          span: (metadata $args).span
+        }
+      ]
+    }
+  }
   let tmp = (mktemp --tmpdir "yazi-cwd.XXXXXX")
-  ^yazi ...$args --cwd-file $tmp
+  yazi ...$args --cwd-file $tmp
   let cwd = (open $tmp)
   if $cwd != $env.PWD and ($cwd | path exists) {
     cd $cwd

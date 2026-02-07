@@ -515,11 +515,11 @@
 
 [[mgr.keymap]]
     on   = "<S-Down>"
-    run  = "seek 1"
+    run  = "seek 5"
     desc = "捲動預覽面板向下"
 [[mgr.keymap]]
     on   = "<S-Up>"
-    run  = "seek -1"
+    run  = "seek -5"
     desc = "捲動預覽面板向上"
 
 [[mgr.keymap]]
