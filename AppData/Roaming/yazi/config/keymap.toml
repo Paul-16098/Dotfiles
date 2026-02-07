@@ -57,7 +57,7 @@
 
 [[mgr.keymap]]
     on   = ";"
-    run  = "plugin custom-shell nu -- auto --interactive"
+    run  = "shell 'nu' --block"
     desc = "運行 shell 命令"
 
 [[mgr.keymap]]
@@ -240,7 +240,7 @@
     desc = "進入子目錄/打開文件"
 
 [[mgr.keymap]]
-    on   = "<S-Enter>"
+    on = "<S-Enter>"
     # run  = "plugin augment-command -- enter --interactive"
     run  = "open --interactive"
     desc = "進入子目錄/以交互方式打開選定的文件"

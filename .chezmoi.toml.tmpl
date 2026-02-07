@@ -1,10 +1,17 @@
 {{ $EMAIL := promptStringOnce . "email" "What is your email address" -}}
 {{ $GH_NAME := promptStringOnce . "github_name" "What is your GitHub user name" -}}
-{{ $GPG_KEY_ID := promptStringOnce . "gpg_key_id" "What is your GPG key ID" -}}
+{{ $USE_SIGN := promptBoolOnce . "use_sign" "Do you want to sign your commits and tags" -}}
+
 [data]
     EMAIL = {{ $EMAIL | quote }}
     GH_NAME = {{ $GH_NAME | quote }}
-    GPG_KEY_ID = {{ $GPG_KEY_ID | quote }}
+
+    {{- if $USE_SIGN -}}
+    {{ $SIGN_BY := promptChoiceOnce . "sign_by" "What you want to use for signing commits and tags" (list "gpg" "ssh") }}
+    {{ $SIGN_KEY_ID := promptStringOnce . "sign_key_id" "Your GPG key ID if use GPG for signing else ssh key ID" }}
+    SIGN_BY = {{ $SIGN_BY | quote }}
+    SIGN_KEY_ID = {{ $SIGN_KEY_ID | quote }}
+    {{- end }}
 
 encryption = "gpg"
 
@@ -16,7 +23,7 @@ encryption = "gpg"
     ]
 
 [keepassxc]
-    database = "~/OneDrive/文件/密碼.kdbx"
+    database = {{ promptStringOnce . "keepassxc_database" "What is the path to your KeePassXC database" | quote }}
 
 [merge]
     command = "code-insiders"

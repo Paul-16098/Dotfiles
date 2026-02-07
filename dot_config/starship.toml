@@ -1,33 +1,16 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format       = "$time$all"
-right_format = "$shlvl$cmd_duration$battery"
+right_format = "${env_var.yazi_level}$shlvl$cmd_duration$battery"
 
 [character]
     success_symbol = "[❯](bold green)"
     error_symbol   = "[! ❯](bold red)"
 
 [battery]
-    full_symbol        = "• "
-    charging_symbol    = "⇡ "
-    discharging_symbol = "⇣ "
-    unknown_symbol     = "❓ "
-    empty_symbol       = "❗ "
-    disabled           = false
+    disabled = false
     [[battery.display]]
         threshold = 50
-
-[erlang]
-    symbol = "ⓔ "
-
-[nodejs]
-    symbol = "[⬢](bold green) "
-
-[pulumi]
-    symbol = "🧊 "
-
-[typst]
-    symbol = "t "
 
 [shlvl]
     disabled = false
@@ -39,5 +22,13 @@ right_format = "$shlvl$cmd_duration$battery"
     truncation_symbol = ".../"
 
 [time]
-    disabled = false
+    disabled    = false
     time_format = "%R"
+
+[env_var.yazi_level]
+    description = "Indicate the shell was launched by `yazi`"
+    variable    = "YAZI_LEVEL"
+    # 🦆: U+1f986 Duck
+    # Alternatively: " ": U+E795 <Private Use>
+    symbol = "🦆"
+    format = '[ $symbol ]($style)'

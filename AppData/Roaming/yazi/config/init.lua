@@ -1,6 +1,3 @@
-require("custom-shell"):setup({
-    save_history = false,
-})
 ---- augment-command ----
 require("augment-command"):setup({
     open_file_after_creation = true,
