@@ -130,10 +130,6 @@
     run = "code"
 
 [[plugin.prepend_previewers]]
-    url = "*.md"
-    run = "rich-preview"
-
-[[plugin.prepend_previewers]]
     url = "*.rst"
     run = "rich-preview"
 
