@@ -125,15 +125,6 @@ chezmoi/
 
 ### 配置
 
-#### KeePassXC 數據庫
-
-在 `.chezmoi.toml.tmpl` 中更新數據庫路徑：
-
-```toml
-[keepassxc]
-    database = "~/path/to/your/database.kdbx"
-```
-
 #### Nushell 環境
 
 編輯 `AppData/Roaming/nushell/env.nu.tmpl` 以配置特定環境變量。
@@ -203,28 +194,6 @@ cd $(chezmoi source-path)
 git pull
 chezmoi apply
 ```
-
-## 編碼標準
-
-### 文件命名約定
-
-- **Dotfiles**：使用 `dot_` 前綴(例如 `dot_gitconfig` → `.gitconfig`)
-- **模板**：使用 `.tmpl` 後綴表示模板文件
-- **目錄**：使用標準命名(目標位置的目錄不使用 `dot_` 前綴)
-
-### 配置組織
-
-- 在子目錄中分組相關配置
-- 對特定環境的設置使用模板(`.tmpl`)
-- 將敏感數據保存在加密文件中
-- 記錄非顯而易見的配置選擇
-
-### Shell 腳本(Nushell)
-
-- 使用結構化數據管道
-- 優先使用內置命令而非外部工具
-- 保持函數模塊化和可重用
-- 使用覆蓋層(overlay)進行命名空間管理
 
 ## 測試
 
