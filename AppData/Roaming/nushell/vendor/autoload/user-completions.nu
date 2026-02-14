@@ -216,3 +216,54 @@ export extern "ya pkg upgrade" [
 export extern "ya pkg add" [
   pkg: string # package name to add | 要添加的包名
 ]
+
+export extern gsudo [
+  command?: string # command to run elevated; omit to elevate current shell | 要提升执行的命令，留空则提升当前 shell
+  --new (-n) # start the command in a new console (returns immediately) | 在新控制台中启动并立即返回
+  --wait (-w) # when used with --new, wait for the command to finish | 与 --new 一起使用时等待命令完成
+  --noexit # after running a command, keep the elevated shell open | 运行后保持提升的 shell 打开
+  --noclose # don't close the console/window after the command ends | 命令结束后不关闭控制台/窗口
+  --pause # after running in a new console, ask for a keypress before closing | 在新控制台运行后，关闭前等待按键
+
+  --integrity (-i): string # integrity level: Untrusted|Low|Medium|MediumPlus|High|System | 指定完整性级别
+  --user (-u): string # run as specified user (may prompt for password) | 以指定用户身份运行（可能需要密码）
+  --system (-s) # run as Local System (NT AUTHORITY\\SYSTEM) | 以本地系统身份运行
+  --ti # run as NT SERVICE\\TrustedInstaller | 以 TrustedInstaller 身份运行
+  --kill-cache (-k) # kills cached credentials (next run will show UAC) | 清除缓存凭据（下次运行会弹出 UAC）
+
+  --direct (-d) # skip shell detection and assume cmd or provided command | 跳过 shell 检测，假定为 cmd 或直接命令
+  --loadProfile # when elevating PowerShell, load the user profile | 提升 PowerShell 时加载用户配置文件
+
+  --loglevel: string # set minimum log level: All|Debug|Info|Warning|Error|None | 设置日志级别
+  --debug # enable debug mode | 启用调试模式
+  --copyns # connect network drives to elevated user (may prompt) | 将网络驱动映射到提升后的用户（可能会提示）
+  --copyev # deprecated: copy environment variables to elevated process | 已弃用：复制环境变量到提升进程
+  --chdir: string # change directory before running the command | 运行前切换工作目录
+
+  --version (-v) # show version information | 显示版本信息
+  --help (-h) # show help | 显示帮助
+]
+
+# gsudo cache subcommand: enable/disable credential cache
+export extern "gsudo cache" [
+  mode: string@["on" "off" "help"] # cache action: on/off/help | 缓存操作: 开/关/帮助
+  --pid (-p): int # Specify which process can use the cache. (Use 0 for any, Default=caller pid) | 指定哪个进程可以使用缓存（使用 0 表示任何进程，默认是调用者的 pid）
+  --duration (-d): datetime # Sets the maximum idle time for the cache before termination. Use '-1' to keep open until logoff (or `cache off`, or `-k`). Current idle duration is: 00:05:00 | 设置缓存在终止前的最大空闲时间。使用 '-1' 保持打开直到注销（或 `cache off`，或 `-k`）。当前空闲时间为：00:05:00
+]
+
+# gsudo config subcommand: read or write configuration
+export extern "gsudo config" [
+  key?: string # config key to read/write | 要读取/写入的配置键
+  --global (-g) # affect all users (global) | 影响所有用户（全局）
+  value?: string # value to set; omit to read current value | 要设置的值；省略则读取当前值
+  --reset # reset key to default | 重置为默认值
+]
+
+# gsudo status subcommand: show current status
+export extern "gsudo status" [
+  --json # output JSON | 输出 JSON
+  filter?: string # optional filter expression | 可选过滤表达式
+]
+
+# gsudo help-style quick aliases
+export extern "gsudo !" [] # re-run last command as admin (shell-specific behavior) | 以管理员重跑上一个命令

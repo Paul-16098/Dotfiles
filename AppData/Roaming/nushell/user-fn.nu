@@ -103,20 +103,20 @@ export def --wrapped es [...rest: string]: nothing -> table {
 # update rustup, pnpm,... and completions
 export def app-update []: nothing -> nothing {
   job spawn --tag app-update-rustup {
-    rustup self update
+    rustup self update o+e>| job send 0
   }
   job spawn --tag "app-update-rust-toolchains" {
-    rustup update
+    rustup update o+e>| job send 0
   }
   job spawn --tag app-update-pnpm {
-    pnpm self-update
+    pnpm self-update o+e>| job send 0
   }
   job spawn --tag app-update-airshipper {
-    airshipper upgrade
-    airshipper update
+    airshipper upgrade o+e>| job send 0
+    airshipper update o+e>| job send 0
   }
   job spawn --tag app-update-cargo-packages {
-    cargo install-update --all
+    cargo install-update --all o+e>| job send 0
   }
   job spawn --tag app-update-coreutils-completions {
     "" | save --force ($nu.data-dir | path join completions/coreutils.nu)
@@ -149,14 +149,30 @@ export def app-update []: nothing -> nothing {
     # carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"
     carapace _carapace nushell | save --force ($nu.data-dir | path join vendor/autoload/carapace.nu)
   }
-
-  while (job list | is-not-empty) {
-    cls --keep-scrollback
-    print (job list | select tag pids | table --index false --expand-deep 2 --expand)
-    sleep 0.5sec
+  sleep 1sec
+  try {
+    loop {
+      sleep 0.5sec
+      print --raw (job recv --timeout 0sec)
+      ^a
+    }
+  } catch {|err|
+    if (
+      ($err.json | from json) == {
+        msg: "No message was received in the requested time interval"
+        labels: []
+        code: "nu::shell::job::recv_timeout"
+        url: null
+        help: "No message arrived within the specified time limit"
+        inner: []
+      }
+    ) {
+      print "All updates completed."
+      print "\a"
+    } else {
+      error make $err
+    }
   }
-  print "All updates completed."
-  print "\a"
   null
 }
 
