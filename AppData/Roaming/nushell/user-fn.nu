@@ -154,7 +154,6 @@ export def app-update []: nothing -> nothing {
     loop {
       sleep 0.5sec
       print --raw (job recv --timeout 0sec)
-      ^a
     }
   } catch {|err|
     if (

@@ -997,6 +997,8 @@ export extern "chezmoi merge" [
   --use-builtin-git: string@"nu-complete bool" # Use builtin git (default auto)
   --verbose (-v) # Make output more verbose
   --working-tree (-W): path # Set working tree directory
+
+  ...target: path@"nu-complete managed"
 ]
 
 # Perform a three-way merge for each modified file
@@ -1375,39 +1377,39 @@ export extern "chezmoi verify" [
   --working-tree (-W): path # Set working tree directory
 ]
 
-def "nu-complete types" [] {
+def "nu-complete types" []: nothing -> list<string> {
   [all none dirs files remove scripts symlinks always templates encrypted externals templates]
 }
 
-def "nu-complete format" [] {
+def "nu-complete format" []: nothing -> list<string> {
   [json toml yaml]
 }
 
-def "nu-complete output-format" [] {
+def "nu-complete output-format" []: nothing -> list<string> {
   [json yaml]
 }
 
-def "nu-complete mode" [] {
+def "nu-complete mode" []: nothing -> list<string> {
   [file symlink]
 }
 
-def "nu-complete state" [] {
+def "nu-complete state" []: nothing -> list<string> {
   [always auto never]
 }
 
-def "nu-complete bool" [] {
+def "nu-complete bool" []: nothing -> list<string> {
   ["'true'" "'false'" auto]
 }
 
-def "nu-complete log" [] {
+def "nu-complete log" []: nothing -> list<string> {
   [error ignore warning]
 }
 
-def "nu-complete path-style" [] {
+def "nu-complete path-style" []: nothing -> list<string> {
   [absolute all relative source-absolute source-relative]
 }
 
-def "nu-complete managed" [] {
+def "nu-complete managed" []: nothing -> record<options: record<completion_algorithm: string>, completions: any> {
   {
     options: {
       completion_algorithm: substring
@@ -1415,7 +1417,7 @@ def "nu-complete managed" [] {
     completions: ((chezmoi managed) | lines | par-each --keep-order { "~/" + ($in) })
   }
 }
-def "nu-complete unmanaged" [] {
+def "nu-complete unmanaged" []: nothing -> record<options: record<completion_algorithm: string>, completions: any> {
   {
     options: {
       completion_algorithm: substring
@@ -1423,18 +1425,16 @@ def "nu-complete unmanaged" [] {
     completions: ((chezmoi unmanaged) | lines | par-each --keep-order { "~/" + ($in) })
   }
 }
-def "nu-complete managed-hasdiff" [] {
+def "nu-complete managed-hasdiff" []: nothing -> record<options: record<completion_algorithm: string>, completions: any> {
   # if has password, use unmanaged files for completion
-  return (
-    if false {
-      {
-        options: {
-          completion_algorithm: substring
-        }
-        completions: (chezmoi status | detect columns --no-headers | rename status path | get path | par-each --keep-order { "~/" + ($in) })
+  if false {
+    {
+      options: {
+        completion_algorithm: substring
       }
-    } else {
-      nu-complete chezmoi managed
+      completions: (chezmoi status | detect columns --no-headers | rename status path | get path | par-each --keep-order { "~/" + ($in) })
     }
-  )
+  } else {
+    nu-complete chezmoi managed
+  }
 }
