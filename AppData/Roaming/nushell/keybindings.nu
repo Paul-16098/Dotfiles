@@ -17,7 +17,7 @@ export-env {
           event: [
             {
               send: executehostcommand
-              cmd: $"let _pwd = pwd; source ($nu.env-path); source ($nu.config-path); cd $_pwd; unlet $_pwd"
+              cmd: (reload-config)
             }
           ]
         }

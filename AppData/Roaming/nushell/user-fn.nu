@@ -149,6 +149,12 @@ export def app-update []: nothing -> nothing {
     # carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"
     carapace _carapace nushell | save --force ($nu.data-dir | path join vendor/autoload/carapace.nu)
   }
+  job spawn --tag app-update-yazi {
+    cargo install --git https://github.com/sxyazi/yazi.git yazi-build o+e>| job send 0
+  }
+  job spawn --tag app-update-nufmt {
+    cargo install --git https://github.com/nushell/nufmt nufmt o+e>| job send 0
+  }
   sleep 1sec
   try {
     loop {
@@ -478,4 +484,34 @@ export def --wrapped --env y [...args: string]: nothing -> nothing {
 # https://www.chezmoi.io/user-guide/frequently-asked-questions/design/#why-does-chezmoi-cd-spawn-a-shell-instead-of-just-changing-directory
 export def --env "chezmoi cd" [] {
   cd (chezmoi source-path | path expand)
+}
+# used in keybindings.nu for F5
+export def reload-config []: nothing -> string {
+  [
+    'let _pwd = pwd'
+    'source ($nu.env-path)'
+    'source ($nu.config-path)'
+
+    '# load vendor autoloads'
+    (
+      $nu.vendor-autoload-dirs | par-each --keep-order {|dir|
+        if ($dir | path exists) {
+          ls ($dir | path expand) | where ($it.type == "file") and ($it.name ends-with ".nu")
+          | par-each --keep-order {|path| $"source ($path.name)" }
+        }
+      }
+    )
+    '# load user autoloads'
+    (
+      $nu.user-autoload-dirs | par-each --keep-order {|dir|
+        if ($dir | path exists) {
+          ls ($dir | path expand) | where ($it.type == "file") and ($it.name ends-with ".nu")
+          | par-each --keep-order {|path| $"source ($path.name)" }
+        }
+      }
+    )
+
+    'cd $_pwd'
+    'unlet $_pwd'
+  ] | flatten | flatten | str join "\n"
 }
