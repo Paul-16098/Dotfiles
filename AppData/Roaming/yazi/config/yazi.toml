@@ -175,3 +175,28 @@
 
 [tasks]
     image_alloc = 1073741824
+
+[input]
+    cd_title = "更改目錄:"
+    create_title = [
+        "創建文件:",
+        "創建文件夾:",
+    ]
+    rename_title = "重命名為:"
+    filter_title = "過濾:"
+    find_title = [
+        "查找下一個:",
+        "查找上一個:",
+    ]
+    search_title = "Search via {n}:"
+    shell_title = [
+        "Shell:",
+        "Shell (block):",
+    ]
+    trash_title = "將 {n} 個選定的檔案刪除?"
+    delete_title = "永久刪除 {n} 個選定的檔案?"
+
+    overwrite_title = "覆蓋檔案?"
+    overwrite_body  = "將覆蓋以下檔案:"
+    quit_title      = "退出?"
+    quit_body       = "有未完成的任務，是否退出?\n(使用預設鍵 'w' 開啟任務管理器)"
