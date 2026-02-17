@@ -19,15 +19,3 @@ alias "encode url" = url encode
 alias "ya pack -a" = ya pkg add
 # nu#16260
 # alias "from editorconfig" = from ini
-
-# chezmoi
-export alias chad = chezmoi add
-export alias chap = chezmoi apply
-export alias chdf = chezmoi diff
-export alias chda = chezmoi data
-export alias chs = chezmoi status
-export alias ched = chezmoi edit
-export alias chst = chezmoi status
-export alias chm = chezmoi merge
-export alias chma = chezmoi merge-all
-export alias chrad = chezmoi re-add
