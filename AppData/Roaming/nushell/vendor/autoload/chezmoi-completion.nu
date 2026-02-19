@@ -575,6 +575,8 @@ export extern "chezmoi edit" [
   --use-builtin-git: string@"nu-complete bool" # Use builtin git (default auto)
   --verbose (-v) # Make output more verbose
   --working-tree (-W): path # Set working tree directory
+
+  ...target: path@"nu-complete managed"
 ]
 
 # Edit the configuration file

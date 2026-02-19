@@ -221,7 +221,7 @@
 
 [[mgr.keymap]]
     on   = "<C-a>"
-    run  = "toggle_all --state=on"
+    run  = "toggle_all"
     desc = "選擇所有文件"
 
 [[mgr.keymap]]
@@ -537,3 +537,8 @@
     ]
     run = "plugin fg -- fzf"
     desc = "按文件名查找文件"
+
+[[spot.keymap]]
+    on   = "c"
+    run  = "copy cell"
+    desc = "複製選取的儲存格"

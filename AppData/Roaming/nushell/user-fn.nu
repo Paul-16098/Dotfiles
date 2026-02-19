@@ -151,6 +151,7 @@ export def app-update []: nothing -> nothing {
   }
   job spawn --tag app-update-yazi {
     cargo install --git https://github.com/sxyazi/yazi.git yazi-build o+e>| job send 0
+    ya pkg upgrade o+e>| job send 0
   }
   job spawn --tag app-update-nufmt {
     cargo install --git https://github.com/nushell/nufmt nufmt o+e>| job send 0
@@ -367,7 +368,7 @@ export def get-dll [
     } else {
       $dll_find
       | upsert type {|table|
-        p if ($table | get path | str starts-with ($env.WINDIR | path expand)) {
+        if ($table | get path | str starts-with ($env.WINDIR | path expand)) {
           $"(ansi d)external(ansi reset):(ansi grey70)system(ansi reset)"
         } else {
           $"(ansi d)external(ansi reset):(ansi grey70)user(ansi reset)"
@@ -514,4 +515,105 @@ export def reload-config []: nothing -> string {
     'cd $_pwd'
     'unlet $_pwd'
   ] | flatten | flatten | str join "\n"
+}
+def "nu-complete image" []: nothing -> record {
+  use script/complete-tools.nu complete-mime
+  complete-mime image/*
+}
+
+# copy image to clipboard using powershell
+export def "clip copy-image" [
+  ...paths: path@"nu-complete image" # paths of images to copy to clipboard
+]: nothing -> nothing {
+  if ($nu.os-info.name != windows) {
+    error make 'only windows is supported for copying images to clipboard'
+  }
+
+  let base = "Add-Type -AssemblyName System.Windows.Forms;"
+
+  $paths | each {|path|
+    let path = $path | path expand
+    if not ($path | path exists) {
+      error make {
+        msg: $"File not found: (ansi green)($path)(ansi reset)"
+        label: {
+          text: "here"
+          span: (metadata $path).span
+        }
+        help: "please provide a valid image file path"
+      }
+    }
+    if ($path | path type) != file {
+      error make {
+        msg: $"Path is not a file: (ansi green)($path)(ansi reset)"
+        label: {
+          text: "here"
+          span: (metadata $path).span
+        }
+        help: "please provide a valid image file path"
+      }
+    }
+    if not (ls $path --mime-type | get 0.type | str starts-with "image/") {
+      error make {
+        msg: $"File is not an image: (ansi green)($path)(ansi reset)"
+        label: {
+          text: "here"
+          span: (metadata $path).span
+        }
+        help: "please provide a valid image file path"
+      }
+    }
+
+    print --stderr $"Copying image to clipboard: (ansi green)($path)(ansi reset)"
+
+    let app_comm = $"[Windows.Forms.Clipboard]::SetImage\($\([System.Drawing.Image]::Fromfile\('($path)')));"
+    let comm = $base + $app_comm
+
+    print --stderr $"> ($comm)"
+    pwsh -Sta -Command $comm | complete | if ($in.exit_code != 0) {
+      error make --unspanned {
+        msg: $"Failed to copy image to clipboard: (ansi green)($path)(ansi reset)"
+        inner: [{msg: $in.stderr}]
+      }
+    } else {
+      print --stderr $"Successfully copied image to clipboard: (ansi green)($path)(ansi reset)"
+    }
+  }
+  null
+}
+
+# get meme from yazi and copy to clipboard
+export def "meme" [
+  type: string@[fzf yazi nushell] = fzf # what tool to use to pick meme
+]: nothing -> nothing {
+  cd ~\OneDrive\文件\meme
+  mut meme_path: list<string> = []
+  match $type {
+    yazi => {
+      let chooser_file = mktemp --tmpdir "yazi-chooser_file.XXXXXX"
+      yazi --chooser-file $chooser_file
+      $meme_path = open $chooser_file | lines
+      rm --force --permanent $chooser_file
+    }
+    fzf => {
+      $meme_path = ^fzf --multi --ansi --preview '$env.TERM = "xterm-256color";viu --sixel -w $env.FZF_PREVIEW_COLUMNS -h $env.FZF_PREVIEW_LINES {}' | lines
+    }
+
+    nushell => {
+      $meme_path = glob ./**/*.* | input list --multi
+    }
+
+    $_ => {
+      error make {
+        msg: $"Invalid meme type: (ansi green)($type)(ansi reset)"
+        label: {
+          text: "here"
+          span: (metadata $type).span
+        }
+        help: "please provide a valid meme type"
+      }
+    }
+  }
+
+  clip copy-image ...$meme_path
 }

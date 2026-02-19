@@ -15,16 +15,6 @@
     block = true
 
 [[opener.open]]
-    run  = "xdg-open %s1"
-    desc = "Open"
-    for  = "linux"
-
-[[opener.open]]
-    run  = "open %s"
-    desc = "Open"
-    for  = "macos"
-
-[[opener.open]]
     run    = 'start "" %s1'
     desc   = "Open"
     for    = "windows"
@@ -35,17 +25,28 @@
     desc = "Open With Sandboxie"
     for  = "windows"
 
-[[opener.open]]
-    run  = "termux-open %s1"
-    desc = "Open"
-    for  = "android"
-
 [[opener.copyimage]]
-    run  = 'powershell.exe -windowstyle hidden -Command "Add-Type -AssemblyName System.Windows.Forms; [Windows.Forms.Clipboard]::SetImage($([System.Drawing.Image]::Fromfile(\"%s1\")))"'
+    # if file name contains space, it will be treated as multiple arguments
+    run  = 'nu --commands "use ($nu.data-dir | path join user-fn.nu) \"clip copy-image\";clip copy-image %s"'
     desc = "Copy Image to Clipboard"
     for  = "windows"
 
+[[opener.get-dll]]
+    run   = 'nu --commands "use ($nu.data-dir | path join user-fn.nu) \"get-dll\";print (get-dll %s1);pause"'
+    desc  = "Get DLL Path"
+    for   = "windows"
+    block = true
+
 [[open.rules]]
+    url = "*.exe"
+    use = [
+        "open",
+        "get-dll",
+        "reveal",
+    ]
+
+[[open.rules]]
+    # image
     mime = "image/*"
     use = [
         "open",
@@ -54,6 +55,7 @@
     ]
 
 [[open.rules]]
+    # media
     mime = "{audio,video}/*"
     use = [
         "play",
@@ -61,6 +63,7 @@
     ]
 
 [[open.rules]]
+    # jar file is actually a zip archive, but it's more user-friendly to open it with java
     mime = "application/java-archive"
     use = [
         "open",
@@ -69,13 +72,7 @@
     ]
 
 [[open.rules]]
-    mime = "text/*"
-    use = [
-        "edit",
-        "reveal",
-    ]
-
-[[open.rules]]
+    # archive
     mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}"
     use = [
         "extract",
@@ -83,13 +80,15 @@
     ]
 
 [[open.rules]]
-    mime = "application/{json,ndjson}"
+    # data
+    mime = "*/{json,ndjson,yaml}"
     use = [
         "edit",
         "reveal",
     ]
 
 [[open.rules]]
+    # code
     mime = "*/javascript"
     use = [
         "edit",
@@ -181,8 +180,12 @@
     run  = "mediainfo"
 
 [[plugin.prepend_previewers]]
-    url = "*.nu"
-    run = 'piper -- nu --commands "open --raw "$1" | nu-highlight"'
+    url = "*.{nu,nuon}"
+    run = 'faster-piper --rely-on-preloader'
+
+[[plugin.prepend_preloaders]]
+    url = "*.{nu,nuon}"
+    run = 'faster-piper -- nu --commands "open --raw "$1" | nu-highlight"'
 
 [[plugin.prepend_previewers]]
     url = "*.csv"

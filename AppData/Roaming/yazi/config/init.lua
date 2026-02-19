@@ -193,3 +193,7 @@ require('spot'):setup {
 }
 --- git ---
 require("git"):setup()
+--- sync_yanked ---
+require("session"):setup {
+    sync_yanked = true,
+}
