@@ -42,6 +42,8 @@ export def complete-path [
 
 # wraps complete-path for file extensions
 # you can use ext="{exe,bat,cmd,ps1}" to match multiple extensions
+@example "complete file .txt" { complete-file txt }
+@example "complete 2file .txt .json" { complete-file "{txt,json}" }
 export def complete-file [ext: string]: nothing -> record {
   log debug $"Generating file completions for extensions: ($ext)"
 
@@ -50,6 +52,7 @@ export def complete-file [ext: string]: nothing -> record {
 
 # wraps complete-path for mime types
 # supports brace expansion like "text/{plain,html}" and wildcards like "text/*"
+@example "complete image" { complete-mime image/* }
 export def complete-mime [...mime_type: string]: nothing -> record {
   log debug $"Generating completions for mime types: ($mime_type)"
 
