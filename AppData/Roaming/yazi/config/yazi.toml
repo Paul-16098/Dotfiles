@@ -37,6 +37,14 @@
     for   = "windows"
     block = true
 
+[[opener.extract]]
+    run  = "ya pub extract --list %s"
+    desc = "Extract here"
+[[opener.extract]]
+    run  = "Bandizip %s"
+    desc = "Extract with Bandizip"
+    for  = "windows"
+
 [[open.rules]]
     url = "*.exe"
     use = [

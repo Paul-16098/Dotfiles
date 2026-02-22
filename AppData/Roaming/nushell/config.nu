@@ -27,7 +27,7 @@ $env.LS_COLORS = (vivid generate molokai)
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 
 $env.TRANSIENT_PROMPT_COMMAND = { starship module time }
-$env.TRANSIENT_PROMPT_INDICATOR = { (starship module directory) + $"(ansi kd)$(ansi reset) " }
+$env.TRANSIENT_PROMPT_INDICATOR = { (starship module directory) + $"(ansi wd)$(ansi reset) " }
 
 # completions
 ## carapace
