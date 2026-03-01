@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "process",
+      "label": "watch: yazi config update",
+      "command": "nu",
+      "args": [
+        "-c",
+        "watch ./AppData/Roaming/yazi/config/yazi.raw.toml { nu ./AppData/Roaming/yazi/config/update.nu }"
+      ],
+      "problemMatcher": [],
+      "isBackground": true,
+      "runOptions": {
+        "runOn": "folderOpen",
+        "instanceLimit": 1,
+        "instancePolicy": "terminateOldest"
+      }
+    }
+  ]
+}

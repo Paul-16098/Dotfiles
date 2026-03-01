@@ -1,0 +1,329 @@
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+[mgr]
+    sort_by      = "natural"
+    show_hidden  = true
+    show_symlink = false
+    linemode     = "mtime"
+
+[preview]
+    wrap = "yes"
+
+[[opener.edit]]
+    run   = "%EDITOR% %s"
+    desc  = "$EDITOR"
+    block = true
+
+[[opener.open]]
+    run    = 'start "" %s1'
+    desc   = "Open"
+    for    = "windows"
+    orphan = true
+
+[[opener.open]]
+    run    = 'sudo start "" %s1'
+    desc   = "Open with sudo"
+    for    = "windows"
+    orphan = true
+
+[[opener.open]]
+    run  = '"C:\Program Files\Sandboxie-Plus\Start.exe" /box:__ask__ %s1'
+    desc = "Open With Sandboxie"
+    for  = "windows"
+
+[[opener.copyimage]]
+    # if file name contains space, it will be treated as multiple arguments
+    run  = '{nu} --commands "clip copy-image %s"'
+    desc = "Copy Image to Clipboard"
+    for  = "windows"
+
+[[opener.get-dll]]
+    run   = '{nu} --commands "(get-dll %s1);pause"'
+    desc  = "Get DLL Path"
+    for   = "windows"
+    block = true
+
+[[opener.extract]]
+    run  = "ya pub extract --list %s"
+    desc = "Extract here"
+[[opener.extract]]
+    run  = "Bandizip %s"
+    desc = "Extract with Bandizip"
+    for  = "windows"
+
+[[opener.nodejs]]
+    run    = 'start {nu} --commands "node %s;pause"'
+    desc   = "Run with Node.js"
+    orphan = true
+
+[[opener.python]]
+    run    = 'start {nu} --commands "uv run %s;pause"'
+    desc   = "Run with Python"
+    orphan = true
+
+[[opener.nushell]]
+    run    = 'start {nu} %s'
+    desc   = "Open with Nushell"
+    orphan = true
+
+[[open.rules]]
+    url = "*.exe"
+    use = [
+        "open",
+        "get-dll",
+        "reveal",
+    ]
+
+[[open.rules]]
+    mime = "image/gif"
+    use = [
+        "play",
+        "reveal",
+    ]
+
+[[open.rules]]
+    # image
+    mime = "image/*"
+    use = [
+        "open",
+        "copyimage",
+        "reveal",
+    ]
+
+[[open.rules]]
+    # media
+    mime = "{audio,video}/*"
+    use = [
+        "play",
+        "reveal",
+    ]
+
+[[open.rules]]
+    # jar file is actually a zip archive, but it's more user-friendly to open it with java
+    mime = "application/java-archive"
+    use = [
+        "open",
+        "extract",
+        "reveal",
+    ]
+
+[[open.rules]]
+    # archive
+    mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}"
+    use = [
+        "extract",
+        "reveal",
+    ]
+
+[[open.rules]]
+    # data
+    mime = "*/{json,ndjson,yaml}"
+    use = [
+        "edit",
+        "reveal",
+    ]
+
+[[open.rules]]
+    # code
+    mime = "*/javascript"
+    use = [
+        "nodejs",
+        "edit",
+        "reveal",
+    ]
+
+[[open.rules]]
+    mime = "text/python"
+    use = [
+        "python",
+        "edit",
+        "reveal",
+    ]
+
+[[open.rules]]
+    url = "*.nu"
+    use = [
+        "nushell",
+        "edit",
+        "reveal",
+    ]
+
+[[open.rules]]
+    mime = "inode/empty"
+    use = [
+        "edit",
+        "reveal",
+    ]
+
+[[open.rules]]
+    mime = "vfs/{absent,stale}"
+    use  = "download"
+
+[[open.rules]]
+    url = "*"
+    use = [
+        "open",
+        "edit",
+        "reveal",
+    ]
+
+[[open.rules]]
+    url = "*/"
+    use = [
+        "edit",
+        "reveal",
+    ]
+
+[[plugin.prepend_fetchers]]
+    id   = "mime"
+    url  = "local://*"
+    run  = "mime-ext.local"
+    prio = "high"
+
+[[plugin.prepend_fetchers]]
+    id   = "mime"
+    url  = "remote://*"
+    run  = "mime-ext.remote"
+    prio = "high"
+
+[[plugin.prepend_fetchers]]
+    id  = "git"
+    url = "*"
+    run = "git"
+
+[[plugin.prepend_fetchers]]
+    id  = "git"
+    url = "*/"
+    run = "git"
+
+# previewers
+[[plugin.prepend_previewers]]
+    mime = "application/xml"
+    run  = "code"
+
+[[plugin.prepend_previewers]]
+    url = "*.csv"
+    run = "code"
+
+[[plugin.prepend_previewers]]
+    url = "*.rst"
+    run = "rich-preview"
+
+[[plugin.prepend_previewers]]
+    url = "*.ipynb"
+    run = "rich-preview"
+
+[[plugin.prepend_previewers]]
+    mime = "font/*"
+    run  = "font-sample"
+
+[[plugin.prepend_previewers]]
+    mime = "application/ms-opentype"
+    run  = "font-sample"
+
+[[plugin.prepend_previewers]]
+    url = "*.{otf,ttf,woff,woff2}"
+    run = "font-sample"
+
+[[plugin.prepend_previewers]]
+    url = "**/.git/"
+    run = "preview-git"
+
+[[plugin.prepend_previewers]]
+    mime = "{audio,video,image}/*"
+    run  = "mediainfo"
+
+[[plugin.prepend_previewers]]
+    mime = "application/subrip"
+    run  = "mediainfo"
+
+[[plugin.prepend_previewers]]
+    mime = "application/postscript"
+    run  = "mediainfo"
+
+[[plugin.prepend_previewers]]
+    url = "*.{nu,nuon}"
+    run = 'faster-piper --rely-on-preloader'
+
+[[plugin.prepend_previewers]]
+    url = "*.bat"
+    run = "code"
+
+# preloaders
+[[plugin.prepend_preloaders]]
+    url = "*.{nu,nuon}"
+    run = 'faster-piper -- nu --commands "open --raw "$1" | nu-highlight"'
+
+[[plugin.prepend_preloaders]]
+    mime = "{audio,video,image}/*"
+    run  = "mediainfo"
+
+[[plugin.prepend_preloaders]]
+    mime = "application/subrip"
+    run  = "mediainfo"
+
+[[plugin.prepend_preloaders]]
+    mime = "application/postscript"
+    run  = "mediainfo"
+
+[[plugin.prepend_preloaders]]
+    mime = "font/*"
+    run  = "font-sample"
+
+[[plugin.prepend_preloaders]]
+    mime = "application/ms-opentype"
+    run  = "font-sample"
+
+[[plugin.prepend_preloaders]]
+    url = "*.{otf,ttf,woff,woff2}"
+    run = "font-sample"
+
+# spotters
+[[plugin.prepend_spotters]]
+    mime = "audio/*"
+    run  = "spot-audio"
+
+[[plugin.prepend_spotters]]
+    mime = "image/*"
+    run  = "spot-image"
+
+[[plugin.prepend_spotters]]
+    url = "video/*"
+    run = "spot-video"
+
+[[plugin.prepend_spotters]]
+    url = "*/"
+    run = "spot"
+
+[[plugin.prepend_spotters]]
+    url = "*"
+    run = "spot"
+
+[tasks]
+    image_alloc = 1073741824
+
+[input]
+    cd_title = "更改目錄:"
+    create_title = [
+        "創建文件:",
+        "創建文件夾:",
+    ]
+    rename_title = "重命名為:"
+    filter_title = "過濾:"
+    find_title = [
+        "查找下一個:",
+        "查找上一個:",
+    ]
+    search_title = "Search via {n}:"
+    shell_title = [
+        "Shell:",
+        "Shell (block):",
+    ]
+    trash_title = "將 {n} 個選定的檔案刪除?"
+    delete_title = "永久刪除 {n} 個選定的檔案?"
+    overwrite_title = "覆蓋檔案?"
+    overwrite_body = "將覆蓋以下檔案:"
+    quit_title = "退出?"
+    quit_body = """
+有未完成的任務，是否退出?
+(使用預設鍵 'w' 開啟任務管理器)"""
