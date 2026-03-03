@@ -74,7 +74,7 @@ require("yatline"):setup({
             },
             section_b = {
                 { type = "string",   name = "hovered_size" },
-                { type = "coloreds", name = "created_time" }
+                -- { type = "coloreds", name = "created_time" }
             },
             section_c = {
                 { type = "string",   name = "hovered_path" },

@@ -244,12 +244,88 @@ export alias gl = git log
 # git pull wrapper to show updated commits
 @complete external
 @category git
-export def --wrapped "git pull" [...rest: string]: nothing -> table {
-  let old_commit = git rev-list HEAD -n 1
-  ^git pull --quiet ...$rest
-  let new_commit = git rev-list HEAD -n 1
+export def --wrapped "git pull" [...rest: string]: nothing -> nothing {
+  let fetch_out = (git fetch --quiet | complete)
+  if $fetch_out.exit_code != 0 {
+    error make --unspanned {
+      msg: "Failed to fetch remote refs before pull"
+      inner: [{msg: $fetch_out.stderr}]
+    }
+  }
+
+  let head_info = (git rev-parse --verify HEAD | complete)
+  if $head_info.exit_code != 0 {
+    print --stderr `There is no tracking information for the current branch.
+Please specify which branch you want to merge with.
+See git-pull(1) for details.
+
+    git pull <remote> <branch>
+
+If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream-to=<remote>/<branch> main
+`
+    return
+  }
+
+  let current_branch_info = (git branch --show-current | complete)
+  let current_branch = if $current_branch_info.exit_code == 0 {
+    $current_branch_info.stdout | str trim
+  } else {
+    ""
+  }
+
+  let upstream_info = (git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}" | complete)
+  let upstream_ref = if $upstream_info.exit_code == 0 {
+    $upstream_info.stdout | str trim
+  } else if ($current_branch | is-not-empty) {
+    $"origin/($current_branch)"
+  } else {
+    "origin/HEAD"
+  }
+
+  let old_commit = ($head_info.stdout | str trim)
+  let new_commit_info = (git rev-parse $upstream_ref | complete)
+  if $new_commit_info.exit_code != 0 {
+    print --stderr $"Could not resolve upstream ref '($upstream_ref)'. Running git pull directly."
+    ^git pull ...$rest
+    return
+  }
+  let new_commit = ($new_commit_info.stdout | str trim)
+
+  if $old_commit == $new_commit {
+    print --stderr "Already up to date."
+    return
+  }
+
   print --stderr $"Pulled latest changes. Showing commits from (ansi green)($old_commit)(ansi reset) to (ansi green)($new_commit)(ansi reset):"
-  git log $"($old_commit)...($new_commit)"
+  git log $"($old_commit)...($new_commit)" | print --stderr $in
+
+  let key_hint = $"(ansi yellow)Press (ansi green)p(ansi reset)(ansi yellow) to pull again, (ansi green)s(ansi reset)(ansi yellow) to show changes, (ansi green)a(ansi reset)(ansi yellow) to abort.(ansi reset)"
+  print --stderr $key_hint
+  loop {
+    match (input listen --types [key]) {
+      {type: "key" key_type: "char" code: "p"} => {
+        print --stderr "Pulling latest changes..."
+        ^git pull --quiet ...$rest
+        print --stderr "Pull completed."
+        break
+      }
+      {type: "key" key_type: "char" code: "s"} => {
+        print --stderr "Showing changes..."
+        try { git show $old_commit $new_commit } catch {
+          if $in.exit_code == 141 { } else {
+            $in | error make "Not expected error"
+          }
+        }
+        print --stderr $key_hint
+      }
+      {type: "key" key_type: "char" code: "a"} => {
+        print --stderr "Aborting pull."
+        break
+      }
+    }
+  }
 }
 export alias gp = git pull
 
