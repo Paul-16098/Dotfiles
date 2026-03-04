@@ -11,73 +11,73 @@
  * String object with additional hover value property for display
  */
 interface StringWithHover extends String {
-  /** Hover text to display in the UI */
-  hoverValue?: string | number;
+	/** Hover text to display in the UI */
+	hoverValue?: string | number;
 }
 
 /**
  * File data accessor for reading binary file contents
  */
 interface FileData {
-  /**
-   * Read bytes from the file at a specific offset
-   * @param offset - File offset to read from
-   * @param length - Number of bytes to read (default: 1)
-   * @returns Array of byte values (0-255)
-   */
-  getBytesAt(offset: number, length?: number): number[];
+	/**
+	 * Read bytes from the file at a specific offset
+	 * @param offset - File offset to read from
+	 * @param length - Number of bytes to read (default: 1)
+	 * @returns Array of byte values (0-255)
+	 */
+	getBytesAt(offset: number, length?: number): number[];
 
-  /**
-   * Get the total file size in bytes
-   * @returns File size
-   */
-  getFileSize(): number;
+	/**
+	 * Get the total file size in bytes
+	 * @returns File size
+	 */
+	getFileSize(): number;
 }
 
 /**
  * Single data series for charting
  */
 interface Series {
-  /** Array of numeric samples */
-  samples: number[];
-  /** Optional label for the series */
-  label?: string;
-  /** Optional color for the series (e.g., 'red', '#FF0000') */
-  color?: string;
+	/** Array of numeric samples */
+	samples: number[];
+	/** Optional label for the series */
+	label?: string;
+	/** Optional color for the series (e.g., 'red', '#FF0000') */
+	color?: string;
 }
 
 /**
  * Chart configuration object
  */
 interface ChartConfig {
-  /** Chart type: 'line' (default) or 'bar' */
-  type?: "line" | "bar";
-  /** Array of data series or raw number arrays */
-  series: (Series | number[])[];
+	/** Chart type: 'line' (default) or 'bar' */
+	type?: "line" | "bar";
+	/** Array of data series or raw number arrays */
+	series: (Series | number[])[];
 }
 
 /**
  * Custom color configuration for parser output
  */
 interface ColorConfig {
-  collapse?: string;
-  offset?: string;
-  size?: string;
-  name?: string;
-  value?: string;
-  description?: string;
-  "row-header"?: string;
-  "row-odd"?: string;
-  "row-even"?: string;
+	collapse?: string;
+	offset?: string;
+	size?: string;
+	name?: string;
+	value?: string;
+	description?: string;
+	"row-header"?: string;
+	"row-odd"?: string;
+	"row-even"?: string;
 }
 
 /**
  * Defaults configuration object
  */
 interface DefaultsConfig {
-  colors?: ColorConfig;
-  "dark-colors"?: ColorConfig;
-  [key: string]: any;
+	colors?: ColorConfig;
+	"dark-colors"?: ColorConfig;
+	[key: string]: any;
 }
 
 // ============================================================================
@@ -99,7 +99,7 @@ interface DefaultsConfig {
  * });
  */
 declare function registerFileType(
-  func: (fileExt: string, filePath: string, fileData: FileData) => boolean,
+	func: (fileExt: string, filePath: string, fileData: FileData) => boolean,
 ): void;
 
 /**
@@ -312,10 +312,10 @@ declare function getBitsValue(): StringWithHover;
  * const samples = getData(2, 0, 'i', 2);
  */
 declare function getData(
-  sampleSize?: number,
-  offset?: number,
-  format?: "u" | "i",
-  skip?: number,
+	sampleSize?: number,
+	offset?: number,
+	format?: "u" | "i",
+	skip?: number,
 ): number[];
 
 // ============================================================================
@@ -337,11 +337,11 @@ declare function getData(
  * addRow("Size", getNumberValue(), "File size in bytes");
  */
 declare function addRow(
-  name: string,
-  value?: string | number | StringWithHover,
-  description?: string,
-  valueHover?: string | number,
-  hexOffset?: boolean,
+	name: string,
+	value?: string | number | StringWithHover,
+	description?: string,
+	valueHover?: string | number,
+	hexOffset?: boolean,
 ): void;
 
 /**
@@ -353,8 +353,8 @@ declare function addRow(
  * @param valueHover - Optional new hover text
  */
 declare function setRowValue(
-  value: string | number | StringWithHover,
-  valueHover?: string | number,
+	value: string | number | StringWithHover,
+	valueHover?: string | number,
 ): void;
 
 /**
@@ -385,14 +385,14 @@ declare function addDetails(func: () => void, opened?: boolean): void;
  * @param hexOffset - Display offset in hex (default: false)
  */
 declare function readRowWithDetails(
-  name: string,
-  func: () => {
-    value: string | number | StringWithHover;
-    description: string;
-    valueHover?: string | number;
-  },
-  opened?: boolean,
-  hexOffset?: boolean,
+	name: string,
+	func: () => {
+		value: string | number | StringWithHover;
+		description: string;
+		valueHover?: string | number;
+	},
+	opened?: boolean,
+	hexOffset?: boolean,
 ): void;
 
 /**
@@ -429,9 +429,9 @@ declare function addChart(config: ChartConfig, name?: string): void;
  * @returns Series object
  */
 declare function createSeries(
-  samples: number[],
-  color?: string,
-  label?: string,
+	samples: number[],
+	color?: string,
+	label?: string,
 ): Series;
 
 /**
@@ -449,9 +449,9 @@ declare function createSeries(
  * ctx.fillRect(10, 10, 50, 50);
  */
 declare function addCanvas(
-  width: number,
-  height: number,
-  name?: string,
+	width: number,
+	height: number,
+	name?: string,
 ): CanvasRenderingContext2D;
 
 /**
@@ -462,9 +462,9 @@ declare function addCanvas(
  * @param height - Box height (optional)
  */
 declare function addTextBox(
-  text: string,
-  width?: number,
-  height?: number,
+	text: string,
+	width?: number,
+	height?: number,
 ): void;
 
 /**

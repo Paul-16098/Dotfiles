@@ -107,21 +107,21 @@ chezmoi/
 
 1. **使用此倉庫初始化 chezmoi**：
 
-   ```bash
-   chezmoi init Paul-16098/Dotfiles
-   ```
+	```bash
+	chezmoi init Paul-16098/Dotfiles
+	```
 
 2. **在應用之前查看更改**：
 
-   ```bash
-   chezmoi diff
-   ```
+	```bash
+	chezmoi diff
+	```
 
 3. **應用配置文件**：
 
-   ```bash
-   chezmoi apply
-   ```
+	```bash
+	chezmoi apply
+	```
 
 ### 配置
 
@@ -159,29 +159,29 @@ chezmoi/
 
 1. **編輯源倉庫中的文件**：
 
-   ```bash
-   chezmoi edit ~/.config/starship.toml
-   ```
+	```bash
+	chezmoi edit ~/.config/starship.toml
+	```
 
 2. **查看更改**：
 
-   ```bash
-   chezmoi diff
-   ```
+	```bash
+	chezmoi diff
+	```
 
 3. **應用更改**：
 
-   ```bash
-   chezmoi apply
-   ```
+	```bash
+	chezmoi apply
+	```
 
 4. **自動提交**通過 `.chezmoi.toml.tmpl` 啟用：
 
-   ```toml
-   [git]
-       autoAdd = true
-       autoCommit = true
-   ```
+	```toml
+	[git]
+		 autoAdd = true
+		 autoCommit = true
+	```
 
 ### 更新配置文件
 
@@ -215,14 +215,14 @@ chezmoi apply --dry-run --verbose
 
 1. **Fork 此倉庫**
 2. **更新個人信息**：
-   - GPG 簽名密鑰
-   - KeePassXC 數據庫路徑
-   - SSH 密鑰和配置
-   - WakaTime API 密鑰
+	- GPG 簽名密鑰
+	- KeePassXC 數據庫路徑
+	- SSH 密鑰和配置
+	- WakaTime API 密鑰
 3. **自定義配置**：
-   - Nushell 別名和函數
-   - Starship 提示符主題
-   - Yazi 快捷鍵綁定
+	- Nushell 別名和函數
+	- Starship 提示符主題
+	- Yazi 快捷鍵綁定
 4. **從配置中移除** 未使用的工具
 
 ### 添加新配置
