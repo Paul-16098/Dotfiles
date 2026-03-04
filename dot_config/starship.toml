@@ -3,10 +3,6 @@
 format       = "$time$all"
 right_format = "${env_var.yazi_level}$shlvl$cmd_duration$battery"
 
-[character]
-    success_symbol = "[❯](bold green)"
-    error_symbol   = "[! ❯](bold red)"
-
 [battery]
     disabled = false
     [[battery.display]]
@@ -225,7 +221,8 @@ right_format = "${env_var.yazi_level}$shlvl$cmd_duration$battery"
     symbol = " "
 
 [status]
-    symbol = " "
+    symbol   = " "
+    disabled = false
 
 [swift]
     symbol = " "
