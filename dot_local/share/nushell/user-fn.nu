@@ -187,6 +187,31 @@ export def app-update [] {
   null
 }
 
+def git-log-subject-highlight [remote_url: string]: string -> string {
+  # Merge pull request #ID from ...
+  | str replace --regex '(?i)Merge pull request #(?<id>\d+) from (?<from>.+)' {|id from|
+    $"[PR (ansi gb)($"($remote_url)/pull/($id)" | ansi link --text $'#($id)')(ansi reset) from (ansi gb)($from)(ansi reset)]"
+  }
+  # Merge branch 'branch' of ...
+  | str replace --regex "(?i)Merge branch '(?<branch>.+)' of (?<from>.+)" {|branch from|
+    $"[Merge branch '(ansi gb)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)' of (ansi gb)($from | str replace --regex "^ssh\\.gitgud\\.io:" 'https://gitgud.io/' | ansi link --text $from)(ansi reset)]"
+  }
+  # Merge branch 'branch' into 'from'
+  # Merge branch 'branch' into from
+  | str replace --regex "(?i)Merge branch '(?<branch>.+)' into '?(?<from>[^']+)'?$" {|branch from|
+    $"[Merge branch '(ansi gb)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)' into '(ansi gb)($"($remote_url)/tree/($from)" | ansi link --text $from)(ansi reset)']"
+  }
+  # Merge commit 'cc62c8f4f6cb164756e97efb3a001fd73976a053' into tw-dev
+  | str replace --regex "(?i)Merge commit '(?<commit>.+)' into '?(?<branch>[^']+)'?$" {|commit branch|
+    $"[Merge commit '(ansi gb)($"($remote_url)/commit/($commit)" | ansi link --text $commit)(ansi reset)' into '(ansi gb)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)']"
+  }
+  # feat:, fix:, docs:, style:, refactor:, perf:, test:, chore:
+  | str replace --all --regex "(?i)^(feat|fix|docs|style|refactor|perf|test|chore|imp|revert|bump)(\\(.*\\))?(:|：)" $"(ansi gb)$1(ansi reset)(ansi gb)$2(ansi reset):"
+  # Vx.x.x
+  | str replace --all --regex "(?i)^(v[\\d\\.]+(-beta\\d+)?)" $"(ansi b)$0(ansi reset)"
+  | str replace --all --regex "#\\d+" $"(ansi gb)$0(ansi reset)"
+}
+
 # git log wrapper to format output as a table
 #
 # noreply email is filtered out
@@ -204,8 +229,8 @@ export def --wrapped "git log" [...rest: string]: nothing -> table {
   ^git log --pretty=%h»¦«%s»¦«%aN»¦«%aE»¦«%aD ...$rest
   | lines
   | split column "»¦«" commit subject name email date
-  | upsert date { $in | into datetime }
-  | upsert email {|row|
+  | update date { $in | into datetime }
+  | update email {|row|
     let email = $row.email
     if (["@users.noreply.github.com" "@noreply.codeberg.org"] | all {|suffix| not ($email | str ends-with $suffix) }) {
       $"mailto:($email)" | ansi link --text $email
@@ -213,31 +238,7 @@ export def --wrapped "git log" [...rest: string]: nothing -> table {
       $"(ansi dgri)noreply email(ansi reset)"
     }
   } | default $"(ansi dgri)N/A(ansi reset)" email
-  | upsert subject {
-    $in | str trim
-    # Merge pull request #ID from ...
-    | str replace --regex '(?i)Merge pull request #(?<id>\d+) from (?<from>.+)' {|id from|
-      $"[PR (ansi gb)($"($remote_url)/pull/($id)" | ansi link --text $'#($id)')(ansi reset) from (ansi gb)($from)(ansi reset)]"
-    }
-    # Merge branch 'branch' of ...
-    | str replace --regex "(?i)Merge branch '(?<branch>.+)' of (?<from>.+)" {|branch from|
-      $"[Merge branch '(ansi gb)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)' of (ansi gb)($from | str replace --regex "^ssh\\.gitgud\\.io:" 'https://gitgud.io/' | ansi link --text $from)(ansi reset)]"
-    }
-    # Merge branch 'branch' into 'from'
-    # Merge branch 'branch' into from
-    | str replace --regex "(?i)Merge branch '(?<branch>.+)' into '?(?<from>[^']+)'?$" {|branch from|
-      $"[Merge branch '(ansi gb)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)' into '(ansi gb)($"($remote_url)/tree/($from)" | ansi link --text $from)(ansi reset)']"
-    }
-    # Merge commit 'cc62c8f4f6cb164756e97efb3a001fd73976a053' into tw-dev
-    | str replace --regex "(?i)Merge commit '(?<commit>.+)' into '?(?<branch>[^']+)'?$" {|commit branch|
-      $"[Merge commit '(ansi gb)($"($remote_url)/commit/($commit)" | ansi link --text $commit)(ansi reset)' into '(ansi gb)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)']"
-    }
-    # feat:, fix:, docs:, style:, refactor:, perf:, test:, chore:
-    | str replace --all --regex "(?i)^(feat|fix|docs|style|refactor|perf|test|chore|imp|revert|bump)(\\(.*\\))?(:|：)" $"(ansi gb)$1(ansi reset)(ansi gb)$2(ansi reset):"
-    # Vx.x.x
-    | str replace --all --regex "(?i)^(v[\\d\\.]+(-beta\\d+)?)" $"(ansi b)$0(ansi reset)"
-    | str replace --all --regex "#\\d+" $"(ansi gb)$0(ansi reset)"
-  }
+  | update subject { $in | str trim | git-log-subject-highlight $remote_url }
   | sort-by date --reverse
 }
 export alias gl = git log
@@ -287,8 +288,8 @@ If you wish to set tracking information for this branch you can do so with:
   let old_commit = ($head_info.stdout | str trim)
   let new_commit_info = (git rev-parse $upstream_ref | complete)
   if $new_commit_info.exit_code != 0 {
-    print --stderr $"Could not resolve upstream ref '($upstream_ref)'. Running git pull directly."
-    ^git pull ...$rest
+    print --stderr $"Could not resolve upstream ref '($upstream_ref)'."
+    # ^git pull ...$rest
     return
   }
   let new_commit = ($new_commit_info.stdout | str trim)
@@ -299,9 +300,9 @@ If you wish to set tracking information for this branch you can do so with:
   }
 
   print --stderr $"Pulled latest changes. Showing commits from (ansi green)($old_commit)(ansi reset) to (ansi green)($new_commit)(ansi reset):"
-  git log $"($old_commit)...($new_commit)" | print --stderr $in
+  git log $"($old_commit)...($new_commit)" | let log | print --stderr $in
 
-  let key_hint = $"(ansi yellow)Press (ansi green)p(ansi reset)(ansi yellow) to pull again, (ansi green)s(ansi reset)(ansi yellow) to show changes, (ansi green)a(ansi reset)(ansi yellow) to abort.(ansi reset)"
+  let key_hint = $"(ansi yellow)Press (ansi green)p(ansi reset)(ansi yellow) to pull again, (ansi green)s(ansi reset)(ansi yellow) to show changes, (ansi green)l(ansi reset)(ansi yellow) to view logs, (ansi green)a(ansi reset)(ansi yellow) to abort.(ansi reset)"
   print --stderr $key_hint
   loop {
     match (input listen --types [key]) {
@@ -318,6 +319,11 @@ If you wish to set tracking information for this branch you can do so with:
             $in | error make "Not expected error"
           }
         }
+        print --stderr $key_hint
+      }
+      {type: "key" key_type: "char" code: "l"} => {
+        print --stderr "Viewing logs..."
+        print --stderr $log
         print --stderr $key_hint
       }
       {type: "key" key_type: "char" code: "a"} => {
