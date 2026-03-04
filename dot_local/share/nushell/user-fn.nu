@@ -246,7 +246,11 @@ export alias gl = git log
 @complete external
 @category git
 export def --wrapped "git pull" [...rest: string]: nothing -> nothing {
+  use std/log
+
+  # Fetch first so remote-tracking refs are fresh before we compare HEADs.
   let fetch_out = (git fetch --quiet | complete)
+  log debug $"git fetch output: ($fetch_out)"
   if $fetch_out.exit_code != 0 {
     error make --unspanned {
       msg: "Failed to fetch remote refs before pull"
@@ -255,6 +259,7 @@ export def --wrapped "git pull" [...rest: string]: nothing -> nothing {
   }
 
   let head_info = (git rev-parse --verify HEAD | complete)
+  log debug $"git rev-parse HEAD output: ($head_info)"
   if $head_info.exit_code != 0 {
     print --stderr `There is no tracking information for the current branch.
 Please specify which branch you want to merge with.
@@ -270,6 +275,7 @@ If you wish to set tracking information for this branch you can do so with:
   }
 
   let current_branch_info = (git branch --show-current | complete)
+  log debug $"git branch --show-current output: ($current_branch_info)"
   let current_branch = if $current_branch_info.exit_code == 0 {
     $current_branch_info.stdout | str trim
   } else {
@@ -277,6 +283,8 @@ If you wish to set tracking information for this branch you can do so with:
   }
 
   let upstream_info = (git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}" | complete)
+  log debug $"git rev-parse @{upstream} output: ($upstream_info)"
+  # Prefer explicit upstream; fall back to origin/<branch> for repos without tracking config.
   let upstream_ref = if $upstream_info.exit_code == 0 {
     $upstream_info.stdout | str trim
   } else if ($current_branch | is-not-empty) {
@@ -286,21 +294,33 @@ If you wish to set tracking information for this branch you can do so with:
   }
 
   let old_commit = ($head_info.stdout | str trim)
+  log debug $"Current commit: ($old_commit), Upstream ref: ($upstream_ref)"
   let new_commit_info = (git rev-parse $upstream_ref | complete)
+  log debug $"git rev-parse $upstream_ref output: ($new_commit_info)"
   if $new_commit_info.exit_code != 0 {
     print --stderr $"Could not resolve upstream ref '($upstream_ref)'."
     # ^git pull ...$rest
     return
   }
   let new_commit = ($new_commit_info.stdout | str trim)
+  log debug $"Upstream commit: ($new_commit)"
 
   if $old_commit == $new_commit {
     print --stderr "Already up to date."
     return
   }
 
-  print --stderr $"Pulled latest changes. Showing commits from (ansi green)($old_commit)(ansi reset) to (ansi green)($new_commit)(ansi reset):"
-  git log $"($old_commit)...($new_commit)" | let log | print --stderr $in
+  # two-dot old..new means "reachable from new but not from old": commits to be pulled.
+  let commits_to_pull = (git rev-list --count $"($old_commit)..($new_commit)")
+  log debug $"Commits to pull from upstream: ($commits_to_pull)"
+  if $commits_to_pull == "0" {
+    # If upstream has no exclusive commits, local is ahead (or diverged without pullable commits).
+    print --stderr $"Your branch is ahead of '($upstream_ref)' by (git rev-list --count $"($new_commit)..($old_commit)") commit\(s)."
+    return
+  }
+
+  print --stderr $"Pulled latest changes. Showing commits from (ansi green)($new_commit)(ansi reset) to (ansi green)($old_commit)(ansi reset):"
+  git log $"($new_commit)..($old_commit)" | let log | print --stderr $in
 
   let key_hint = $"(ansi yellow)Press (ansi green)p(ansi reset)(ansi yellow) to pull again, (ansi green)s(ansi reset)(ansi yellow) to show changes, (ansi green)l(ansi reset)(ansi yellow) to view logs, (ansi green)a(ansi reset)(ansi yellow) to abort.(ansi reset)"
   print --stderr $key_hint

@@ -10,8 +10,7 @@ right_format = "${env_var.yazi_level}$shlvl$cmd_duration$battery "
 
 [shlvl]
 	disabled = false
-	symbol   = " "
-	format   = '[$shlvl$symbol]($style)'
+	symbol   = ""
 
 [git_metrics]
 	disabled = false
