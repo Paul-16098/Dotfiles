@@ -1,235 +1,237 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format       = "$time$all"
-right_format = "${env_var.yazi_level}$shlvl$cmd_duration$battery"
+right_format = "${env_var.yazi_level}$shlvl$cmd_duration$battery "
 
 [battery]
-    disabled = false
-    [[battery.display]]
-        threshold = 50
+	disabled = false
+	[[battery.display]]
+		threshold = 50
 
 [shlvl]
-    disabled = false
+	disabled = false
+	symbol   = " "
+	format   = '[$shlvl$symbol]($style)'
+
 [git_metrics]
-    disabled = false
+	disabled = false
 
 [directory]
-    truncation_length = 5
-    truncation_symbol = ".../"
-    read_only         = " 󰌾"
+	truncation_length = 5
+	truncation_symbol = ".../"
+	read_only         = " 󰌾"
 
 [time]
-    disabled    = false
-    time_format = "%R"
+	disabled    = false
+	time_format = "%R"
 
 [env_var.yazi_level]
-    description = "Indicate the shell was launched by `yazi`"
-    variable    = "YAZI_LEVEL"
-    # 🦆: U+1f986 Duck
-    # Alternatively: " ": U+E795 <Private Use>
-    symbol = "🦆"
-    format = '[ $symbol ]($style)'
+	description = "Indicate the shell was launched by `yazi`"
+	variable    = "YAZI_LEVEL"
+	symbol      = " "
+	format      = '[$symbol]($style)'
+	style       = "yellow bold"
 
 # https://starship.rs/presets/nerd-font <
 [aws]
-    symbol = " "
+	symbol = " "
 
 [buf]
-    symbol = " "
+	symbol = " "
 
 [bun]
-    symbol = " "
+	symbol = " "
 
 [c]
-    symbol = " "
+	symbol = " "
 
 [cpp]
-    symbol = " "
+	symbol = " "
 
 [cmake]
-    symbol = " "
+	symbol = " "
 
 [conda]
-    symbol = " "
+	symbol = " "
 
 [crystal]
-    symbol = " "
+	symbol = " "
 
 [dart]
-    symbol = " "
+	symbol = " "
 
 [deno]
-    symbol = " "
+	symbol = " "
 
 [docker_context]
-    symbol = " "
+	symbol = " "
 
 [elixir]
-    symbol = " "
+	symbol = " "
 
 [elm]
-    symbol = " "
+	symbol = " "
 
 [fennel]
-    symbol = " "
+	symbol = " "
 
 [fortran]
-    symbol = " "
+	symbol = " "
 
 [fossil_branch]
-    symbol = " "
+	symbol = " "
 
 [gcloud]
-    symbol = " "
+	symbol = " "
 
 [git_branch]
-    symbol = " "
+	symbol = " "
 
 [git_commit]
-    tag_symbol = '  '
+	tag_symbol = '  '
 
 [golang]
-    symbol = " "
+	symbol = " "
 
 [gradle]
-    symbol = " "
+	symbol = " "
 
 [guix_shell]
-    symbol = " "
+	symbol = " "
 
 [haskell]
-    symbol = " "
+	symbol = " "
 
 [haxe]
-    symbol = " "
+	symbol = " "
 
 [hg_branch]
-    symbol = " "
+	symbol = " "
 
 [hostname]
-    ssh_symbol = " "
+	ssh_symbol = " "
 
 [java]
-    symbol = " "
+	symbol = " "
 
 [julia]
-    symbol = " "
+	symbol = " "
 
 [kotlin]
-    symbol = " "
+	symbol = " "
 
 [lua]
-    symbol = " "
+	symbol = " "
 
 [memory_usage]
-    symbol = "󰍛 "
+	symbol = "󰍛 "
 
 [meson]
-    symbol = "󰔷 "
+	symbol = "󰔷 "
 
 [nim]
-    symbol = "󰆥 "
+	symbol = "󰆥 "
 
 [nix_shell]
-    symbol = " "
+	symbol = " "
 
 [nodejs]
-    symbol = " "
+	symbol = " "
 
 [ocaml]
-    symbol = " "
+	symbol = " "
 
 [os.symbols]
-    Alpaquita        = " "
-    Alpine           = " "
-    AlmaLinux        = " "
-    Amazon           = " "
-    Android          = " "
-    AOSC             = " "
-    Arch             = " "
-    Artix            = " "
-    CachyOS          = " "
-    CentOS           = " "
-    Debian           = " "
-    DragonFly        = " "
-    Elementary       = " "
-    Emscripten       = " "
-    EndeavourOS      = " "
-    Fedora           = " "
-    FreeBSD          = " "
-    Garuda           = "󰛓 "
-    Gentoo           = " "
-    HardenedBSD      = "󰞌 "
-    Illumos          = "󰈸 "
-    Ios              = "󰀷 "
-    Kali             = " "
-    Linux            = " "
-    Mabox            = " "
-    Macos            = " "
-    Manjaro          = " "
-    Mariner          = " "
-    MidnightBSD      = " "
-    Mint             = " "
-    NetBSD           = " "
-    NixOS            = " "
-    Nobara           = " "
-    OpenBSD          = "󰈺 "
-    openSUSE         = " "
-    OracleLinux      = "󰌷 "
-    Pop              = " "
-    Raspbian         = " "
-    Redhat           = " "
-    RedHatEnterprise = " "
-    RockyLinux       = " "
-    Redox            = "󰀘 "
-    Solus            = "󰠳 "
-    SUSE             = " "
-    Ubuntu           = " "
-    Unknown          = " "
-    Void             = " "
-    Windows          = "󰍲 "
-    Zorin            = " "
+	Alpaquita        = " "
+	Alpine           = " "
+	AlmaLinux        = " "
+	Amazon           = " "
+	Android          = " "
+	AOSC             = " "
+	Arch             = " "
+	Artix            = " "
+	CachyOS          = " "
+	CentOS           = " "
+	Debian           = " "
+	DragonFly        = " "
+	Elementary       = " "
+	Emscripten       = " "
+	EndeavourOS      = " "
+	Fedora           = " "
+	FreeBSD          = " "
+	Garuda           = "󰛓 "
+	Gentoo           = " "
+	HardenedBSD      = "󰞌 "
+	Illumos          = "󰈸 "
+	Ios              = "󰀷 "
+	Kali             = " "
+	Linux            = " "
+	Mabox            = " "
+	Macos            = " "
+	Manjaro          = " "
+	Mariner          = " "
+	MidnightBSD      = " "
+	Mint             = " "
+	NetBSD           = " "
+	NixOS            = " "
+	Nobara           = " "
+	OpenBSD          = "󰈺 "
+	openSUSE         = " "
+	OracleLinux      = "󰌷 "
+	Pop              = " "
+	Raspbian         = " "
+	Redhat           = " "
+	RedHatEnterprise = " "
+	RockyLinux       = " "
+	Redox            = "󰀘 "
+	Solus            = "󰠳 "
+	SUSE             = " "
+	Ubuntu           = " "
+	Unknown          = " "
+	Void             = " "
+	Windows          = "󰍲 "
+	Zorin            = " "
 
 [package]
-    symbol = "󰏗 "
+	symbol = "󰏗 "
 
 [perl]
-    symbol = " "
+	symbol = " "
 
 [php]
-    symbol = " "
+	symbol = " "
 
 [pijul_channel]
-    symbol = " "
+	symbol = " "
 
 [pixi]
-    symbol = "󰏗 "
+	symbol = "󰏗 "
 
 [python]
-    symbol = " "
+	symbol = " "
 
 [rlang]
-    symbol = "󰟔 "
+	symbol = "󰟔 "
 
 [ruby]
-    symbol = " "
+	symbol = " "
 
 [rust]
-    symbol = "󱘗 "
+	symbol = "󱘗 "
 
 [scala]
-    symbol = " "
+	symbol = " "
 
 [status]
-    symbol   = " "
-    disabled = false
+	symbol   = " "
+	disabled = false
 
 [swift]
-    symbol = " "
+	symbol = " "
 
 [xmake]
-    symbol = " "
+	symbol = " "
 
 [zig]
-    symbol = " "
-    # >
+	symbol = " "
+	# >
