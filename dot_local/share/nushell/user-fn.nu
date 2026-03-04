@@ -721,10 +721,14 @@ export def --wrapped "docker compose volumes" [...rest: string]: nothing -> tabl
 }
 
 # use $color_code to highlight text in output
+@example "highlight with text" { "abc" | highlight "a" } --result "\u{1b}[1;31ma\u{1b}[0mbc"
+@example "highlight with 2 text" { "abc" | highlight "a" "c" } --result "\u{1b}[1;31ma\u{1b}[0mb\u{1b}[1;31mc\u{1b}[0m"
+@example "highlight with regex" { "abc" | highlight --regex "^a.*$" } --result "\u{1b}[1;31mabc\u{1b}[0m"
 export def highlight [
   --color-code (-c) = "red_bold" # use in ansi $color_code to highlight text, hex string or color name supported
+  --regex (-r) # if set, treat highlight_text as regex pattern, otherwise treat it as plain text, default is false
   ...highlight_text: string # text to highlight in output, can not include regex special characters
 ]: string -> string {
-  let highlight_regex = $highlight_text | str replace "|" "\|" | str join '|'
+  let highlight_regex = ($highlight_text | if not $regex { str escape-regex } else { $in } | str join '|')
   $in | str replace --all --regex $"\(($highlight_regex)\)" $"(ansi $color_code)$1(ansi reset)"
 }
