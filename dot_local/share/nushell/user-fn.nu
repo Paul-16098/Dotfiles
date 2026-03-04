@@ -313,7 +313,7 @@ If you wish to set tracking information for this branch you can do so with:
       }
       {type: "key" key_type: "char" code: "s"} => {
         print --stderr "Showing changes..."
-        try { git show $old_commit $new_commit } catch {
+        try { git show $"($old_commit)...($new_commit)" } catch {
           if $in.exit_code == 141 { } else {
             $in | error make "Not expected error"
           }
