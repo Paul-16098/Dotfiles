@@ -320,7 +320,7 @@ If you wish to set tracking information for this branch you can do so with:
   }
 
   print --stderr $"Pulled latest changes. Showing commits from (ansi green)($new_commit)(ansi reset) to (ansi green)($old_commit)(ansi reset):"
-  git log $"($new_commit)..($old_commit)" | let log | print --stderr $in
+  git log $"($old_commit)..($new_commit)" | let log | print --stderr $in
 
   let key_hint = $"(ansi yellow)Press (ansi green)p(ansi reset)(ansi yellow) to pull again, (ansi green)s(ansi reset)(ansi yellow) to show changes, (ansi green)l(ansi reset)(ansi yellow) to view logs, (ansi green)a(ansi reset)(ansi yellow) to abort.(ansi reset)"
   print --stderr $key_hint
