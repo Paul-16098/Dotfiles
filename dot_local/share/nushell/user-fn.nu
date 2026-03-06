@@ -249,11 +249,11 @@ export def --wrapped "git pull" [...rest: string]: nothing -> nothing {
   use std/log
 
   # Fetch first so remote-tracking refs are fresh before we compare HEADs.
-  let fetch_out = (git fetch --quiet | complete)
+  let fetch_out = (git fetch | complete)
   log debug $"git fetch output: ($fetch_out)"
   if $fetch_out.exit_code != 0 {
     error make --unspanned {
-      msg: "Failed to fetch remote refs before pull"
+      msg: "git pull: Failed to fetch remote refs before pull"
       inner: [{msg: $fetch_out.stderr}]
     }
   }
