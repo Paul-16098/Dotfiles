@@ -1,10 +1,20 @@
 [core]
     editor = code-insiders --wait
     preloadindex = true
-    autocrlf = input
+    autocrlf = true
     compression = 3
     longpaths = true
     quotepath = false
+    fileMode = false
+    commitGraph = true
+    fsmonitor = true
+    untrackedCache = true
+
+[gc]
+    writeCommitGraph = true
+
+[fetch]
+    writeCommitGraph = true
 
 [user]
     name = {{ .GH_NAME }}
@@ -52,9 +62,12 @@
 [merge]
     tool = vscode
 [diff]
-    tool = vscode
+    guitool = vscode
+    algorithm = patience
 
 [difftool]
 	prompt = false
 [difftool "vscode"]
     path = "code-insiders"
+[difftool "zed"]
+    cmd = "zed --diff $LOCAL $REMOTE"
