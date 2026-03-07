@@ -13,8 +13,8 @@ export def add-keybindings [
   --name (-n) = "custom-keybinding"
   modifier: string@$MODIFIER
   keycode: string
-  event: oneof<record>
-]: nothing -> record<name: string, modifier: string, keycode: string, mode: list<string>, event: oneof<record>> {
+  event: oneof<record, list<record>>
+]: nothing -> record<name: string, modifier: string, keycode: string, mode: list<string>, event: oneof<record, list<record>>> {
   {
     name: $name
     modifier: $modifier
