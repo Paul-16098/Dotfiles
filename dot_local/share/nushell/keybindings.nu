@@ -29,25 +29,27 @@ export-env {
           event: {send: executehostcommand cmd: (_atuin_search_cmd)}
         }
         {
+          # why custom?
+          # default ctrl+d is send CtrlD event, if commandline not null, it will del cursor word, but I want it always send "exit 0" command to host
           name: "exit-nu"
           modifier: control
           keycode: char_d
           mode: [emacs vi_normal vi_insert]
-          event: {send: executehostcommand cmd: "exit 0"}
+          event: {send: executehostcommand cmd: "exit"}
         }
         {
           name: "cls-nu"
           modifier: control
           keycode: char_l
           mode: [emacs vi_normal vi_insert]
-          event: {send: executehostcommand cmd: "clear --keep-scrollback"}
+          event: {send: ClearScreen}
         }
         {
           name: "cls-nu-no-keep-scrollback"
           modifier: control_shift
           keycode: char_l
           mode: [emacs vi_normal vi_insert]
-          event: {send: executehostcommand cmd: "clear"}
+          event: {send: ClearScrollBack}
         }
         {
           name: "overlay-menu"
