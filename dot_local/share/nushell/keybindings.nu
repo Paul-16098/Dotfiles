@@ -106,61 +106,17 @@ export-env {
     (add-keybindings --name "add-default-keybinding" SHIFT Right {edit: MoveRight select: true})
     # add custom keybindings
     (add-keybindings control_shift char_z {edit: Redo})
-    {
-      name: reload_config
-      modifier: none
-      keycode: f5
-      mode: [emacs vi_insert vi_normal]
-      event: [
-        {
-          send: executehostcommand
-          cmd: (reload-config)
-        }
-      ]
-    }
-    {
-      name: atuin
-      modifier: control
-      keycode: "char_/"
-      mode: [emacs vi_normal vi_insert]
-      event: {send: executehostcommand cmd: (_atuin_search_cmd)}
-    }
-    {
-      # why custom?
-      # default ctrl+d is send CtrlD event, if commandline not null, it will del cursor word, but I want it always send "exit 0" command to host
-      name: "exit-nu"
-      modifier: control
-      keycode: char_d
-      mode: [emacs vi_normal vi_insert]
-      event: {send: executehostcommand cmd: "exit"}
-    }
-    {
-      name: "cls-nu"
-      modifier: control
-      keycode: char_l
-      mode: [emacs vi_normal vi_insert]
-      event: {send: ClearScreen}
-    }
-    {
-      name: "cls-nu-no-keep-scrollback"
-      modifier: control_shift
-      keycode: char_l
-      mode: [emacs vi_normal vi_insert]
-      event: {send: ClearScrollBack}
-    }
-    {
-      name: "overlay-menu"
-      modifier: control
-      keycode: "char_\\"
-      mode: [emacs vi_normal vi_insert]
-      event: [
-        # {
-        #   edit: InsertString
-        #   value: "overlay "
-        # }
-        # {send: Menu name: overlay_menu}
-        {send: executehostcommand cmd: "y"}
-      ]
-    }
+
+    (add-keybindings --name "reload-config" none f5 {send: executehostcommand cmd: (reload-config)})
+
+    (add-keybindings --name "search-atuin-history" control "char_/" {send: executehostcommand cmd: (_atuin_search_cmd)})
+
+    # why custom?
+    # default ctrl+d is send CtrlD event, if commandline not null, it will del cursor word, but I want it always send "exit 0" command to host
+    (add-keybindings --name "exit-nu" control char_d {send: executehostcommand cmd: "exit 0"})
+
+    (add-keybindings --name "clear-screen" control char_l {send: ClearScreen})
+    (add-keybindings --name "clear-scrollback" control_shift char_l {send: ClearScrollBack})
+    (add-keybindings --name "yazi-menu" control "char_\\" {send: executehostcommand cmd: "y"})
   ]
 }
