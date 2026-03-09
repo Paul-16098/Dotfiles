@@ -22,7 +22,8 @@ def classify []: record -> record {
 
 export-env {
   $env.config.hooks.display_output = {
-    metadata access {|meta|
+    $env.LAST_RESULT = $in
+    $env.LAST_RESULT | metadata access {|meta|
       # print --stderr $meta
       # nu-lint-ignore: try_instead_of_do
       do {|class|
@@ -46,4 +47,7 @@ export-env {
       } ($meta | classify)
     }
   }
+}
+export def _ []: nothing -> nothing {
+  $env.LAST_RESULT
 }

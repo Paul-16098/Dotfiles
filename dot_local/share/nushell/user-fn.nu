@@ -131,6 +131,7 @@ export def app-update [] {
   # }
 
   job spawn --tag app-update-atuin {
+    $env.ATUIN_NOBIND = "true"
     atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand)
   }
   job spawn --tag app-update-starship {
@@ -148,8 +149,10 @@ export def app-update [] {
   }
   job spawn --tag app-update-nu {
     if (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
+      let run = "start ~/.config/nushell/scripts/nu-selfupdate.ps1"
+      $run | clip copy
       print "A new version of NuShell is available, run for update:\a"
-      print ("start ~/.config/nushell/scripts/nu-selfupdate.ps1" | nu-highlight)
+      print ($run | nu-highlight)
     }
   }
   [nu_plugin_formats nu_plugin_polars nu_plugin_query] | each {|plugin|

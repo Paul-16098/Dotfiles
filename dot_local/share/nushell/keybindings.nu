@@ -67,12 +67,12 @@ export-env {
     (add-keybindings --name "add-default-keybinding" none Delete {edit: Delete})
     (
       add-keybindings --name "add-default-keybinding" none Down {
-        until: [{send: MenuDown} {send: Down}]
+        until: [{send: MenuDown} {send: executehostcommand cmd: "commandline edit --replace ''"}]
       }
     )
     (
       add-keybindings --name "add-default-keybinding" none Up {
-        until: [{send: MenuUp} {send: Up}]
+        until: [{send: MenuUp} {send: executehostcommand cmd: (_atuin_search_cmd '--shell-up-key-binding')}]
       }
     )
     (add-keybindings --name "add-default-keybinding" none Left {until: [{send: MenuLeft} {send: Left}]})
@@ -94,10 +94,6 @@ export-env {
     (add-keybindings --name "add-default-keybinding" CONTROL char_d {send: CtrlD})
     (add-keybindings --name "add-default-keybinding" CONTROL char_z {edit: Undo})
     ## SHIFT_CONTROL
-    (add-keybindings --name "add-default-keybinding" CONTROL_SHIFT char_a {edit: SelectAll})
-    (add-keybindings --name "add-default-keybinding" CONTROL_SHIFT char_c {edit: CopySelectionSystem})
-    (add-keybindings --name "add-default-keybinding" CONTROL_SHIFT char_v {edit: PasteSystem})
-    (add-keybindings --name "add-default-keybinding" CONTROL_SHIFT char_x {edit: CutSelectionSystem})
     (add-keybindings --name "add-default-keybinding" CONTROL_SHIFT Left {edit: MoveWordLeft select: true})
     (add-keybindings --name "add-default-keybinding" CONTROL_SHIFT Right {edit: MoveWordRight select: true})
     ## SHIFT
@@ -105,6 +101,11 @@ export-env {
     (add-keybindings --name "add-default-keybinding" SHIFT Left {edit: MoveLeft select: true})
     (add-keybindings --name "add-default-keybinding" SHIFT Right {edit: MoveRight select: true})
     # add custom keybindings
+    (add-keybindings --name "add-default-keybinding" CONTROL char_a {edit: SelectAll})
+    (add-keybindings --name "add-default-keybinding" CONTROL char_c {edit: CopySelectionSystem})
+    (add-keybindings --name "add-default-keybinding" CONTROL char_v {edit: PasteSystem})
+    (add-keybindings --name "add-default-keybinding" CONTROL char_x {edit: CutSelectionSystem})
+
     (add-keybindings control_shift char_z {edit: Redo})
 
     (add-keybindings --name "reload-config" none f5 {send: executehostcommand cmd: (reload-config)})

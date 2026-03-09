@@ -2,7 +2,7 @@
 $env.config.buffer_editor = $env.EDITOR
 $env.config.table.missing_value_symbol = "[X]"
 $env.config.display_errors.exit_code = true
-$env.config.history.max_size = 100
+$env.config.history.path = null
 $env.config.history.file_format = "sqlite"
 $env.config.history.sync_on_enter = false
 $env.config.history.isolation = true
