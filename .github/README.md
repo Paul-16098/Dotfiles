@@ -30,29 +30,78 @@
 ## 項目架構
 
 ```tree
-chezmoi/
-├── AppData/Roaming/          # Windows AppData 配置
-│   ├── nushell/              # Nushell Shell 配置
-│   │   ├── config.nu         # 主配置文件
-│   │   ├── env.nu.tmpl       # 環境變量(模板化)
-│   │   ├── hooks.nu          # Shell 鉤子
-│   │   ├── keybindings.nu    # 自定義快捷鍵
-│   │   └── script/           # 輔助腳本
-│   └── yazi/                 # Yazi 文件管理器配置
-│       └── config/           # Yazi 配置文件
-├── dot_cargo/                # Rust/Cargo 配置
-│   ├── config.toml           # Cargo 設置(包含鏡像源)
-│   └── binstall.toml         # cargo-binstall 配置
-├── dot_config/               # 標準配置目錄
-│   ├── starship.toml         # Starship 提示符配置
-│   ├── atuin/                # Atuin Shell 歷史
-│   ├── gh/                   # GitHub CLI 配置
-│   ├── nextest/              # Cargo nextest 配置
-│   └── uv/                   # Python uv 工具配置
-├── dot_ssh/                  # SSH 配置
-│   └── config                # SSH 客戶端配置
-├── .chezmoi.toml.tmpl        # Chezmoi 配置
-└── dot_gitconfig             # Git 全局配置
+chezmoi
+├─ .chezmoi.toml.tmpl
+├─ AppData
+│  └─ Roaming
+│     ├─ Everything
+│     │  └─ Filters-1.5a.csv
+│     └─ yazi
+│        └─ config
+│           ├─ dot_luarc.json
+│           ├─ init.lua
+│           ├─ keymap.toml
+│           ├─ theme.toml
+│           ├─ update.nu
+│           ├─ yazi.raw.toml
+│           └─ yazi.toml
+├─ dot_actrc
+├─ dot_cargo
+│  ├─ binstall.toml
+│  └─ config.toml
+├─ dot_config
+│  ├─ act
+│  │  ├─ actrc
+│  │  └─ dot_actrc
+│  ├─ atuin
+│  │  └─ config.toml
+│  ├─ gh
+│  │  └─ config.yml
+│  ├─ nextest
+│  │  └─ empty_config.toml
+│  ├─ nushell
+│  │  ├─ autoload
+│  │  │  ├─ chezmoi-completion.nu
+│  │  │  ├─ user-aliases.nu
+│  │  │  └─ user-completions.nu
+│  │  ├─ config.nu
+│  │  ├─ env.nu
+│  │  └─ scripts
+│  │     ├─ complete-tools.nu
+│  │     ├─ i18n.nu
+│  │     └─ nu-selfupdate.ps1
+│  ├─ starship.toml
+│  ├─ uv
+│  │  └─ uv.toml
+│  └─ vscode-binary-file-viewer
+│     ├─ def.d.ts
+│     ├─ executable_lnk.js
+│     ├─ executable_wav.js
+│     └─ tsconfig.json
+├─ dot_eget.toml
+├─ dot_gitconfig.tmpl
+├─ dot_local
+│  └─ share
+│     └─ nushell
+│        ├─ hooks.nu
+│        ├─ hook_display_output.nu
+│        ├─ keybindings.nu
+│        └─ user-fn.nu
+├─ dot_nu-lint.toml
+├─ dot_prettierrc # use tab
+├─ dot_ssh
+│  ├─ config.tmpl
+│  ├─ empty_dot_nomedia
+│  ├─ github.pub.tmpl
+│  ├─ github.tmpl
+│  └─ known_hosts
+├─ dot_wakatime.cfg.tmpl
+├─ readonly_OneDrive
+│  └─ readonly_文件
+│     └─ PowerShell
+│        └─ Microsoft.PowerShell_profile.ps1
+├─ rustfmt.toml # use tab
+└─ tsconfig.json
 ```
 
 ## 主要特性
