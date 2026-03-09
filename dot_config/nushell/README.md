@@ -3,8 +3,8 @@
 > By numd
 
 ```nu
-config nu --doc
-# => # Nushell Config File Documentation
+config nu --doc | nu-highlight | to md
+# => * # Nushell Config File Documentation
 # => #
 # => # Warning: This file is intended for documentation purposes only and
 # => # is not intended to be used as an actual configuration file as-is.
