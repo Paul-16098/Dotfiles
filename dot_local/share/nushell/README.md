@@ -6,7 +6,7 @@
 
 ```nu
 use ./user-fn.nu
-help commands | where name starts-with user-fn | select name description | table --index false --expand
+help commands | where name starts-with user-fn | select name description | sort | table --index false --expand
 # => ╭────────────────────────────────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 # => │              name              │                                                    description                                                    │
 # => ├────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
