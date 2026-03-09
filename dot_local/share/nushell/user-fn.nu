@@ -700,24 +700,29 @@ export def "meme" [
   clip copy-image ...$meme_path
 }
 
+# wrapper for docker compose commands to output json parsed tables
 @complete external
 export def --wrapped "docker compose ls" [...rest: string]: nothing -> table {
   ^docker compose ls --format json ...$rest | from json
 }
+# wrapper for docker compose ps to output json parsed table and format RunningFor column to human readable date
 @complete external
 export def --wrapped "docker compose ps" [...rest: string]: nothing -> table {
   ^docker compose ps --no-trunc --format json ...$rest | from json | update RunningFor {
     date from-human
   }
 }
+# wrapper for docker compose stats to output json parsed table, also add --no-trunc and --no-stream to get full output and only one snapshot
 @complete external
 export def --wrapped "docker compose stats" [...rest: string]: nothing -> table {
   ^docker compose stats --no-trunc --no-stream --format json ...$rest | from json
 }
+# wrapper for docker compose version to output json parsed record
 @complete external
 export def --wrapped "docker compose version" [...rest: string]: nothing -> record {
   ^docker compose version --format json ...$rest | from json
 }
+# wrapper for docker volumes to output json parsed table
 @complete external
 export def --wrapped "docker compose volumes" [...rest: string]: nothing -> table {
   ^docker compose volumes --format json ...$rest | from json
