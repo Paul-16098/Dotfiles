@@ -16,6 +16,18 @@
 				"instanceLimit": 1,
 				"instancePolicy": "terminateOldest"
 			}
+		},
+		{
+			"type": "process",
+			"label": "update numd doc",
+			"command": "nu",
+			"args": ["dot_local/share/nushell/.update.nu"],
+			"problemMatcher": [],
+			"options": {
+				"env": {
+					"NU_LIB_DIRS": "~\\.config\\nushell\\nupm\\modules"
+				}
+			}
 		}
 	]
 }
