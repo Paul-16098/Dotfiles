@@ -48,6 +48,9 @@ export-env {
     }
   }
 }
-export def _ []: nothing -> nothing {
+
+# alias to get the last result
+# nu-lint-ignore: kebab_case_commands, missing_output_type
+export def _ []: nothing -> any {
   $env.LAST_RESULT
 }
