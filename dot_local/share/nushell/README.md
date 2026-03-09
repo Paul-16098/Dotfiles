@@ -50,7 +50,7 @@ def reload-config [] {}
 def _atuin_search_cmd [...rest] {}
 use ./keybindings.nu
 keybindings --help
-$env.config.keybindings | table --index false --expand
+$env.config.keybindings | sort | table --index false --expand
 # => ╭───────────────────────────┬─────────────────┬─────────────┬──────────────────────────────────────────────────────────────────────┬─────────────────╮
 # => │           name            │    modifier     │   keycode   │                                event                                 │      mode       │
 # => ├───────────────────────────┼─────────────────┼─────────────┼──────────────────────────────────────────────────────────────────────┼─────────────────┤
