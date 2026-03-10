@@ -5,23 +5,13 @@ require("augment-command"):setup({
 })
 ---- yatline ----
 require("yatline"):setup({
+	theme = require("yatline-catppuccin"):setup("macchiato"),
+
 	section_separator = { open = "", close = "" },
 	part_separator = { open = "", close = "" },
 	inverse_separator = { open = "", close = "" },
 
 	padding = { inner = 1, outer = 1 },
-
-	style_a = {
-		bg = "white",
-		fg = "black",
-		bg_mode = {
-			normal = "white",
-			select = "brightyellow",
-			un_set = "brightred",
-		},
-	},
-	style_b = { bg = "brightblack", fg = "brightwhite" },
-	style_c = { bg = "black", fg = "brightwhite" },
 
 	permissions_t_fg = "green",
 	permissions_r_fg = "yellow",
