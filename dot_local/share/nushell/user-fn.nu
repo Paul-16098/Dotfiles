@@ -741,3 +741,19 @@ export def highlight [
   let highlight_regex = ($highlight_text | if not $regex { str escape-regex } else { $in } | str join '|')
   $in | str replace --all --regex $"\(($highlight_regex)\)" $"(ansi $color_code)$1(ansi reset)"
 }
+# alternative buffer wrapper, use callback to run commands in alternative buffer and get the output, the callback should return the output as a string, the alternative buffer will be cleared after the callback is executed
+# nu-lint-ignore: missing_in_type, missing_output_type
+export def --env alternative-buffer [
+  callback: closure # a callback to run commands in alternative buffer, the callback should return the output as a string
+
+  # nu-lint-ignore: add_type_hints_arguments
+  ...rest: any # a rest to pass to the callback
+]: any -> any {
+  print --no-newline (ansi --escape ?1049h)
+
+  $in | do --env $callback ...$rest | let out
+
+  print --no-newline (ansi --escape ?1049l)
+
+  $out
+}
