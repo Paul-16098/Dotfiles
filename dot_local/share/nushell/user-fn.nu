@@ -130,14 +130,14 @@ export def app-update [] {
   #   }
   # }
 
-  job spawn --tag app-update-atuin {
+  job spawn --description app-update-atuin {
     $env.ATUIN_NOBIND = "true"
     atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand)
   }
-  job spawn --tag app-update-starship {
+  job spawn --description app-update-starship {
     starship init nu | save --force ($nu.user-autoload-dirs.0 | path join starship.nu)
   }
-  job spawn --tag app-update-carapace {
+  job spawn --description app-update-carapace {
     carapace _carapace nushell | save --force ($nu.user-autoload-dirs.0 | path join carapace.nu)
   }
   jobd spawn app-update-yazi {
@@ -147,7 +147,7 @@ export def app-update [] {
   jobd spawn app-update-nufmt {
     cargo install --git https://github.com/nushell/nufmt nufmt
   }
-  job spawn --tag app-update-nu {
+  job spawn --description app-update-nu {
     if (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
       let run = "start ~/.config/nushell/scripts/nu-selfupdate.ps1"
       $run | clip copy
@@ -337,7 +337,7 @@ If you wish to set tracking information for this branch you can do so with:
       }
       {type: "key" key_type: "char" code: "s"} => {
         print --stderr "Showing changes..."
-        try { git show $"($old_commit)...($new_commit)" } catch {
+        try { git show $"($old_commit)..($new_commit)" } catch {
           if $in.exit_code == 141 { } else {
             $in | error make "Not expected error"
           }
