@@ -151,7 +151,8 @@ export def app-update [] {
     if (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
       let run = "start ~/.config/nushell/scripts/nu-selfupdate.ps1"
       $run | clip copy
-      print "A new version of NuShell is available, run for update:\a"
+      print --no-newline (char bel)
+      print "A new version of NuShell is available, run for update:"
       print ($run | nu-highlight)
     }
   }
@@ -186,7 +187,7 @@ export def app-update [] {
   jobd wait
 
   print "All updates completed."
-  print "\a"
+  print --no-newline (char bel)
   null
 }
 
