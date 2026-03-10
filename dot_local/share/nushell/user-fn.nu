@@ -130,10 +130,10 @@ export def app-update [] {
   #   }
   # }
 
-  job spawn --description app-update-atuin {
-    $env.ATUIN_NOBIND = "true"
-    atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand)
-  }
+  # job spawn --description app-update-atuin {
+  #   $env.ATUIN_NOBIND = "true"
+  #   atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand)
+  # }
   job spawn --description app-update-starship {
     starship init nu | save --force ($nu.user-autoload-dirs.0 | path join starship.nu)
   }

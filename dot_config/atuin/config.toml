@@ -111,6 +111,7 @@ history_format = "{time}\t{duration}\t{exit}\t{command}"
 ## https://docs.rs/regex/latest/regex/#syntax
 history_filter = [
 	"^exit",
+	"^_$",
 ]
 
 ## 防止執行目錄符合以下任意正則表達式的命令被寫入歷史記錄
