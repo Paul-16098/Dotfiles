@@ -29,6 +29,9 @@ $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 $env.TRANSIENT_PROMPT_COMMAND = { starship module time }
 $env.TRANSIENT_PROMPT_INDICATOR = { (starship module directory) + $"(ansi wd)$(ansi reset) " }
 
+# $env.NO_TUI_GIT_PULL = ["own/repo"] to disable the wrapper for specific repos, useful for repos with very large number of commits to pull where counting commits can be slow, or repos with non-standard remote names where resolving upstream can be complicated
+$env.NO_TUI_GIT_PULL = ["Paul-16098/Paul-16098"]
+
 use ~\OneDrive\文件\git\nu_scripts\nu-hooks\nu-hooks\direnv\direnv.nu
 
 source "~/.local/share/atuin/init.nu"

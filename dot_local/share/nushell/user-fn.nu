@@ -226,9 +226,7 @@ def git-log-subject-highlight [remote_url: string]: string -> string {
 @complete external
 @category git
 export def --wrapped "git log" [...rest: string]: nothing -> table {
-  let remote_url = git config get remote.origin.url
-    | str replace "git@ssh.gitgud.io:" "https://gitgud.io/"
-    | str replace --regex "\\.git$" ""
+  let remote_url = git-remote_url
 
   ^git log --pretty=%h»¦«%s»¦«%aN»¦«%aE»¦«%aD ...$rest
   | lines
@@ -245,12 +243,26 @@ export def --wrapped "git log" [...rest: string]: nothing -> table {
   | update subject { $in | str trim | git-log-subject-highlight $remote_url }
   | sort-by date --reverse
 }
+
+def git-remote_url []: nothing -> string {
+  git config get remote.origin.url
+  | str replace "git@ssh.gitgud.io:" "https://gitgud.io/"
+  | str replace --regex "\\.git$" ""
+}
+
 export alias gl = git log
 # git pull wrapper to show updated commits
+# $env.NO_TUI_GIT_PULL = ["own/repo"] to disable the wrapper for specific repos, useful for repos with very large number of commits to pull where counting commits can be slow, or repos with non-standard remote names where resolving upstream can be complicated
 @complete external
 @category git
 export def --wrapped "git pull" [...rest: string]: nothing -> nothing {
   use std/log
+
+  let remote_url = git-remote_url
+  if ($env.NO_TUI_GIT_PULL | any {|el| $remote_url ends-with $el }) {
+    print --stderr $"Repository '($remote_url)' is configured to skip the interactive pull wrapper. Running git pull with provided arguments..."
+    return (^git pull ...$rest)
+  }
 
   # Fetch first so remote-tracking refs are fresh before we compare HEADs.
   let fetch_out = (git fetch | complete)

@@ -35,6 +35,9 @@ Output:
 # => | user-fn get-dll                | get dll dependencies of an exe file                                                                         |
 # => | user-fn git log                | git log wrapper to format output as a table                                                                 |
 # => | user-fn git pull               | git pull wrapper to show updated commits                                                                    |
+# => |                                | $env.NO_TUI_GIT_PULL = ["own/repo"] to disable the wrapper for                                              |
+# => |                                | specific repos, useful for repos with very large number of commits to pull where counting commits can be    |
+# => |                                | slow, or repos with non-standard remote names where resolving upstream can be complicated                   |
 # => | user-fn gl                     | Alias for `git log`                                                                                         |
 # => | user-fn gp                     | Alias for `git pull`                                                                                        |
 # => | user-fn highlight              | use $color_code to highlight text in output                                                                 |
