@@ -14,6 +14,10 @@ Output:
 ```
 # => .----------------------------------------------------------------------------------------------------------------------------------------------.
 # => |              name              |                                                 description                                                 |
+# => | user-fn alternative-buffer     | alternative buffer wrapper, use callback to run commands in alternative buffer and get the output, the      |
+# => |                                | callback should return the output as a string, the alternative buffer will be cleared after the callback is |
+# => |                                |  executed                                                                                                   |
+# => |                                | nu-lint-ignore: missing_in_type, missing_output_type                                                        |
 # => | user-fn app-update             |                                                                                                             |
 # => | user-fn chezmoi cd             | https://www.chezmoi.io/user-guide/frequently-asked-questions/design/#why-does-chezmoi-cd-spawn-a-shell-inst |
 # => |                                | ead-of-just-changing-directory                                                                              |

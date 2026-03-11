@@ -7,7 +7,7 @@ export def "config user-display-output" []: nothing -> nothing {
 
 def classify []: record -> record {
   let md = $in
-  # print --stderr $md
+  # print --stderr ($md | to json)
   let head = try { view span $md.span.start $md.span.end }
   match $md.content_type? {
     null => {table: true}
@@ -22,8 +22,7 @@ def classify []: record -> record {
 
 export-env {
   $env.config.hooks.display_output = {
-    $env.LAST_RESULT = $in
-    $env.LAST_RESULT | metadata access {|meta|
+    metadata access {|meta|
       # print --stderr $meta
       # nu-lint-ignore: try_instead_of_do
       do {|class|
@@ -38,11 +37,11 @@ export-env {
             ^($env.ProgramFiles | path join VideoLAN\VLC\vlc.exe) -
           }
 
-          {source: ls} if (term size).columns >= 100 => { table --expand --icons --index false }
-          {source: ls} => { table --icons --index false }
-
-          _ if (term size).columns >= 100 => { table --expand }
-          _ => { table }
+          $data => {
+            # print --stderr $data
+            $env.LAST_RESULT = $in
+            $in | table --expand=((term size).columns >= 100) --icons=(($data.source) == "ls")
+          }
         }
       } ($meta | classify)
     }
