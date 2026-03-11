@@ -1,0 +1,22 @@
+repos:
+  - repo: local
+    hooks:
+      - id: update-yazi-config
+        name: update-yazi-config
+        pass_filenames: false
+        language: system
+        files: AppData/Roaming/yazi/config/yazi\.raw\.toml
+        verbose: true
+        entry: nu
+        args:
+          - ./AppData/Roaming/yazi/config/update.nu
+
+      - id: update-doc
+        name: update-doc
+        pass_filenames: false
+        language: system
+        files: dot_local/share/nushell/
+        verbose: true
+        entry: nu
+        args:
+          - ./dot_local/share/nushell/.update.nu
