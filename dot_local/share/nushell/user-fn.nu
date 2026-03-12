@@ -245,9 +245,7 @@ export def --wrapped "git log" [...rest: string]: nothing -> table {
 }
 
 def git-remote_url []: nothing -> string {
-  git config get remote.origin.url
-  | str replace "git@ssh.gitgud.io:" "https://gitgud.io/"
-  | str replace --regex "\\.git$" ""
+  git config get remote.origin.url | complete | get stdout | str trim | str replace "git@ssh.gitgud.io:" "https://gitgud.io/" | str replace --regex "\\.git$" ""
 }
 
 export alias gl = git log
@@ -261,7 +259,8 @@ export def --wrapped "git pull" [...rest: string]: nothing -> nothing {
   let remote_url = git-remote_url
   if ($env.NO_TUI_GIT_PULL | any {|el| $remote_url ends-with $el }) {
     print --stderr $"Repository '($remote_url)' is configured to skip the interactive pull wrapper. Running git pull with provided arguments..."
-    return (^git pull ...$rest)
+    print (^git pull ...$rest)
+    return
   }
 
   # Fetch first so remote-tracking refs are fresh before we compare HEADs.
