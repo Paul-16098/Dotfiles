@@ -88,11 +88,11 @@ export def --wrapped es [...rest: string]: nothing -> table {
 #   for row in $update_job {
 #     let job_conf = ($conf | get --optional * | default {}) | merge ($conf | get --optional $row.id | default {})
 
-#     print $"Starting job: (ansi gb)($row.id)(ansi reset) with config: ($job_conf | to nuon | nu-highlight)"
+#     print $"Starting job: (ansi green_bold)($row.id)(ansi reset) with config: ($job_conf | to nuon | nu-highlight)"
 
 #     job spawn --tag $row.id {
 #       let o = ($job_conf | do --ignore-errors $row.job ...$rest | default "")
-#       $"(ansi gb)($row.id)(ansi reset)#[($o)]" | job send 0
+#       $"(ansi green_bold)($row.id)(ansi reset)#[($o)]" | job send 0
 #     }
 #   }
 
@@ -191,29 +191,30 @@ export def app-update [] {
   null
 }
 
+@category git
 def git-log-subject-highlight [remote_url: string]: string -> string {
   # Merge pull request #ID from ...
   | str replace --regex '(?i)Merge pull request #(?<id>\d+) from (?<from>.+)' {|id from|
-    $"[PR (ansi gb)($"($remote_url)/pull/($id)" | ansi link --text $'#($id)')(ansi reset) from (ansi gb)($from)(ansi reset)]"
+    $"[PR (ansi green_bold)($"($remote_url)/pull/($id)" | ansi link --text $'#($id)')(ansi reset) from (ansi green_bold)($from)(ansi reset)]"
   }
   # Merge branch 'branch' of ...
   | str replace --regex "(?i)Merge branch '(?<branch>.+)' of (?<from>.+)" {|branch from|
-    $"[Merge branch '(ansi gb)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)' of (ansi gb)($from | str replace --regex "^ssh\\.gitgud\\.io:" 'https://gitgud.io/' | ansi link --text $from)(ansi reset)]"
+    $"[Merge branch '(ansi green_bold)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)' of (ansi green_bold)($from | str replace --regex "^ssh\\.gitgud\\.io:" 'https://gitgud.io/' | ansi link --text $from)(ansi reset)]"
   }
   # Merge branch 'branch' into 'from'
   # Merge branch 'branch' into from
   | str replace --regex "(?i)Merge branch '(?<branch>.+)' into '?(?<from>[^']+)'?$" {|branch from|
-    $"[Merge branch '(ansi gb)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)' into '(ansi gb)($"($remote_url)/tree/($from)" | ansi link --text $from)(ansi reset)']"
+    $"[Merge branch '(ansi green_bold)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)' into '(ansi green_bold)($"($remote_url)/tree/($from)" | ansi link --text $from)(ansi reset)']"
   }
   # Merge commit 'cc62c8f4f6cb164756e97efb3a001fd73976a053' into tw-dev
   | str replace --regex "(?i)Merge commit '(?<commit>.+)' into '?(?<branch>[^']+)'?$" {|commit branch|
-    $"[Merge commit '(ansi gb)($"($remote_url)/commit/($commit)" | ansi link --text $commit)(ansi reset)' into '(ansi gb)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)']"
+    $"[Merge commit '(ansi green_bold)($"($remote_url)/commit/($commit)" | ansi link --text $commit)(ansi reset)' into '(ansi green_bold)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)']"
   }
   # feat:, fix:, docs:, style:, refactor:, perf:, test:, chore:
-  | str replace --all --regex "(?i)^(feat|fix|docs|style|refactor|perf|test|chore|imp|revert|bump)(\\(.*\\))?(:|：)" $"(ansi gb)$1(ansi reset)(ansi gb)$2(ansi reset):"
+  | str replace --all --regex "(?i)^(feat|fix|docs|style|refactor|perf|test|chore|imp|revert|bump)(\\(.*\\))?(:|：)" $"(ansi green_bold)$1(ansi reset)(ansi green_bold)$2(ansi reset):"
   # Vx.x.x
-  | str replace --all --regex "(?i)^(v[\\d\\.]+(-beta\\d+)?)" $"(ansi b)$0(ansi reset)"
-  | str replace --all --regex "#\\d+" $"(ansi gb)$0(ansi reset)"
+  | str replace --all --regex "(?i)^(v[\\d\\.]+(-beta\\d+)?)" $"(ansi blue)$0(ansi reset)"
+  | str replace --all --regex "#\\d+" $"(ansi green_bold)$0(ansi reset)"
 }
 
 # git log wrapper to format output as a table
@@ -237,13 +238,14 @@ export def --wrapped "git log" [...rest: string]: nothing -> table {
     if (["@users.noreply.github.com" "@noreply.codeberg.org"] | all {|suffix| not ($email | str ends-with $suffix) }) {
       $"mailto:($email)" | ansi link --text $email
     } else {
-      $"(ansi dgri)noreply email(ansi reset)"
+      $"(ansi dark_gray_italic)noreply email(ansi reset)"
     }
-  } | default $"(ansi dgri)N/A(ansi reset)" email
+  } | default $"(ansi dark_gray_italic)N/A(ansi reset)" email
   | update subject { $in | str trim | git-log-subject-highlight $remote_url }
   | sort-by date --reverse
 }
 
+@category git
 def git-remote_url []: nothing -> string {
   git config get remote.origin.url | complete | get stdout | str trim | str replace "git@ssh.gitgud.io:" "https://gitgud.io/" | str replace --regex "\\.git$" ""
 }
@@ -258,7 +260,7 @@ export def --wrapped "git pull" [...rest: string]: nothing -> nothing {
 
   let remote_url = git-remote_url
   if ($env.NO_TUI_GIT_PULL | any {|el| $remote_url ends-with $el }) {
-    print --stderr $"Repository '($remote_url)' is configured to skip the interactive pull wrapper. Running git pull with provided arguments..."
+    print --stderr $"Repository '(ansi green_bold)($remote_url)(ansi reset)' is configured to skip the interactive pull wrapper. Running git pull with provided arguments..."
     print (^git pull ...$rest)
     return
   }
@@ -276,16 +278,16 @@ export def --wrapped "git pull" [...rest: string]: nothing -> nothing {
   let head_info = (git rev-parse --verify HEAD | complete)
   log debug $"git rev-parse HEAD output: ($head_info)"
   if $head_info.exit_code != 0 {
-    print --stderr `There is no tracking information for the current branch.
+    print --stderr $"There is no tracking information for the current branch.
 Please specify which branch you want to merge with.
-See git-pull(1) for details.
+See git-pull\(1) for details.
 
-    git pull <remote> <branch>
+    ('git pull <remote> <branch>' | nu-highlight)
 
 If you wish to set tracking information for this branch you can do so with:
 
-    git branch --set-upstream-to=<remote>/<branch> main
-`
+    ('git branch --set-upstream-to=<remote>/<branch> main' | nu-highlight)"
+
     return
   }
 
@@ -313,15 +315,14 @@ If you wish to set tracking information for this branch you can do so with:
   let new_commit_info = (git rev-parse $upstream_ref | complete)
   log debug $"git rev-parse $upstream_ref output: ($new_commit_info)"
   if $new_commit_info.exit_code != 0 {
-    print --stderr $"Could not resolve upstream ref '($upstream_ref)'."
-    # ^git pull ...$rest
+    print --stderr $"Could not resolve upstream ref '(ansi green_bold)($upstream_ref)(ansi reset)'."
     return
   }
   let new_commit = ($new_commit_info.stdout | str trim)
   log debug $"Upstream commit: ($new_commit)"
 
   if $old_commit == $new_commit {
-    print --stderr "Already up to date."
+    print --stderr ((ansi grey) + "Already up to date." + (ansi reset))
     return
   }
 
@@ -330,11 +331,11 @@ If you wish to set tracking information for this branch you can do so with:
   log debug $"Commits to pull from upstream: ($commits_to_pull)"
   if $commits_to_pull == "0" {
     # If upstream has no exclusive commits, local is ahead (or diverged without pullable commits).
-    print --stderr $"Your branch is ahead of '($upstream_ref)' by (git rev-list --count $"($new_commit)..($old_commit)") commit\(s)."
+    print --stderr $"Your branch is ahead of '(ansi green_bold)($upstream_ref)(ansi reset)' by (ansi green_bold)(git rev-list --count $"($new_commit)..($old_commit)")(ansi reset) commit\(s)."
     return
   }
 
-  print --stderr $"Pulled latest changes. Showing commits from (ansi green)($new_commit)(ansi reset) to (ansi green)($old_commit)(ansi reset):"
+  print --stderr $"Pulled latest changes. Showing commits from (ansi green_bold)($new_commit)(ansi reset) to (ansi green_bold)($old_commit)(ansi reset):"
   git log $"($old_commit)..($new_commit)" | let log | print --stderr $in
 
   let key_hint = $"(ansi yellow)Press (ansi green)p(ansi reset)(ansi yellow) to pull again, (ansi green)s(ansi reset)(ansi yellow) to show changes, (ansi green)l(ansi reset)(ansi yellow) to view logs, (ansi green)a(ansi reset)(ansi yellow) to abort.(ansi reset)"
@@ -343,16 +344,14 @@ If you wish to set tracking information for this branch you can do so with:
     match (input listen --types [key]) {
       {type: "key" key_type: "char" code: "p"} => {
         print --stderr "Pulling latest changes..."
-        ^git pull --quiet ...$rest
+        print (^git pull --quiet ...$rest)
         print --stderr "Pull completed."
         break
       }
       {type: "key" key_type: "char" code: "s"} => {
         print --stderr "Showing changes..."
         try { git show $"($old_commit)..($new_commit)" } catch {
-          if $in.exit_code == 141 { } else {
-            $in | error make "Not expected error"
-          }
+          if $in.exit_code == 141 { } else { error make "Not expected error" }
         }
         print --stderr $key_hint
       }

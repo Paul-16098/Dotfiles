@@ -67,7 +67,7 @@ export-env {
     (add-keybindings --name "add-default-keybinding" none Delete {edit: Delete})
     (
       add-keybindings --name "add-default-keybinding" none Down {
-        until: [{send: MenuDown} {send: executehostcommand cmd: "commandline edit --replace ''"}]
+        until: [{send: MenuDown} {send: executehostcommand cmd: " commandline edit --replace ''"}]
       }
     )
     (
