@@ -100,6 +100,8 @@ export-env {
     (add-keybindings --name "add-default-keybinding" SHIFT Enter {edit: InsertNewline})
     (add-keybindings --name "add-default-keybinding" SHIFT Left {edit: MoveLeft select: true})
     (add-keybindings --name "add-default-keybinding" SHIFT Right {edit: MoveRight select: true})
+    (add-keybindings --name "add-default-keybinding" SHIFT Up {edit: MoveLineUp select: true})
+    (add-keybindings --name "add-default-keybinding" SHIFT Down {edit: MoveLineDown select: true})
     # add custom keybindings
     (add-keybindings --name "add-default-keybinding" CONTROL char_a {edit: SelectAll})
     (add-keybindings --name "add-default-keybinding" CONTROL char_c {edit: CopySelectionSystem})
