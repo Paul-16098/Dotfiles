@@ -338,13 +338,13 @@ If you wish to set tracking information for this branch you can do so with:
   print --stderr $"Pulled latest changes. Showing commits from (ansi green_bold)($new_commit)(ansi reset) to (ansi green_bold)($old_commit)(ansi reset):"
   git log $"($old_commit)..($new_commit)" | let log | print --stderr $in
 
-  let key_hint = $"(ansi yellow)Press (ansi green)p(ansi reset)(ansi yellow) to pull again, (ansi green)s(ansi reset)(ansi yellow) to show changes, (ansi green)l(ansi reset)(ansi yellow) to view logs, (ansi green)a(ansi reset)(ansi yellow) to abort.(ansi reset)"
-  print --stderr $key_hint
+  const KEY_HINT = $"(ansi green_underline)P(ansi reset)(ansi green)ull(ansi reset), (ansi green_underline)S(ansi reset)(ansi green)how(ansi reset), (ansi green_underline)L(ansi reset)(ansi green)ogs(ansi reset) or (ansi green_underline)A(ansi reset)(ansi green)bort(ansi reset)."
+  print --stderr $KEY_HINT
   loop {
     match (input listen --types [key]) {
       {type: "key" key_type: "char" code: "p"} => {
         print --stderr "Pulling latest changes..."
-        print (^git pull --quiet ...$rest)
+        print --no-newline (^git pull --quiet ...$rest)
         print --stderr "Pull completed."
         break
       }
@@ -353,12 +353,12 @@ If you wish to set tracking information for this branch you can do so with:
         try { git show $"($old_commit)..($new_commit)" } catch {
           if $in.exit_code == 141 { } else { error make "Not expected error" }
         }
-        print --stderr $key_hint
+        print --stderr $KEY_HINT
       }
       {type: "key" key_type: "char" code: "l"} => {
         print --stderr "Viewing logs..."
         print --stderr $log
-        print --stderr $key_hint
+        print --stderr $KEY_HINT
       }
       {type: "key" key_type: "char" code: "a"} => {
         print --stderr "Aborting pull."

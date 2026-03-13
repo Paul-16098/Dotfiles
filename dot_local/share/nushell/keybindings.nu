@@ -108,6 +108,9 @@ export-env {
     (add-keybindings --name "add-default-keybinding" CONTROL char_v {edit: PasteSystem})
     (add-keybindings --name "add-default-keybinding" CONTROL char_x {edit: CutSelectionSystem})
 
+    (add-keybindings CONTROL Up {edit: MoveLineUp})
+    (add-keybindings CONTROL Down {edit: MoveLineDown})
+
     (add-keybindings control_shift char_z {edit: Redo})
 
     (add-keybindings --name "reload-config" none f5 {send: executehostcommand cmd: (reload-config)})
