@@ -60,6 +60,9 @@
 [credential "https://gist.github.com"]
 	helper =
 	helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
+[url "https://{{ .GH_NAME }}@gitlab.com/"]
+	insteadOf = https://gitlab.com/
+
 
 [merge]
 	tool = vscode
