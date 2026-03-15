@@ -30,6 +30,7 @@ export-env {
         match $class {
           {nu: true} => { nu-highlight }
           {source: ls} => { sort-by type modified size name --custom {|a b| $a == dir } }
+          {head: ps} => { move pid ppid --last | sort-by mem virtual cpu --reverse }
           _ => { }
         }
         | match $class {

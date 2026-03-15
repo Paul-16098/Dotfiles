@@ -474,25 +474,12 @@ export def get-dll [
   } | flatten
 }
 
-export alias nu_ps = ps
-# processes wrapper to filter by name
-export def ps [
-  name?: string # process name to filter
-  --long (-l)
-]: nothing -> table {
-  if $name == null {
-    nu_ps --long=$long
-  } else {
-    nu_ps --long=$long | where name =~ $name
-  } | sort-by mem virtual cpu --reverse
-}
-
 # kill process by name
 export def "kill with name" [
   name: string # process name to kill
   --force (-f) # force kill the process
 ]: nothing -> nothing {
-  ps $name | kill ...$in.pid --force=$force
+  ps | where name =~ $name | kill ...$in.pid --force=$force
 }
 
 # my custom pause function

@@ -36,9 +36,7 @@ Output:
 # => | user-fn highlight | use $color_code to highlight text in output |
 # => | user-fn kill with name | kill process by name |
 # => | user-fn meme | get meme and copy to clipboard |
-# => | user-fn nu_ps | Alias for `ps` |
 # => | user-fn pause | my custom pause function |
-# => | user-fn ps | processes wrapper to filter by name |
 # => | user-fn reload-config | used in keybindings.nu for F5 |
 # => | user-fn rust-debug | set rust debug env variables |
 # => | user-fn steamcmd | steamcmd wrapper to login |

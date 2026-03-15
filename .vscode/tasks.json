@@ -12,7 +12,7 @@
 			"problemMatcher": [],
 			"isBackground": true,
 			"runOptions": {
-				"runOn": "folderOpen",
+				// "runOn": "folderOpen",
 				"instanceLimit": 1,
 				"instancePolicy": "terminateOldest"
 			}
