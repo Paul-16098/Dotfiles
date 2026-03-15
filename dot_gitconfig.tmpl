@@ -1,73 +1,75 @@
 [core]
-    editor = code-insiders --wait
-    preloadindex = true
-    autocrlf = true
-    compression = 3
-    longpaths = true
-    quotepath = false
-    fileMode = false
-    commitGraph = true
-    fsmonitor = true
-    untrackedCache = true
+	editor = code-insiders --wait
+	preloadindex = true
+	autocrlf = true
+	compression = 3
+	longpaths = true
+	quotepath = false
+	fileMode = false
+	commitGraph = true
+	fsmonitor = true
+	untrackedCache = true
 
 [gc]
-    writeCommitGraph = true
+	writeCommitGraph = true
 
 [fetch]
-    writeCommitGraph = true
+	writeCommitGraph = true
 
 [user]
-    name = {{ .GH_NAME }}
-    email = {{ .EMAIL }}
-    signingkey = {{ .SIGN_KEY_ID }}
+	name = {{ .GH_NAME }}
+	email = {{ .EMAIL }}
+	signingkey = {{ .SIGN_KEY_ID }}
 [filter "lfs"]
-    process = git-lfs filter-process
-    required = true
-    clean = git-lfs clean -- %f
-    smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
 [push]
-    autoSetupRemote = true
+	autoSetupRemote = true
 [commit]
-    gpgsign = true
+	gpgsign = true
 [tag]
-    gpgSign = true
+	gpgSign = true
 [gpg]
-    {{- if eq .SIGN_BY "gpg" }}
-    format = openpgp
-    program = "C:\\Program Files\\GnuPG\\bin\\gpg.exe"
-    {{- else if eq .SIGN_BY "ssh" }}
-    format = ssh
-    {{- else }}
-    {{ warnf "Invalid signing method: %s. No signing will be used." .SIGN_BY}}
-    {{- end }}
+	{{- if eq .SIGN_BY "gpg" }}
+	format = openpgp
+	program = "C:\\Program Files\\GnuPG\\bin\\gpg.exe"
+	{{- else if eq .SIGN_BY "ssh" }}
+	format = ssh
+	{{- else }}
+	{{ warnf "Invalid signing method: %s. No signing will be used." .SIGN_BY}}
+	{{- end }}
 
 [http]
-    postBuffer = 524288000
+	postBuffer = 524288000
 
 [sendemail]
-    smtpEncryption = tls
-    smtpServer = smtp.gmail.com
-    smtpUser = {{ .EMAIL }}
-    smtpServerPort = 587
+	smtpEncryption = tls
+	smtpServer = smtp.gmail.com
+	smtpUser = {{ .EMAIL }}
+	smtpServerPort = 587
 [checkout]
-    workers = 0
-[credential "https://github.com"]
-    helper =
-    helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
-[credential "https://gist.github.com"]
-    helper =
-    helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
+	workers = 0
 
+[credential]
+	helper = manager
+[credential "https://github.com"]
+	helper =
+	helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
 
 [merge]
-    tool = vscode
+	tool = vscode
 [diff]
-    guitool = vscode
-    algorithm = patience
+	guitool = vscode
+	algorithm = patience
 
 [difftool]
 	prompt = false
 [difftool "vscode"]
-    path = "code-insiders"
+	path = "code-insiders"
 [difftool "zed"]
-    cmd = "zed --diff $LOCAL $REMOTE"
+	cmd = "zed --diff $LOCAL $REMOTE"
