@@ -7,7 +7,7 @@
 			"command": "nu",
 			"args": [
 				"-c",
-				"watch ./AppData/Roaming/yazi/config/yazi.raw.toml { nu ./AppData/Roaming/yazi/config/update.nu }"
+				"watch ./AppData/Roaming/yazi/config/yazi.raw.toml { nu .vscode/yazi-config-update.nu }"
 			],
 			"problemMatcher": [],
 			"isBackground": true,
@@ -21,7 +21,7 @@
 			"type": "process",
 			"label": "update numd doc",
 			"command": "nu",
-			"args": ["dot_local/share/nushell/.update.nu"],
+			"args": [".vscode/update-numd-doc.nu"],
 			"problemMatcher": [],
 			"options": {
 				"env": {

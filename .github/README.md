@@ -29,79 +29,110 @@
 
 ## 項目架構
 
-```tree
-chezmoi
-├─ .chezmoi.toml.tmpl
-├─ AppData
-│  └─ Roaming
-│     ├─ Everything
-│     │  └─ Filters-1.5a.csv
-│     └─ yazi
-│        └─ config
-│           ├─ dot_luarc.json
-│           ├─ init.lua
-│           ├─ keymap.toml
-│           ├─ theme.toml
-│           ├─ update.nu
-│           ├─ yazi.raw.toml
-│           └─ yazi.toml
-├─ dot_actrc
-├─ dot_cargo
-│  ├─ binstall.toml
-│  └─ config.toml
-├─ dot_config
-│  ├─ act
-│  │  ├─ actrc
-│  │  └─ dot_actrc
-│  ├─ atuin
-│  │  └─ config.toml
-│  ├─ gh
-│  │  └─ config.yml
-│  ├─ nextest
-│  │  └─ empty_config.toml
-│  ├─ nushell
-│  │  ├─ autoload
-│  │  │  ├─ chezmoi-completion.nu
-│  │  │  ├─ user-aliases.nu
-│  │  │  └─ user-completions.nu
-│  │  ├─ config.nu
-│  │  ├─ env.nu
-│  │  └─ scripts
-│  │     ├─ complete-tools.nu
-│  │     ├─ i18n.nu
-│  │     └─ nu-selfupdate.ps1
-│  ├─ starship.toml
-│  ├─ uv
-│  │  └─ uv.toml
-│  └─ vscode-binary-file-viewer
-│     ├─ def.d.ts
-│     ├─ executable_lnk.js
-│     ├─ executable_wav.js
-│     └─ tsconfig.json
-├─ dot_eget.toml
-├─ dot_gitconfig.tmpl
-├─ dot_local
-│  └─ share
-│     └─ nushell
-│        ├─ hooks.nu
-│        ├─ hook_display_output.nu
-│        ├─ keybindings.nu
-│        └─ user-fn.nu
-├─ dot_nu-lint.toml
-├─ dot_prettierrc # use tab
-├─ dot_ssh
-│  ├─ config.tmpl
-│  ├─ empty_dot_nomedia
-│  ├─ github.pub.tmpl
-│  ├─ github.tmpl
-│  └─ known_hosts
-├─ dot_wakatime.cfg.tmpl
-├─ readonly_OneDrive
-│  └─ readonly_文件
-│     └─ PowerShell
-│        └─ Microsoft.PowerShell_profile.ps1
-├─ rustfmt.toml # use tab
-└─ tsconfig.json
+```nu
+tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replace --all --regex '(?u)([\s\|]+.*\-numd\-temp\-\d+_\d+\.md\.nu)' ""
+# => C:.
+# => |   .chezmoi.toml.tmpl
+# => |   .gitattributes
+# => |   .gitignore
+# => |   .pre-commit-config.yaml
+# => |   dot_actrc
+# => |   dot_eget.toml
+# => |   dot_gitconfig.tmpl
+# => |   dot_nu-lint.toml
+# => |   dot_prettierrc
+# => |   dot_wakatime.cfg.tmpl
+# => |   rustfmt.toml
+# => |   tsconfig.json
+# => |
+# => +---.github
+# => |       README.md
+# => |
+# => +---.vscode
+# => |       tasks.json
+# => |       update-numd-doc.nu
+# => |       yazi-config-update.nu
+# => |
+# => +---AppData
+# => |   \---Roaming
+# => |       +---Everything
+# => |       |       Filters-1.5a.csv
+# => |       |
+# => |       \---yazi
+# => |           \---config
+# => |                   dot_luarc.json
+# => |                   init.lua
+# => |                   keymap.toml
+# => |                   theme.toml
+# => |                   yazi.raw.toml
+# => |                   yazi.toml
+# => |
+# => +---dot_cargo
+# => |       binstall.toml
+# => |       config.toml
+# => |
+# => +---dot_config
+# => |   |   starship.toml
+# => |   |
+# => |   +---act
+# => |   |       actrc
+# => |   |       dot_actrc
+# => |   |
+# => |   +---atuin
+# => |   |       config.toml
+# => |   |
+# => |   +---gh
+# => |   |       config.yml
+# => |   |
+# => |   +---nextest
+# => |   |       empty_config.toml
+# => |   |
+# => |   +---nushell
+# => |   |   |   config.nu
+# => |   |   |   env.nu
+# => |   |   |   README.md
+# => |   |   |
+# => |   |   +---autoload
+# => |   |   |       chezmoi-completion.nu
+# => |   |   |       READMD.md
+# => |   |   |       user-aliases.nu
+# => |   |   |       user-completions.nu
+# => |   |   |
+# => |   |   \---scripts
+# => |   |           complete-tools.nu
+# => |   |           i18n.nu
+# => |   |           nu-selfupdate.ps1
+# => |   |
+# => |   +---uv
+# => |   |       uv.toml
+# => |   |
+# => |   \---vscode-binary-file-viewer
+# => |           def.d.ts
+# => |           executable_lnk.js
+# => |           executable_wav.js
+# => |           tsconfig.json
+# => |
+# => +---dot_local
+# => |   \---share
+# => |       \---nushell
+# => |               hooks.nu
+# => |               hook_display_output.nu
+# => |               keybindings.nu
+# => |               README.md
+# => |               user-fn.nu
+# => |
+# => +---dot_ssh
+# => |       config.tmpl
+# => |       empty_dot_nomedia
+# => |       github.pub.tmpl
+# => |       github.tmpl
+# => |       known_hosts
+# => |
+# => \---readonly_OneDrive
+# =>     \---readonly_���
+# =>         \---PowerShell
+# =>                 Microsoft.PowerShell_profile.ps1
+# =>
 ```
 
 ## 主要特性
@@ -124,9 +155,9 @@ chezmoi
 ### 開發優化
 
 - **Rust 開發**：
-  - 鏡像源配置以加快 crate 下載(清華、重郵鏡像)
-  - sccache 集成以加快編譯速度
-  - cargo-binstall 用於二進制 crate 安裝
+- 鏡像源配置以加快 crate 下載(清華、重郵鏡像)
+- sccache 集成以加快編譯速度
+- cargo-binstall 用於二進制 crate 安裝
 - **Git 工作流**：
   - 通過 chezmoi 自動提交和推送
   - VS Code Insiders 作為 diff/merge 工具
@@ -156,21 +187,21 @@ chezmoi
 
 1. **使用此倉庫初始化 chezmoi**：
 
-	```bash
-	chezmoi init Paul-16098/Dotfiles
-	```
+```bash
+chezmoi init Paul-16098/Dotfiles
+```
 
-2. **在應用之前查看更改**：
+1. **在應用之前查看更改**：
 
-	```bash
-	chezmoi diff
-	```
+```bash
+chezmoi diff
+```
 
-3. **應用配置文件**：
+1. **應用配置文件**：
 
-	```bash
-	chezmoi apply
-	```
+```bash
+chezmoi apply
+```
 
 ### 配置
 
@@ -208,29 +239,29 @@ chezmoi
 
 1. **編輯源倉庫中的文件**：
 
-	```bash
-	chezmoi edit ~/.config/starship.toml
-	```
+```bash
+chezmoi edit ~/.config/starship.toml
+```
 
-2. **查看更改**：
+1. **查看更改**：
 
-	```bash
-	chezmoi diff
-	```
+```bash
+chezmoi diff
+```
 
-3. **應用更改**：
+1. **應用更改**：
 
-	```bash
-	chezmoi apply
-	```
+```bash
+chezmoi apply
+```
 
-4. **自動提交**通過 `.chezmoi.toml.tmpl` 啟用：
+1. **自動提交**通過 `.chezmoi.toml.tmpl` 啟用：
 
-	```toml
-	[git]
-		 autoAdd = true
-		 autoCommit = true
-	```
+```toml
+[git]
+ autoAdd = true
+ autoCommit = true
+```
 
 ### 更新配置文件
 
@@ -264,15 +295,19 @@ chezmoi apply --dry-run --verbose
 
 1. **Fork 此倉庫**
 2. **更新個人信息**：
-	- GPG 簽名密鑰
-	- KeePassXC 數據庫路徑
-	- SSH 密鑰和配置
-	- WakaTime API 密鑰
-3. **自定義配置**：
-	- Nushell 別名和函數
-	- Starship 提示符主題
-	- Yazi 快捷鍵綁定
-4. **從配置中移除** 未使用的工具
+
+- GPG 簽名密鑰
+- KeePassXC 數據庫路徑
+- SSH 密鑰和配置
+- WakaTime API 密鑰
+
+1. **自定義配置**：
+
+- Nushell 別名和函數
+- Starship 提示符主題
+- Yazi 快捷鍵綁定
+
+1. **從配置中移除** 未使用的工具
 
 ### 添加新配置
 

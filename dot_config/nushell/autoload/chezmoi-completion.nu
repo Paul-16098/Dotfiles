@@ -1446,3 +1446,4 @@ export alias chst = chezmoi status
 export alias chm = chezmoi merge
 export alias chma = chezmoi merge-all
 export alias chrad = chezmoi re-add
+export alias chcd = chezmoi cd

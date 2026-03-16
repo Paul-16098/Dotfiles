@@ -9,14 +9,14 @@ repos:
         verbose: true
         entry: nu
         args:
-          - ./AppData/Roaming/yazi/config/update.nu
+          - .vscode/yazi-config-update.nu
 
       - id: update-doc
         name: update-doc
         pass_filenames: false
         language: system
-        files: dot_local/share/nushell/
+        files: \.(nu|md)$
         verbose: true
         entry: nu
         args:
-          - ./dot_local/share/nushell/.update.nu
+          - .vscode/update-numd-doc.nu

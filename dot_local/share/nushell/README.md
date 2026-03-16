@@ -6,7 +6,7 @@
 
 ```nu s
 use ./user-fn.nu
-help commands | where name starts-with user-fn | select name description | sort | to md
+ls-commands user-fn | to md
 ```
 
 Output:
@@ -14,79 +14,34 @@ Output:
 ```
 # => | name | description |
 # => | --- | --- |
-# => | user-fn alternative-buffer | alternative buffer wrapper, use callback to run commands in alternative buffer and get the output, the callback should return the output as a string, the alternative buffer will be cleared after the callback is executed
+# => | alternative-buffer | alternative buffer wrapper, use callback to run commands in alternative buffer and get the output, the callback should return the output as a string, the alternative buffer will be cleared after the callback is executed
 # => nu-lint-ignore: missing_in_type, missing_output_type |
-# => | user-fn app-update |  |
-# => | user-fn chezmoi cd | https://www.chezmoi.io/user-guide/frequently-asked-questions/design/#why-does-chezmoi-cd-spawn-a-shell-instead-of-just-changing-directory |
-# => | user-fn clip copy-image | copy image to clipboard using powershell |
-# => | user-fn config user-fn | Edit this config. |
-# => | user-fn docker compose ls | wrapper for docker compose commands to output json parsed tables |
-# => | user-fn docker compose ps | wrapper for docker compose ps to output json parsed table and format RunningFor column to human readable date |
-# => | user-fn docker compose stats | wrapper for docker compose stats to output json parsed table, also add --no-trunc and --no-stream to get full output and only one snapshot |
-# => | user-fn docker compose version | wrapper for docker compose version to output json parsed record |
-# => | user-fn docker compose volumes | wrapper for docker volumes to output json parsed table |
-# => | user-fn es | es wrapper to always output json parsed table |
-# => | user-fn gc | Alias for `git clone` |
-# => | user-fn get-dll | get dll dependencies of an exe file |
-# => | user-fn git log | git log wrapper to format output as a table |
-# => | user-fn git pull | git pull wrapper to show updated commits
+# => | app-update |  |
+# => | chezmoi cd | https://www.chezmoi.io/user-guide/frequently-asked-questions/design/#why-does-chezmoi-cd-spawn-a-shell-instead-of-just-changing-directory |
+# => | clip copy-image | copy image to clipboard using powershell |
+# => | config user-fn | Edit this config. |
+# => | docker compose ls | wrapper for docker compose commands to output json parsed tables |
+# => | docker compose ps | wrapper for docker compose ps to output json parsed table and format RunningFor column to human readable date |
+# => | docker compose stats | wrapper for docker compose stats to output json parsed table, also add --no-trunc and --no-stream to get full output and only one snapshot |
+# => | docker compose version | wrapper for docker compose version to output json parsed record |
+# => | docker compose volumes | wrapper for docker volumes to output json parsed table |
+# => | es | es wrapper to always output json parsed table |
+# => | gc | Alias for `git clone` |
+# => | get-dll | get dll dependencies of an exe file |
+# => | git log | git log wrapper to format output as a table |
+# => | git pull | git pull wrapper to show updated commits
 # => $env.NO_TUI_GIT_PULL = ["own/repo"] to disable the wrapper for specific repos, useful for repos with very large number of commits to pull where counting commits can be slow, or repos with non-standard remote names where resolving upstream can be complicated |
-# => | user-fn gl | Alias for `git log` |
-# => | user-fn gp | Alias for `git pull` |
-# => | user-fn highlight | use $color_code to highlight text in output |
-# => | user-fn kill with name | kill process by name |
-# => | user-fn meme | get meme and copy to clipboard |
-# => | user-fn pause | my custom pause function |
-# => | user-fn reload-config | used in keybindings.nu for F5 |
-# => | user-fn rust-debug | set rust debug env variables |
-# => | user-fn steamcmd | steamcmd wrapper to login |
-# => | user-fn whois | whois wrapper to format output as a table |
-# => | user-fn y | https://yazi-rs.github.io/docs/quick-start#shell-wrapper |
-```
-
-Output:
-
-```md
-# => .----------------------------------------------------------------------------------------------------------------------------------------------------.
-# => |              name              |                                                    description                                                    |
-# => | user-fn alternative-buffer     | alternative buffer wrapper, use callback to run commands in alternative buffer and get the output, the callback   |
-# => |                                | should return the output as a string, the alternative buffer will be cleared after the callback is                |
-# => |                                | executed                                                                                                          |
-# => |                                | nu-lint-ignore: missing_in_type, missing_output_type                                                              |
-# => | user-fn app-update             |                                                                                                                   |
-# => | user-fn chezmoi cd             | https://www.chezmoi.io/user-guide/frequently-asked-questions/design/#why-does-chezmoi-cd-spawn-a-shell-instead-of |
-# => |                                | -just-changing-directory                                                                                          |
-# => | user-fn clip copy-image        | copy image to clipboard using powershell                                                                          |
-# => | user-fn config user-fn         | Edit this config.                                                                                                 |
-# => | user-fn docker compose ls      | wrapper for docker compose commands to output json parsed tables                                                  |
-# => | user-fn docker compose ps      | wrapper for docker compose ps to output json parsed table and format RunningFor column to human readable date     |
-# => | user-fn docker compose stats   | wrapper for docker compose stats to output json parsed table, also add --no-trunc and --no-stream to get full     |
-# => |                                | output and only one snapshot                                                                                      |
-# => | user-fn docker compose version | wrapper for docker compose version to output json parsed record                                                   |
-# => | user-fn docker compose volumes | wrapper for docker volumes to output json parsed table                                                            |
-# => | user-fn es                     | es wrapper to always output json parsed table                                                                     |
-# => | user-fn gc                     | Alias for `git clone`                                                                                             |
-# => | user-fn get-dll                | get dll dependencies of an exe file                                                                               |
-# => | user-fn git log                | git log wrapper to format output as a table                                                                       |
-# => | user-fn git pull               | git pull wrapper to show updated commits                                                                          |
-# => |                                | $env.NO_TUI_GIT_PULL = ["own/repo"] to disable the wrapper for specific                                           |
-# => |                                | repos, useful for repos with very large number of commits to pull where counting commits can be slow, or repos    |
-# => |                                | with non-standard remote names where resolving upstream can be complicated                                        |
-# => | user-fn gl                     | Alias for `git log`                                                                                               |
-# => | user-fn gp                     | Alias for `git pull`                                                                                              |
-# => | user-fn highlight              | use $color_code to highlight text in output                                                                       |
-# => | user-fn kill with name         | kill process by name                                                                                              |
-# => | user-fn meme                   | get meme and copy to clipboard                                                                                    |
-# => | user-fn nu_ps                  | Alias for `ps`                                                                                                    |
-# => | user-fn pause                  | my custom pause function                                                                                          |
-# => | user-fn ps                     | processes wrapper to filter by name                                                                               |
-# => | user-fn reload-config          | used in keybindings.nu for F5                                                                                     |
-# => | user-fn rust-debug             | set rust debug env variables                                                                                      |
-# => | user-fn steamcmd               | steamcmd wrapper to login                                                                                         |
-# => | user-fn whois                  | whois wrapper to format output as a table                                                                         |
-# => | user-fn y                      | https://yazi-rs.github.io/docs/quick-start#shell-wrapper                                                          |
-# => |              name              |                                                    description                                                    |
-# => '----------------------------------------------------------------------------------------------------------------------------------------------------'
+# => | gl | Alias for `git log` |
+# => | gp | Alias for `git pull` |
+# => | highlight | use $color_code to highlight text in output |
+# => | kill with name | kill process by name |
+# => | meme | get meme and copy to clipboard |
+# => | pause | my custom pause function |
+# => | reload-config | used in keybindings.nu for F5 |
+# => | rust-debug | set rust debug env variables |
+# => | steamcmd | steamcmd wrapper to login |
+# => | whois | whois wrapper to format output as a table |
+# => | y | https://yazi-rs.github.io/docs/quick-start#shell-wrapper |
 ```
 
 ## keybindings
