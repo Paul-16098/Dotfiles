@@ -309,7 +309,7 @@ If you wish to set tracking information for this branch you can do so with:
   print --stderr $"Pulled latest changes. Showing commits from (ansi green_bold)($new_commit)(ansi reset) to (ansi green_bold)($old_commit)(ansi reset):"
   git log $"($old_commit)..($new_commit)" | let log | print --stderr $in
 
-  const KEY_HINT = $"(ansi green_underline)P(ansi reset)(ansi green)ull(ansi reset), (ansi green_underline)S(ansi reset)(ansi green)how(ansi reset), (ansi green_underline)L(ansi reset)(ansi green)ogs(ansi reset) or (ansi green_underline)A(ansi reset)(ansi green)bort(ansi reset)."
+  const KEY_HINT = $"(ansi green_underline)P(ansi reset_underline)ull(ansi reset), (ansi green_underline)S(ansi reset_underline)how(ansi reset), (ansi green_underline)L(ansi reset_underline)ogs(ansi reset) or (ansi green_underline)A(ansi reset_underline)bort(ansi reset)."
   print --stderr $KEY_HINT
   loop {
     match (input listen --types [key]) {
