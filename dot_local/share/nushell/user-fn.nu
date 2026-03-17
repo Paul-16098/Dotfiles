@@ -73,37 +73,6 @@ export def --wrapped es [...rest: string]: nothing -> table {
   ^es "-instance" 1.5a ...$rest "--json"
 }
 
-# export def app-update [
-#   update_job: table<id: string, job: closure> # a table of update jobs, each row should have id and job columns, job is a block to execute the update, id is a unique identifier for the job
-#   conf?: record # configuration for update jobs, conf.<id>.* for job <id>, conf.* for all jobs
-#   ...rest: any # a rest to all job
-# ]: nothing -> nothing {
-#   let conf = $conf | default {}
-
-#   let update_job = ($update_job | default [[id job]; ])
-
-#   print "Starting app updates..."
-#   print $"Total jobs to run: ($update_job | length)"
-
-#   for row in $update_job {
-#     let job_conf = ($conf | get --optional * | default {}) | merge ($conf | get --optional $row.id | default {})
-
-#     print $"Starting job: (ansi green_bold)($row.id)(ansi reset) with config: ($job_conf | to nuon | nu-highlight)"
-
-#     job spawn --tag $row.id {
-#       let o = ($job_conf | do --ignore-errors $row.job ...$rest | default "")
-#       $"(ansi green_bold)($row.id)(ansi reset)#[($o)]" | job send 0
-#     }
-#   }
-
-#   for i in 1..($update_job | length) {
-#     print (job recv)
-#   }
-#   print "\a"
-
-#   null
-# }
-
 export def app-update [] {
   use jobd.nu
 
@@ -120,16 +89,17 @@ export def app-update [] {
   jobd spawn app-update-cargo-packages {
     cargo install-update --all
   }
-  # job spawn --tag app-update-coreutils-completions {
-  #   const COREUTILS_COMPLETIONS_PATH = ($nu.user-autoload-dirs.0 | path join completions-coreutils.nu)
-  #   "" | save --force $COREUTILS_COMPLETIONS_PATH
-  #   ^coreutils --list | decode utf-8 | lines | par-each --keep-order {
-  #     if ($in == '[') { return }
-  #     let dis = (^coreutils $in --help | str replace --regex r#'\n\nUsage[\s\S]*$'# '' | lines | each { '# ' + $in } | str join "\n")
-  #     $"($dis)\nexport extern \"coreutils ($in)\" [\n  --help \(-h) # get help information\n  --version \(-V) # get version information\n]\n" | save --append $COREUTILS_COMPLETIONS_PATH
-  #   }
-  # }
+  job spawn --description app-update-coreutils-completions {
+    const COREUTILS_COMPLETIONS_PATH = ($nu.user-autoload-dirs.0 | path join completions-coreutils.nu)
+    "" | save --force $COREUTILS_COMPLETIONS_PATH
+    ^coreutils --list | decode utf-8 | lines | par-each --keep-order {
+      if ($in == '[') { return }
+      let dis = (^coreutils --help $in | complete | get stdout | str replace --regex r#'\n\nUsage[\s\S]*$'# '' | lines | each { '# ' + $in } | str join "\n")
+      $"($dis)\nexport extern \"coreutils ($in)\" [\n  --help \(-h) # get help information\n  --version \(-V) # get version information\n]\n" | save --append $COREUTILS_COMPLETIONS_PATH
+    }
+  }
 
+  # wait for update `job spawn -d` to `job spawn --description`
   # job spawn --description app-update-atuin {
   #   $env.ATUIN_NOBIND = "true"
   #   atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand)
@@ -164,9 +134,10 @@ export def app-update [] {
 
   [
     [name type];
-    [nu_plugin_dns cargo]
+    [https://github.com/dead10ck/nu_plugin_dns git]
     [https://github.com/fdncred/nu_plugin_file git]
     [https://github.com/fdncred/nu_plugin_to_gui git]
+    [https://github.com/fdncred/nu_plugin_regex git]
   ] | each {|plugin|
     match $plugin.type {
       cargo => {
@@ -286,7 +257,7 @@ See git-pull\(1) for details.
 
 If you wish to set tracking information for this branch you can do so with:
 
-    ('git branch --set-upstream-to=<remote>/<branch> main' | nu-highlight)"
+    ('git branch --set-upstream-to=<remote>/<branch> ' + (git branch --show-current) | nu-highlight)"
 
     return
   }

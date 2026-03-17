@@ -17,3 +17,6 @@ explicit_optional_access   = false
 	wrap_external_with_complete = "hint"
 	catch_builtin_error_try     = "hint"
 	error_make_for_non_fatal    = "off"
+
+	# i use dev version of nushell, so i want to disable parse error for now
+	nu_parse_error = "off"
