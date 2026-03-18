@@ -188,32 +188,35 @@ def git-log-subject-highlight [remote_url: string]: string -> string {
   | str replace --all --regex "#\\d+" $"(ansi green_bold)$0(ansi reset)"
 }
 
+# use in git log wrapper
+const NOREPLY_EMAIL = ["@users.noreply.github.com" "@noreply.codeberg.org"]
 # git log wrapper to format output as a table
 #
 # noreply email is filtered out
 # merge commit messages are reformatted to include links
 # commit messages are highlighted for common prefixes
 # version tags are highlighted
-# sorted by date newest at bottom
+# no sort
 @complete external
 @category git
 export def --wrapped "git log" [...rest: string]: nothing -> table {
+  const SPLIT_STR = "»¦«"
+
   let remote_url = git-remote_url
 
-  ^git log --pretty=%h»¦«%s»¦«%aN»¦«%aE»¦«%aD ...$rest
+  ^git log --pretty=$"%h($SPLIT_STR)%s($SPLIT_STR)%aN($SPLIT_STR)%aE($SPLIT_STR)%aD" ...$rest
   | lines
-  | split column "»¦«" commit subject name email date
-  | update date { $in | into datetime }
+  | split column $SPLIT_STR commit subject name email date
+  | into datetime date
   | update email {|row|
     let email = $row.email
-    if (["@users.noreply.github.com" "@noreply.codeberg.org"] | all {|suffix| not ($email | str ends-with $suffix) }) {
+    if ($NOREPLY_EMAIL | all {|suffix| not ($email | str ends-with $suffix) }) {
       $"mailto:($email)" | ansi link --text $email
     } else {
       $"(ansi dark_gray_italic)noreply email(ansi reset)"
     }
   } | default $"(ansi dark_gray_italic)N/A(ansi reset)" email
   | update subject { $in | str trim | git-log-subject-highlight $remote_url }
-  | sort-by date --reverse
 }
 
 @category git
