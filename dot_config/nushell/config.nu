@@ -22,6 +22,27 @@ $env.config.highlight_resolved_externals = true
 $env.config.completions.partial = false
 $env.config.error_lines = 3
 $env.config.error_style = "nested"
+$env.config.hinter.closure = {|ctx|
+  if ($ctx.line | str length) == 0 {
+    null
+  } else {
+    let candidate = (
+      try {
+        ^atuin search --cwd $ctx.cwd --limit 1 --search-mode prefix --cmd-only $ctx.line
+        | lines
+        | first
+      } catch {
+        null
+      }
+    )
+
+    if $candidate == null or not ($candidate | str starts-with $ctx.line) {
+      null
+    } else {
+      ($candidate | str substring (($ctx.line | str length))..)
+    }
+  }
+}
 
 $env.LS_COLORS = (vivid generate molokai)
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
