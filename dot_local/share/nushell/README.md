@@ -29,8 +29,7 @@ Output:
 # => | gc | Alias for `git clone` |
 # => | get-dll | get dll dependencies of an exe file |
 # => | git log | git log wrapper to format output as a table |
-# => | git pull | git pull wrapper to show updated commits
-# => $env.NO_TUI_GIT_PULL = ["own/repo"] to disable the wrapper for specific repos, useful for repos with very large number of commits to pull where counting commits can be slow, or repos with non-standard remote names where resolving upstream can be complicated |
+# => | git pull | git pull wrapper to show updated commits |
 # => | gl | Alias for `git log` |
 # => | gp | Alias for `git pull` |
 # => | highlight | use $color_code to highlight text in output |

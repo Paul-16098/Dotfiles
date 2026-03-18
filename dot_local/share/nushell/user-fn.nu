@@ -162,6 +162,7 @@ export def app-update [] {
   null
 }
 
+# highlight git log subject, reformat merge commit messages to include links to PRs and branches, also highlight common prefixes like feat:, fix:, etc. and version tags like v1.2.3
 @category git
 def git-log-subject-highlight [remote_url: string]: string -> string {
   # Merge pull request #ID from ...
@@ -190,8 +191,9 @@ def git-log-subject-highlight [remote_url: string]: string -> string {
 
 # use in git log wrapper
 const NOREPLY_EMAIL = ["@users.noreply.github.com" "@noreply.codeberg.org"]
+
 # git log wrapper to format output as a table
-#
+# 
 # noreply email is filtered out
 # merge commit messages are reformatted to include links
 # commit messages are highlighted for common prefixes
@@ -219,6 +221,7 @@ export def --wrapped "git log" [...rest: string]: nothing -> table {
   | update subject { $in | str trim | git-log-subject-highlight $remote_url }
 }
 
+# get git remote url and convert to https if it's an ssh url, also remove .git suffix
 @category git
 def git-remote_url []: nothing -> string {
   git config get remote.origin.url | complete | get stdout | str trim | str replace "git@ssh.gitgud.io:" "https://gitgud.io/" | str replace --regex "\\.git$" ""
@@ -226,6 +229,7 @@ def git-remote_url []: nothing -> string {
 
 export alias gl = git log
 # git pull wrapper to show updated commits
+# 
 # $env.NO_TUI_GIT_PULL = ["own/repo"] to disable the wrapper for specific repos, useful for repos with very large number of commits to pull where counting commits can be slow, or repos with non-standard remote names where resolving upstream can be complicated
 @complete external
 @category git
