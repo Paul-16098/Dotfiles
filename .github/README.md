@@ -90,6 +90,7 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   +---nushell
 # => |   |   |   config.nu
 # => |   |   |   env.nu
+# => |   |   |   env.nuom.tmpl
 # => |   |   |   README.md
 # => |   |   |
 # => |   |   +---autoload

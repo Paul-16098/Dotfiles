@@ -228,16 +228,32 @@ def git-remote_url []: nothing -> string {
 }
 
 export alias gl = git log
+
+export-env {
+  # $env.NO_TUI_GIT_PULL to disable the wrapper for specific repos, useful for repos with very large number of commits to pull where counting commits can be slow, or repos with non-standard remote names where resolving upstream can be complicated
+  # {
+  #   REMOTE_URL: ["<github.com/><own/>repo"]
+  #   FULL_COMMIT_SUBJECT: ["FULL SUBJECT"]}
+  #   COMMIT_SUBJECT: ["SUBJECT"]
+  # }
+  $env.NO_TUI_GIT_PULL = $env.NO_TUI_GIT_PULL? | default {
+      REMOTE_URL: []
+      FULL_COMMIT_SUBJECT: []
+      COMMIT_SUBJECT: []
+    }
+}
+
 # git pull wrapper to show updated commits
-# 
-# $env.NO_TUI_GIT_PULL = ["own/repo"] to disable the wrapper for specific repos, useful for repos with very large number of commits to pull where counting commits can be slow, or repos with non-standard remote names where resolving upstream can be complicated
 @complete external
 @category git
 export def --wrapped "git pull" [...rest: string]: nothing -> nothing {
   use std/log
 
   let remote_url = git-remote_url
-  if ($env.NO_TUI_GIT_PULL | any {|el| $remote_url ends-with $el }) {
+  if (
+    $env.NO_TUI_GIT_PULL.REMOTE_URL
+    | any {|el| $remote_url ends-with $el }
+  ) {
     print --stderr $"Repository '(ansi green_bold)($remote_url)(ansi reset)' is configured to skip the interactive pull wrapper. Running git pull with provided arguments..."
     print (^git pull ...$rest)
     return
@@ -315,6 +331,15 @@ If you wish to set tracking information for this branch you can do so with:
 
   print --stderr $"Pulled latest changes. Showing commits from (ansi green_bold)($new_commit)(ansi reset) to (ansi green_bold)($old_commit)(ansi reset):"
   git log $"($old_commit)..($new_commit)" | let log | print --stderr $in
+
+  if (
+    $log.subject | ansi strip
+    | all {|el| ($env.NO_TUI_GIT_PULL.FULL_COMMIT_SUBJECT | any {|sub| $el == $sub }) or ($env.NO_TUI_GIT_PULL.COMMIT_SUBJECT | any {|sub| $el =~ $sub }) }
+  ) {
+    print --stderr "The pull includes commits with subjects configured to skip the interactive pull wrapper.\nRunning git pull with provided arguments..."
+    print (^git pull ...$rest)
+    return
+  }
 
   const KEY_HINT = $"(ansi green_underline)P(ansi reset_underline)ull(ansi reset), (ansi green_underline)S(ansi reset_underline)how(ansi reset), (ansi green_underline)L(ansi reset_underline)ogs(ansi reset) or (ansi green_underline)A(ansi reset_underline)bort(ansi reset)."
   print --stderr $KEY_HINT

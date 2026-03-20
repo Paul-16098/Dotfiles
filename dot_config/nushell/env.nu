@@ -5,7 +5,8 @@ const NU_PLUGIN_DIRS = $NU_PLUGIN_DIRS ++ ["~/.cargo/bin/"]
 load-env {
   COLORTERM: "truecolor"
   PATH: ($env.PATH | path expand | uniq)
-} # optional
+}
+open ($nu.config-path | path dirname | path join env.nuom) | from nuon | load-env
 
 chcp 65001 | ignore
 
