@@ -201,15 +201,15 @@ def "nu-complete ya pkg" [] {
 # delete yazi package | 删除 yazi 包
 export extern "ya pkg delete" [
   pkg: string@"nu-complete ya pkg" # package name to delete | 要删除的包名
+  --discard # Discard local changes made to packages while upgrading
 ]
 # list yazi packages | 列出 yazi 包
 export extern "ya pkg list" [
-  --help (-h) # show help message | 显示帮助信息
 ]
 # upgrade yazi package | 升级 yazi 包
 export extern "ya pkg upgrade" [
   pkg?: string@"nu-complete ya pkg" # package name to upgrade | 要升级的包名
-  --help (-h) # show help message | 显示帮助信息
+  --discard # Discard local changes made to packages while upgrading
 ]
 # add yazi package | 添加 yazi 包
 export extern "ya pkg add" [
