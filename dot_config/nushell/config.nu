@@ -25,6 +25,46 @@ $env.config.error_style = "nested"
 $env.config.hinter.closure = {|ctx|
   if ($ctx.line | str length) == 0 {
     null
+  } else if (false and $ctx.line =~ '^#\s*ai:.*\n') {
+    const system_prompt = "# who are you
+
+You are a Nushell command completion assistant.
+You will receive a partial Nushell command and must complete it into a valid full command.
+
+# return
+
+Return only the completed command.
+Do not include any explanation, markdown, or extra text.
+Output exactly in this format: <output>COMPLETED_COMMAND</output>
+
+Example:
+Input: ls -
+Output: <output>ls -la</output>
+"
+    let user_prompt = ($ctx.line | str replace --regex '^#\s*ai:' "")
+
+    let full_prompt = [
+      {
+        role: "system"
+        content: $system_prompt
+      }
+      {
+        role: "system"
+        content: $"<cwd>Current working directory: ($ctx.cwd)<cwd/>\n<environment_info>The user's current OS is: ($nu.os-info)</environment_info>"
+      }
+      {
+        role: "user"
+        content: $user_prompt
+      }
+    ]
+
+    http post http://127.0.0.1:1357/v1/chat/completions --headers {'Authorization': 'Bearer abcd'} (
+      {
+        model: "gpt-5-mini"
+        verbosity: "low"
+        messages: $full_prompt
+      } | to json
+    ) | get choices | first | get message.content | parse '<output>{o}</output>' | get o
   } else {
     let candidate = (
       try {
