@@ -3,19 +3,20 @@
 	linker = "rust-lld.exe"
 
 [source.crates-io]
-	# replace-with = 'cqu'
+	# 避開 Received timeout error from reqwest. Delay future request by 200ms
+	replace-with = 'tsinghua'
 
 [source.tsinghua]
 	registry = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"
-
 [registries.tsinghua]
 	index = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"
 
 [source.cqu]
 	registry = "sparse+https://mirrors.cqu.edu.cn/crates.io-index/"
-
 [registries.cqu]
 	index = "sparse+https://mirrors.cqu.edu.cn/crates.io-index/"
 
 [build]
 	rustc-wrapper = "sccache"
+[net]
+	git-fetch-with-cli = true

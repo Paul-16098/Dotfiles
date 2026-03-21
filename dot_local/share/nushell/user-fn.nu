@@ -126,33 +126,8 @@ export def app-update [] {
       print ($run | nu-highlight)
     }
   }
-  [nu_plugin_formats nu_plugin_polars nu_plugin_query] | each {|plugin|
-    jobd spawn $"app-update-nu-core-plugins-($plugin)" {
-      cargo install --locked --git https://github.com/nushell/nushell.git $plugin
-    }
-  }
-
-  [
-    [name type];
-    [https://github.com/dead10ck/nu_plugin_dns git]
-    [https://github.com/fdncred/nu_plugin_file git]
-    [https://github.com/fdncred/nu_plugin_to_gui git]
-    [https://github.com/fdncred/nu_plugin_regex git]
-  ] | each {|plugin|
-    match $plugin.type {
-      cargo => {
-        jobd spawn $"app-update-nu-plugins-($plugin.name)" {
-          cargo install $plugin.name
-        }
-      }
-      git => {
-        jobd spawn $"app-update-nu-plugins-($plugin.name)" {
-          let name = $plugin.name | split row "/" | last
-
-          cargo install --git $plugin.name
-        }
-      }
-    }
+  jobd spawn app-update-cargo {
+    cargo install-update --all --git
   }
 
   jobd wait

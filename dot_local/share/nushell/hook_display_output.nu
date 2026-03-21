@@ -39,18 +39,10 @@ export-env {
           }
 
           $data => {
-            # print --stderr $data
-            $env.LAST_RESULT = $in
-            $in | table --expand=((term size).columns >= 100) --icons=(($data.source) == "ls")
+            table --expand=((term size).columns >= 100) --icons=(($data.source) == "ls")
           }
         }
       } ($meta | classify)
     }
   }
-}
-
-# alias to get the last result
-# nu-lint-ignore: kebab_case_commands, missing_output_type
-export def _ []: nothing -> any {
-  $env.LAST_RESULT
 }
