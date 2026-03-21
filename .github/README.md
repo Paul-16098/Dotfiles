@@ -17,7 +17,7 @@
 - **版本控制**：Git(帶 GPG 簽名)
 - **Shell 歷史**：[Atuin](https://atuin.sh/) - 智能 Shell 歷史記錄
 
-### 開發工具
+### 配置包含
 
 - **Rust/Cargo**：自定義配置，支持鏡像源
 - **VS Code Insiders**：集成為 diff 和 merge 工具
