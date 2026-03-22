@@ -119,10 +119,10 @@ export-env {
 
     # why custom?
     # default ctrl+d is send CtrlD event, if commandline not null, it will del cursor word, but I want it always send "exit 0" command to host
-    (add-keybindings --name "exit-nu" control char_d {send: executehostcommand cmd: "exit 0"})
+    (add-keybindings --name "exit-nu" control char_d {send: executehostcommand cmd: " exit 0"})
 
     (add-keybindings --name "clear-screen" control char_l {send: ClearScreen})
     (add-keybindings --name "clear-scrollback" control_shift char_l {send: ClearScrollBack})
-    (add-keybindings --name "yazi-menu" control "char_\\" {send: executehostcommand cmd: "y"})
+    (add-keybindings --name "yazi-menu" control "char_\\" {send: executehostcommand cmd: " y"})
   ]
 }

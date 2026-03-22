@@ -91,7 +91,7 @@ Output:
 # => | custom-keybinding | CONTROL | Down | {edit: MoveLineDown} | [emacs, vi_normal, vi_insert] |
 # => | custom-keybinding | CONTROL | Up | {edit: MoveLineUp} | [emacs, vi_normal, vi_insert] |
 # => | custom-keybinding | control_shift | char_z | {edit: Redo} | [emacs, vi_normal, vi_insert] |
-# => | exit-nu | control | char_d | {send: executehostcommand, cmd: exit 0} | [emacs, vi_normal, vi_insert] |
+# => | exit-nu | control | char_d | {send: executehostcommand, cmd:  exit 0} | [emacs, vi_normal, vi_insert] |
 # => | reload-config | none | f5 | {send: executehostcommand, cmd: } | [emacs, vi_normal, vi_insert] |
 # => | remove-keybindings | ALT | Backspace |  | [emacs] |
 # => | remove-keybindings | ALT | Delete |  | [emacs] |
@@ -245,5 +245,5 @@ Output:
 # => | remove-keybindings | none | Up |  | [vi_insert] |
 # => | remove-keybindings | none | Up |  | [vi_normal] |
 # => | search-atuin-history | control | char_/ | {send: executehostcommand, cmd: } | [emacs, vi_normal, vi_insert] |
-# => | yazi-menu | control | char_\\ | {send: executehostcommand, cmd: y} | [emacs, vi_normal, vi_insert] |
+# => | yazi-menu | control | char_\\ | {send: executehostcommand, cmd:  y} | [emacs, vi_normal, vi_insert] |
 ```
