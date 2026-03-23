@@ -39,6 +39,7 @@ Output:
 # => | reload-config | used in keybindings.nu for F5 |
 # => | rust-debug | set rust debug env variables |
 # => | steamcmd | steamcmd wrapper to login |
+# => | vt scan file |  |
 # => | whois | whois wrapper to format output as a table |
 # => | y | https://yazi-rs.github.io/docs/quick-start#shell-wrapper |
 ```

@@ -658,7 +658,7 @@ export def "meme" [
     }
 
     nushell => {
-      $meme_path = glob ./**/*.* | input list --multi
+      $meme_path = ls | input list --multi | get name
     }
 
     $_ => {
@@ -731,4 +731,8 @@ export def --env alternative-buffer [
   print --no-newline (ansi --escape ?1049l)
 
   $out
+}
+
+export def --wrapped 'vt scan file' [path: path ...rest]: any -> any {
+  ^vt scan file $path ...$rest --silent --wait | from yaml
 }
