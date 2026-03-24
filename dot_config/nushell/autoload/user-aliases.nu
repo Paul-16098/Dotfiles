@@ -17,6 +17,5 @@ alias cls = clear
 alias "decode url" = url decode
 alias "encode url" = url encode
 alias "ya pack -a" = ya pkg add
-alias npx = pnpm exec
 # nu#16260
 # alias "from editorconfig" = from ini
