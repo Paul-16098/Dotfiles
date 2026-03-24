@@ -106,24 +106,28 @@ export def app-update [] {
     }
   }
 
-  # wait for update `job spawn -d` to `job spawn --description`
-  # job spawn --description app-update-atuin {
-  #   $env.ATUIN_NOBIND = "true"
-  #   atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand)
-  # }
+  job spawn --description app-update-atuin {
+    $env.ATUIN_NOBIND = "true"
+    atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand)
+  }
+
   job spawn --description app-update-starship {
     starship init nu | save --force ($nu.user-autoload-dirs.0 | path join starship.nu)
   }
+
   job spawn --description app-update-carapace {
     carapace _carapace nushell | save --force ($nu.user-autoload-dirs.0 | path join carapace.nu)
   }
+
   jobd spawn app-update-yazi {
     cargo install --git https://github.com/sxyazi/yazi.git yazi-build
     ya pkg upgrade
   }
+
   jobd spawn app-update-nufmt {
     cargo install --git https://github.com/nushell/nufmt nufmt
   }
+
   job spawn --description app-update-nu {
     if (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
       let run = "start ~/.config/nushell/scripts/nu-selfupdate.ps1"
