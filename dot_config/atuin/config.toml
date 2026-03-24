@@ -167,6 +167,7 @@ keymap_mode = "auto"
 ## 將此設置為 true，Atuin 將最小化 UI 中的動態 - 計時器將不會即時更新等。
 ## 或者，設置環境變數 NO_MOTION=true
 prefers_reduced_motion = true
+search_mode            = "daemon-fuzzy"
 
 [stats]
 	## 設定應考慮子命令進行統計的命令。例如，kubectl get 與僅 kubectl
@@ -231,6 +232,8 @@ prefers_reduced_motion = true
 	# strategy = "auto"
 
 [daemon]
+	enabled   = true
+	autostart = true
 	## 啟用使用守護程序進行同步。需要守護程序在背景中運行。使用 `atuin daemon` 啟動它
 	# enabled = false
 
