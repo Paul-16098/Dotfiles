@@ -96,15 +96,16 @@ export def app-update [] {
   jobd spawn app-update-cargo-packages {
     cargo install-update --all
   }
-  job spawn --description app-update-coreutils-completions {
-    const COREUTILS_COMPLETIONS_PATH = ($nu.user-autoload-dirs.0 | path join completions-coreutils.nu)
-    "" | save --force $COREUTILS_COMPLETIONS_PATH
-    ^coreutils --list | decode utf-8 | lines | par-each --keep-order {
-      if ($in == '[') { return }
-      let dis = (^coreutils --help $in | complete | get stdout | str replace --regex r#'\n\nUsage[\s\S]*$'# '' | lines | each { '# ' + $in } | str join "\n")
-      $"($dis)\nexport extern \"coreutils ($in)\" [\n  --help \(-h) # get help information\n  --version \(-V) # get version information\n]\n" | save --append $COREUTILS_COMPLETIONS_PATH
-    }
-  }
+
+  # job spawn --description app-update-coreutils-completions {
+  #   const COREUTILS_COMPLETIONS_PATH = ($nu.user-autoload-dirs.0 | path join completions-coreutils.nu)
+  #   "" | save --force $COREUTILS_COMPLETIONS_PATH
+  #   ^coreutils --list | decode utf-8 | lines | par-each --keep-order {
+  #     if ($in == '[') { return }
+  #     let dis = (^coreutils --help $in | complete | get stdout | str replace --regex r#'\n\nUsage[\s\S]*$'# '' | lines | each { '# ' + $in } | str join "\n")
+  #     $"($dis)\nexport extern \"coreutils ($in)\" [\n  --help \(-h) # get help information\n  --version \(-V) # get version information\n]\n" | save --append $COREUTILS_COMPLETIONS_PATH
+  #   }
+  # }
 
   job spawn --description app-update-atuin {
     $env.ATUIN_NOBIND = "true"
