@@ -15,57 +15,64 @@ export def --wrapped whois [
   if ("-h" in $rest or "--help" in $rest) {
     log debug "Displaying help for whois"
     whois-cli --help
-  } else {
-    if ("-v" in $rest or "--verbose" in $rest) {
-      log set-level 10
-    }
-    let po = (whois-cli --no-color ...$rest | complete)
-    if $po.exit_code != 0 {
-      error make {
-        msg: $"whois command failed with exit code ($po.exit_code)"
-        label: {
-          span: (metadata $rest).span
-          text: $po.stderr
-        }
-        help: "try whois-cli --help for more information"
-      }
-    }
-    log debug "Processing whois output"
-    let raw_o = $po.stdout
-    log debug $"raw whois output=($raw_o)"
-    if "No entries found for the selected source(s)." in $raw_o {
-      return $"(ansi red)($raw_o)(ansi reset)"
-    }
-    let o = $raw_o | str replace --regex `(>>> ([.\s\S]*))` ""
-    log debug $"new whois output=($o)"
-    log debug "Parsing whois output into table"
-    let o2 = $o
-      | lines
-      | where (str contains :)
-      | par-each --keep-order { str trim }
-    log debug $"parsed lines=($o2)"
-    let o3 = $o2
-      | parse "{k}: {v}"
-    log debug $"parsed key-value pairs=($o3)"
-    let o4 = $o3
-      | group-by k
-      | update cells { reject k }
-      | update cells {|value|
-        # log debug $"cell updated: ($value)"
-        if (($value | length) == 1) {
-          # log debug $"single cell found: ($value)"
-          return ($value | get 0.v)
-        } else {
-          return ($value | par-each --keep-order { $in.v })
-        }
-      }
-    mut scu = []
-    for $it in ($o4 | get --optional --ignore-case "Domain Status") {
-      let o = $it | split row " "
-      $scu ++= [[["status codes" url]; [($o | get 0) ($o | get 1)]]]
-    }
-    $o4 | merge {"Domain Status": $scu}
   }
+
+  if ("-v" in $rest or "--verbose" in $rest) {
+    log set-level 10
+  }
+
+  let process_output = (whois-cli --no-color ...$rest | complete)
+  if $process_output.exit_code != 0 {
+    error make {
+      msg: $"whois command failed with exit code ($process_output.exit_code)"
+      label: {
+        span: (metadata $rest).span
+        text: $process_output.stderr
+      }
+      help: "try whois-cli --help for more information"
+    }
+  }
+
+  log debug "Processing whois output"
+  let raw_output = $process_output.stdout
+  log debug $"raw whois output=($raw_output)"
+
+  if "No entries found for the selected source(s)." in $raw_output {
+    return $"(ansi red)($raw_output)(ansi reset)"
+  }
+
+  let normalized_output = $raw_output | str replace --regex `(>>> ([.\s\S]*))` ""
+  log debug $"new whois output=($normalized_output)"
+  log debug "Parsing whois output into table"
+
+  let parsed_lines = $normalized_output
+    | lines
+    | where (str contains :)
+    | par-each --keep-order { str trim }
+  log debug $"parsed lines=($parsed_lines)"
+
+  let parsed_pairs = $parsed_lines
+    | parse "{k}: {v}"
+  log debug $"parsed key-value pairs=($parsed_pairs)"
+
+  let grouped = $parsed_pairs
+    | group-by k
+    | update cells { reject k }
+    | update cells {|value|
+      if (($value | length) == 1) {
+        $value | get 0.v
+      } else {
+        $value | par-each --keep-order { $in.v }
+      }
+    }
+
+  mut status_code_urls = []
+  for $item in ($grouped | get --optional --ignore-case "Domain Status") {
+    let parts = $item | split row " "
+    $status_code_urls ++= [[["status codes" url]; [($parts | get 0) ($parts | get 1)]]]
+  }
+
+  $grouped | merge {"Domain Status": $status_code_urls}
 }
 
 # es wrapper to always output json parsed table
@@ -255,7 +262,7 @@ See git-pull\(1) for details.
 
 If you wish to set tracking information for this branch you can do so with:
 
-    ('git branch --set-upstream-to=<remote>/<branch> ' + (git branch --show-current) | nu-highlight)"
+    ('git branch --set-upstream-to=<remote>/<branch> ' + (git branch --show-current) | nu-highlight)\n"
 
     return
   }
