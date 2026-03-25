@@ -125,10 +125,6 @@ export def app-update [] {
     ya pkg upgrade
   }
 
-  jobd spawn app-update-nufmt {
-    cargo install --git https://github.com/nushell/nufmt nufmt
-  }
-
   job spawn --description app-update-nu {
     if (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
       let run = "start ~/.config/nushell/scripts/nu-selfupdate.ps1"
