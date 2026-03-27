@@ -729,12 +729,14 @@ export def highlight [
 export def --env alternative-buffer [
   callback: closure # a callback to run commands in alternative buffer, the callback should return the output as a string
 
+  --keep-env # Keep the environment defined inside the command.
+
   # nu-lint-ignore: add_type_hints_arguments
   ...rest: any # a rest to pass to the callback
 ]: any -> any {
   print --no-newline (ansi --escape ?1049h)
 
-  $in | do --env $callback ...$rest | let out
+  $in | do --env=$keep_env $callback ...$rest | let out
 
   print --no-newline (ansi --escape ?1049l)
 
