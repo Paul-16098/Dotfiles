@@ -127,11 +127,9 @@ export def app-update [] {
 
   job spawn --description app-update-nu {
     if (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
-      let run = "start ~/.config/nushell/scripts/nu-selfupdate.ps1"
-      $run | clip copy
       print --no-newline (char bel)
-      print "A new version of NuShell is available, run for update:"
-      print ($run | nu-highlight)
+      print "A new version of NuShell is available, updateing:"
+      start ~/.config/nushell/scripts/nu-selfupdate.ps1
     }
   }
   jobd spawn app-update-cargo {
