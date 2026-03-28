@@ -316,5 +316,5 @@ overwrite_title = "覆蓋檔案?"
 overwrite_body = "將覆蓋以下檔案:"
 quit_title = "退出?"
 quit_body = """
-有未完成的任務，是否退出?
+有未完成的任務，是否退出?\r
 (使用預設鍵 'w' 開啟任務管理器)"""

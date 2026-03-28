@@ -19,6 +19,13 @@
 		},
 		{
 			"type": "process",
+			"label": "yazi config update",
+			"command": "nu",
+			"args": [".vscode/yazi-config-update.nu"],
+			"problemMatcher": []
+		},
+		{
+			"type": "process",
 			"label": "update numd doc",
 			"command": "nu",
 			"args": [".vscode/update-numd-doc.nu"],
