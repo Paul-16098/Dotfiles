@@ -81,6 +81,12 @@ config nu --doc | nu-highlight | to md
 # => # If set to a directory, the appropriate file name (e.g., history.txt) is used.
 # => # If set to a filename only, the file will be stored in $nu.default-config-dir.
 # =>
+# => # history.ignore_space_prefixed (bool): Whether commands starting with leading whitespace are saved to history.
+# => # true: Commands starting with one or more spaces or tabs will NOT be saved.
+# => # false: All commands are saved, including those with any amount of leading whitespace.
+# => # Default: true
+# => $env.config.history.ignore_space_prefixed = true
+# =>
 # => # ----------------------
 # => # Miscellaneous Settings
 # => # ----------------------

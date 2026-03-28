@@ -94,7 +94,7 @@ export def app-update [] {
     airshipper update
   }
   jobd spawn app-update-cargo-packages {
-    cargo install-update --all
+    cargo install-update --all --git
   }
 
   # job spawn --description app-update-coreutils-completions {
@@ -131,9 +131,6 @@ export def app-update [] {
       print "A new version of NuShell is available, updateing:"
       start ~/.config/nushell/scripts/nu-selfupdate.ps1
     }
-  }
-  jobd spawn app-update-cargo {
-    cargo install-update --all --git
   }
 
   jobd wait
