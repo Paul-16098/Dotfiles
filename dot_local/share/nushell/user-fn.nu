@@ -741,3 +741,30 @@ export def --env alternative-buffer [
 export def --wrapped 'vt scan file' [path: path ...rest]: any -> any {
   ^vt scan file $path ...$rest --silent --wait | from yaml
 }
+
+# export def '_atuin history' [] {
+#   atuin search --reverse --limit 500 | parse "{date}\t{duration}\t{exit_with}\t{command}" | into datetime date | into int exit_with | update command { nu-highlight } | update duration {
+#     match $in {
+#       $_ if $_ ends-with "ms" => { str replace --regex 'ms$' '' | into duration --unit ms }
+#       $_ if $_ ends-with "s" => { str replace --regex 's$' '' | into duration --unit sec }
+#       $_ if $_ ends-with "m" => { str replace --regex 'm$' '' | into duration --unit min }
+#       _ => {
+#         error make {
+#           msg: $"Unknown duration format: (ansi green)($in)(ansi reset)"
+#           label: {
+#             text: "here"
+#             span: (metadata $in).span
+#           }
+#           help: "please provide a valid duration format, e.g. 100ms, 2s"
+#         }
+#       }
+#     }
+#   }
+# }
+# export def '_atuin_search_cmd' [...rest] {
+#   let s = _atuin history | input list --fuzzy --display {|| $"($in.duration)\t($in.command)" }
+#   if ($s | is-not-empty) {
+#     print $s
+#     commandline edit ($s.command | ansi strip)
+#   }
+# }

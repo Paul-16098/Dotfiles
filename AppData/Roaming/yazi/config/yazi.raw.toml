@@ -42,6 +42,7 @@
 	desc  = "Get DLL Path"
 	for   = "windows"
 	block = true
+
 [[opener.extract]]
 	run  = "Bandizip %s"
 	desc = "Extract with Bandizip"
@@ -65,6 +66,28 @@
 	run    = 'start {nu} %s'
 	desc   = "Open with Nushell"
 	orphan = true
+
+[[opener.docker-compose-pull]]
+	run   = 'docker compose --file %s pull'
+	desc  = "Pull with Docker Compose"
+	block = true
+
+[[open.rules]]
+	url = "*.nu"
+	use = [
+		"nushell",
+		"edit",
+		"reveal",
+	]
+
+# not work
+[[open.rules]]
+	url = "docker-compose.yaml"
+	use = [
+		"docker-compose-pull",
+		"edit",
+		"reveal",
+	]
 
 [[open.rules]]
 	url = "*.exe"
@@ -136,14 +159,6 @@
 	mime = "text/python"
 	use = [
 		"python",
-		"edit",
-		"reveal",
-	]
-
-[[open.rules]]
-	url = "*.nu"
-	use = [
-		"nushell",
 		"edit",
 		"reveal",
 	]
@@ -252,7 +267,7 @@
 # preloaders
 [[plugin.prepend_preloaders]]
 	url = "*.{nu,nuon}"
-	run = 'faster-piper -- nu --commands "open --raw "$1" | nu-highlight"'
+	run = 'faster-piper -- {nu} --commands "open --raw "$1" | nu-highlight"'
 
 [[plugin.prepend_preloaders]]
 	mime = "{audio,video,image}/*"
@@ -301,29 +316,3 @@
 
 [tasks]
 	image_alloc = 1073741824
-
-[input]
-	cd_title = "更改目錄:"
-	create_title = [
-		"創建文件:",
-		"創建文件夾:",
-	]
-	rename_title = "重命名為:"
-	filter_title = "過濾:"
-	find_title = [
-		"查找下一個:",
-		"查找上一個:",
-	]
-	search_title = "Search via {n}:"
-	shell_title = [
-		"Shell:",
-		"Shell (block):",
-	]
-	trash_title = "將 {n} 個選定的檔案刪除?"
-	delete_title = "永久刪除 {n} 個選定的檔案?"
-	overwrite_title = "覆蓋檔案?"
-	overwrite_body = "將覆蓋以下檔案:"
-	quit_title = "退出?"
-	quit_body = """
-有未完成的任務，是否退出?
-(使用預設鍵 'w' 開啟任務管理器)"""

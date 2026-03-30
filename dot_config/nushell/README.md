@@ -112,6 +112,13 @@ config nu --doc | nu-highlight | to md
 # => # Default: 50
 # => $env.config.recursion_limit = 50
 # =>
+# => # auto_cd_implicit (bool): Gives precedence to auto-cd when command string is
+# => # an existing directory path.
+# => # false: A relative (e.g.  './dirname') or absolute path is required to auto-cd.
+# => # true: If the command string matches a subdirectory in the current directory
+# => # (e.g. 'src'), auto-cd will be triggered without needing './' or '/'.
+# => $env.config.auto_cd_implicit = false
+# =>
 # => # ------------------
 # => # Clipboard Settings
 # => # ------------------
