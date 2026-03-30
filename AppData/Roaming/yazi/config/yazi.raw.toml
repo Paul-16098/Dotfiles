@@ -72,6 +72,14 @@
 	desc  = "Pull with Docker Compose"
 	block = true
 
+[[opener.bulk-rename]]
+	run   = "code-insiders --wait %s"
+	block = true
+
+[[open.prepend_rules]]
+	url = "bulk-rename.txt"
+	use = "bulk-rename"
+
 [[open.rules]]
 	url = "*.nu"
 	use = [
