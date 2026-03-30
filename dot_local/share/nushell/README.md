@@ -14,6 +14,7 @@ Output:
 ```
 # => | name | description |
 # => | --- | --- |
+# => | _atuin history | a wrapper for atuin history command to output a table with date, duration, exit code and command, also parse the duration to a duration type and exit code to int, also highlight the command using nu-highlight |
 # => | alternative-buffer | alternative buffer wrapper, use callback to run commands in alternative buffer and get the output, the callback should return the output as a string, the alternative buffer will be cleared after the callback is executed
 # => nu-lint-ignore: missing_in_type, missing_output_type |
 # => | app-update |  |
