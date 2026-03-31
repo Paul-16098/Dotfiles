@@ -9,59 +9,70 @@ export def "config user-fn" []: nothing -> nothing {
 
 # whois wrapper to format output as a table
 export def --wrapped whois [
+  --use-akae_re_api # use whois.akae.re API to get whois information
   ...rest: string # a rest that to whois-cli
 ]: nothing -> table {
-  let process_output = (whois-cli --no-color ...$rest | complete)
-  if $process_output.exit_code != 0 {
-    error make {
-      msg: $"whois command failed with exit code ($process_output.exit_code)"
-      label: {
-        span: (metadata $rest).span
-        text: $process_output.stderr
-      }
-      help: "try whois-cli --help for more information"
-    }
-  }
-
-  log debug "Processing whois output"
-  let raw_output = $process_output.stdout
-  log debug $"raw whois output=($raw_output)"
-
-  if "No entries found for the selected source(s)." in $raw_output {
-    return $"(ansi red)($raw_output)(ansi reset)"
-  }
-
-  let normalized_output = $raw_output | str replace --regex `(>>> ([.\s\S]*))` ""
-  log debug $"new whois output=($normalized_output)"
-  log debug "Parsing whois output into table"
-
-  let parsed_lines = $normalized_output
-    | lines
-    | where (str contains :)
-    | str trim
-  log debug $"parsed lines=($parsed_lines)"
-
-  let parsed_pairs = $parsed_lines
-    | parse "{k}: {v}"
-  log debug $"parsed key-value pairs=($parsed_pairs)"
-
-  let grouped = $parsed_pairs
-    | group-by k --prune
-    | update cells {|value|
-      if (($value | length) == 1) {
-        $value | get 0.v
-      } else {
-        $value | par-each --keep-order { $in.v }
+  if $use_akae_re_api {
+    http get (
+      'https://whois.akae.re/api/whois?' + (
+        {
+          q: $rest.0
+        } | url build-query
+      )
+    )
+  } else {
+    let process_output = (whois-cli --no-color ...$rest | complete)
+    if $process_output.exit_code != 0 {
+      error make {
+        msg: $"whois command failed with exit code ($process_output.exit_code)"
+        label: {
+          span: (metadata $rest).span
+          text: $process_output.stderr
+        }
+        help: "try whois-cli --help for more information"
       }
     }
 
-  mut status_code_urls = []
-  for $item in ($grouped | get --optional --ignore-case "Domain Status") {
-    let parts = $item | split row " "
-    $status_code_urls ++= [[["status codes" url]; [($parts | get 0) ($parts | get 1)]]]
-  }
+    log debug "Processing whois output"
+    let raw_output = $process_output.stdout
+    log debug $"raw whois output=($raw_output)"
 
-  $grouped | merge {"Domain Status": $status_code_urls}
+    if "No entries found for the selected source(s)." in $raw_output {
+      return $"(ansi red)($raw_output)(ansi reset)"
+    }
+
+    let normalized_output = $raw_output | str replace --regex `(>>> ([.\s\S]*))` ""
+    log debug $"new whois output=($normalized_output)"
+    log debug "Parsing whois output into table"
+
+    let parsed_lines = $normalized_output
+      | lines
+      | where (str contains :)
+      | str trim
+    log debug $"parsed lines=($parsed_lines)"
+
+    let parsed_pairs = $parsed_lines
+      | parse "{k}: {v}"
+    log debug $"parsed key-value pairs=($parsed_pairs)"
+
+    let grouped = $parsed_pairs
+      | group-by k --prune
+      | update cells {|value|
+        if (($value | length) == 1) {
+          $value | get 0.v
+        } else {
+          $value | par-each --keep-order { $in.v }
+        }
+      }
+
+    mut status_code_urls = []
+    for $item in ($grouped | get --optional --ignore-case "Domain Status") {
+      let parts = $item | split row " "
+      $status_code_urls ++= [[["status codes" url]; [($parts | get 0) ($parts | get 1)]]]
+    }
+
+    $grouped | merge {"Domain Status": $status_code_urls}
+  }
 }
 
 # es wrapper to always output json parsed table
