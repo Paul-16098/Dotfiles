@@ -46,8 +46,7 @@ export def --wrapped whois [
   log debug $"parsed key-value pairs=($parsed_pairs)"
 
   let grouped = $parsed_pairs
-    | group-by k
-    | update cells { reject k }
+    | group-by k --prune
     | update cells {|value|
       if (($value | length) == 1) {
         $value | get 0.v
