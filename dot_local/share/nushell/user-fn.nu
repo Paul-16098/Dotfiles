@@ -11,16 +11,6 @@ export def "config user-fn" []: nothing -> nothing {
 export def --wrapped whois [
   ...rest: string # a rest that to whois-cli
 ]: nothing -> table {
-  log debug ("Executing whois with args: " + ($rest | str join " "))
-  if ("-h" in $rest or "--help" in $rest) {
-    log debug "Displaying help for whois"
-    whois-cli --help
-  }
-
-  if ("-v" in $rest or "--verbose" in $rest) {
-    log set-level 10
-  }
-
   let process_output = (whois-cli --no-color ...$rest | complete)
   if $process_output.exit_code != 0 {
     error make {
@@ -48,7 +38,7 @@ export def --wrapped whois [
   let parsed_lines = $normalized_output
     | lines
     | where (str contains :)
-    | par-each --keep-order { str trim }
+    | str trim
   log debug $"parsed lines=($parsed_lines)"
 
   let parsed_pairs = $parsed_lines
