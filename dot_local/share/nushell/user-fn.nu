@@ -96,6 +96,12 @@ export def app-update [] {
   jobd spawn app-update-cargo-packages {
     cargo install-update --all --git
   }
+  jobd spawn app-update-nu-plugins {
+    jobd wait app-update-cargo-packages
+    glob ~/.cargo/bin/nu_*.exe | par-each {
+      plugin add $in
+    }
+  }
 
   # job spawn --description app-update-coreutils-completions {
   #   const COREUTILS_COMPLETIONS_PATH = ($nu.user-autoload-dirs.0 | path join completions-coreutils.nu)
