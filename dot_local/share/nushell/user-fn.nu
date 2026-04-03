@@ -127,7 +127,7 @@ export def app-update [] {
   }
 
   jobd spawn app-update-yazi {
-    cargo install --git https://github.com/sxyazi/yazi.git yazi-build
+    jobd wait app-update-cargo-packages
     ya pkg upgrade
   }
 
