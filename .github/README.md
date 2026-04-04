@@ -35,6 +35,7 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   .chezmoi.toml.tmpl
 # => |   .gitattributes
 # => |   .gitignore
+# => |   .justfile
 # => |   .pre-commit-config.yaml
 # => |   dot_actrc
 # => |   dot_eget.toml
@@ -83,6 +84,9 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   |
 # => |   +---gh
 # => |   |       config.yml
+# => |   |
+# => |   +---just
+# => |   |       justfile
 # => |   |
 # => |   +---nextest
 # => |   |       empty_config.toml

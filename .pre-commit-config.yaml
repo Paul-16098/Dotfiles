@@ -17,6 +17,15 @@ repos:
         language: system
         files: \.(nu|md)$
         verbose: true
-        entry: nu
+        entry: just
         args:
-          - .vscode/update-numd-doc.nu
+          - update-numd-doc
+
+      - id: nu-check
+        name: nu-check
+        verbose: true
+        language: system
+        files: \.nu$
+        entry: just
+        args:
+          - test
