@@ -83,6 +83,16 @@ export def --wrapped es [...rest: string]: nothing -> table {
 export def app-update [] {
   use jobd.nu
 
+  job spawn --description app-update-nu {
+    jobd wait app-update-rustup
+    jobd wait app-update-rust-toolchains
+
+    if (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
+      print --no-newline (char bel)
+      print "A new version of NuShell is available, updateing:"
+      start ~/.config/nushell/scripts/nu-selfupdate.ps1
+    }
+  }
   jobd spawn app-update-rustup {
     rustup self update
   }
@@ -94,6 +104,9 @@ export def app-update [] {
     airshipper update
   }
   jobd spawn app-update-cargo-packages {
+    jobd wait app-update-rustup
+    jobd wait app-update-rust-toolchains
+
     cargo install-update --all --git
   }
   jobd spawn app-update-nu-plugins {
@@ -102,16 +115,6 @@ export def app-update [] {
       plugin add $in
     }
   }
-
-  # job spawn --description app-update-coreutils-completions {
-  #   const COREUTILS_COMPLETIONS_PATH = ($nu.user-autoload-dirs.0 | path join completions-coreutils.nu)
-  #   "" | save --force $COREUTILS_COMPLETIONS_PATH
-  #   ^coreutils --list | decode utf-8 | lines | par-each --keep-order {
-  #     if ($in == '[') { return }
-  #     let dis = (^coreutils --help $in | complete | get stdout | str replace --regex r#'\n\nUsage[\s\S]*$'# '' | lines | each { '# ' + $in } | str join "\n")
-  #     $"($dis)\nexport extern \"coreutils ($in)\" [\n  --help \(-h) # get help information\n  --version \(-V) # get version information\n]\n" | save --append $COREUTILS_COMPLETIONS_PATH
-  #   }
-  # }
 
   job spawn --description app-update-atuin {
     $env.ATUIN_NOBIND = "true"
@@ -129,14 +132,6 @@ export def app-update [] {
   jobd spawn app-update-yazi {
     jobd wait app-update-cargo-packages
     ya pkg upgrade
-  }
-
-  job spawn --description app-update-nu {
-    if (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
-      print --no-newline (char bel)
-      print "A new version of NuShell is available, updateing:"
-      start ~/.config/nushell/scripts/nu-selfupdate.ps1
-    }
   }
 
   jobd wait
