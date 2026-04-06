@@ -1,6 +1,7 @@
-set shell := ['nu', '-c']
+# set shell := ['nu', '-c']
 
 [default]
 [private]
-default:
-    @just --list --justfile {{ justfile() }} 
+@default:
+    {{ just_executable() }} --version
+    {{ just_executable() }} --list --justfile {{ justfile() }}
