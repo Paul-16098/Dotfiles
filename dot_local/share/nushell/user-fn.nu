@@ -103,8 +103,7 @@ export def app-update [] {
   jobd spawn app-update-cargo-packages {
     cargo install-update --all --git
   }
-  jobd spawn app-update-nu-plugins {
-    jobd wait app-update-cargo-packages
+  job spawn --description app-update-nu-plugins {
     glob ~/.cargo/bin/nu_*.exe | par-each {
       plugin add $in
     }
@@ -124,7 +123,6 @@ export def app-update [] {
   }
 
   jobd spawn app-update-yazi {
-    jobd wait app-update-cargo-packages
     ya pkg upgrade
   }
 
