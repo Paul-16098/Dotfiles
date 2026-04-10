@@ -104,7 +104,7 @@ export def app-update [] {
     cargo install-update --all --git
   }
   job spawn --description app-update-nu-plugins {
-    jobd wait app-update-cargo-packages
+    # jobd wait app-update-cargo-packages
     glob ~/.cargo/bin/nu_*.exe | each {
       plugin add $in
     }
