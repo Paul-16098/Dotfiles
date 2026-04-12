@@ -17,7 +17,7 @@ Output:
 # => | _atuin history | a wrapper for atuin history command to output a table with date, duration, exit code and command, also parse the duration to a duration type and exit code to int, also highlight the command using nu-highlight |
 # => | alternative-buffer | alternative buffer wrapper, use callback to run commands in alternative buffer and get the output, the callback should return the output as a string, the alternative buffer will be cleared after the callback is executed
 # => nu-lint-ignore: missing_in_type, missing_output_type |
-# => | app-update |  |
+# => | app-update | for each app update job, check if the update is enabled in the config before spawning the job, the config should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}} |
 # => | chezmoi cd | https://www.chezmoi.io/user-guide/frequently-asked-questions/design/#why-does-chezmoi-cd-spawn-a-shell-instead-of-just-changing-directory |
 # => | clip copy-image | copy image to clipboard using powershell |
 # => | config user-fn | Edit this config. |

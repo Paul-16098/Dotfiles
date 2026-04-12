@@ -80,8 +80,24 @@ export def --wrapped es [...rest: string]: nothing -> table {
   ^es "-instance" 1.5a ...$rest "--json"
 }
 
-export def app-update [] {
+# for each app update job, check if the update is enabled in the config before spawning the job, the config should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}}
+export def app-update [
+  cofg = {} # the config record to check if the update job is enabled, should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}}
+  --bel-at-end # if set, ring the bell after all updates are completed
+] {
   use jobd.nu
+
+  alias '_jobd spawn' = jobd spawn
+  alias "_job spawn" = job spawn
+
+  def 'jobd spawn' [name: string fn ...rest]: any -> any {
+    if ($cofg | get -o $name | default {status: on} | get status) == on { $in | _jobd spawn $name $fn }
+  }
+  def 'job spawn' [--description (-d): string fn] {
+    if ($description | is-not-empty) {
+      if ($cofg | get -o $description | default {status: on} | get status) == on { _job spawn --description=$description $fn }
+    } else { _job spawn $fn }
+  }
 
   job spawn --description app-update-nu {
     if (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
@@ -105,8 +121,12 @@ export def app-update [] {
   }
   job spawn --description app-update-nu-plugins {
     # jobd wait app-update-cargo-packages
-    glob ~/.cargo/bin/nu_*.exe | each {
-      plugin add $in
+    for x in (glob ~/.cargo/bin/nu_*.exe) {
+      if (nu -c $"plugin add ($x)" | complete | get exit_code) != 0 {
+        print $"app-update-nu-plugins: (ansi red)Failed to apply: ($x)(ansi reset)"
+      } else {
+        print $"app-update-nu-plugins: (ansi green)done: ($x)(ansi reset)"
+      }
     }
   }
 
@@ -130,7 +150,9 @@ export def app-update [] {
   jobd wait
 
   print "All updates completed."
-  print --no-newline (char bel)
+  if $bel_at_end {
+    print --no-newline (char bel)
+  }
   null
 }
 
