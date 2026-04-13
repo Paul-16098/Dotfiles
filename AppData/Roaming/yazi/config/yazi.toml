@@ -257,15 +257,11 @@ run = "mediainfo"
 
 [[plugin.prepend_previewers]]
 url = "*.{nu,nuon}"
-run = "faster-piper --rely-on-preloader"
+run = "piper -- open --raw $env.TP | nu-highlight"
 
 [[plugin.prepend_previewers]]
 url = "*.bat"
 run = "code"
-
-[[plugin.prepend_preloaders]]
-url = "*.{nu,nuon}"
-run = 'faster-piper -- nu --config ~\.config\nushell\config.nu --env-config ~\.config\nushell\env.nu --commands "open --raw "$1" | nu-highlight"'
 
 [[plugin.prepend_preloaders]]
 mime = "{audio,video,image}/*"
