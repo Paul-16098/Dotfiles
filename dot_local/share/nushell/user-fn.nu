@@ -139,6 +139,10 @@ export def app-update [
     starship init nu | save --force ($nu.user-autoload-dirs.0 | path join starship.nu)
   }
 
+  job spawn --description app-update-my-http-server-completion {
+    my-http-server --generate-completion nushell | save --force ($nu.user-autoload-dirs.0 | path join my-http-server-completion.nu)
+  }
+
   job spawn --description app-update-carapace {
     carapace _carapace nushell | save --force ($nu.user-autoload-dirs.0 | path join carapace.nu)
   }
