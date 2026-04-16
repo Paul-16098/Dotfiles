@@ -197,27 +197,27 @@ use = [
   "reveal",
 ]
 
-# [[plugin.prepend_fetchers]]
-# id = "mime"
-# url = "local://*"
-# run = "mime-ext.local"
-# prio = "high"
+[[plugin.prepend_fetchers]]
+group = "mime"
+url = "local://*"
+run = "mime-ext.local"
+prio = "high"
 
-# [[plugin.prepend_fetchers]]
-# id = "mime"
-# url = "remote://*"
-# run = "mime-ext.remote"
-# prio = "high"
+[[plugin.prepend_fetchers]]
+group = "mime"
+url = "remote://*"
+run = "mime-ext.remote"
+prio = "high"
 
-# [[plugin.prepend_fetchers]]
-# id = "git"
-# url = "*"
-# run = "git"
+[[plugin.prepend_fetchers]]
+group = "git"
+url = "*"
+run = "git"
 
-# [[plugin.prepend_fetchers]]
-# id = "git"
-# url = "*/"
-# run = "git"
+[[plugin.prepend_fetchers]]
+group = "git"
+url = "*/"
+run = "git"
 
 # previewers
 [[plugin.prepend_previewers]]

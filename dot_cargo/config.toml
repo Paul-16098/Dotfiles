@@ -4,7 +4,7 @@
 
 [source.crates-io]
 	# 避開 Received timeout error from reqwest. Delay future request by 200ms
-	replace-with = 'tsinghua'
+	# replace-with = 'tsinghua'
 
 [source.tsinghua]
 	registry = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"
