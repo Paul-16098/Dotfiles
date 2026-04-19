@@ -244,7 +244,10 @@ export-env {
 # git pull wrapper to show updated commits
 @complete external
 @category git
-export def --wrapped "git pull" [...rest: string]: nothing -> nothing {
+export def --wrapped "git pull" [
+  --no-pause # if set, skip the interactive prompt and directly pull, useful for automation or when the user is confident about the changes being pulled
+  ...rest: string
+]: nothing -> nothing {
   use std/log
 
   let remote_url = git-remote_url
@@ -331,8 +334,10 @@ If you wish to set tracking information for this branch you can do so with:
   git log $"($old_commit)..($new_commit)" | let log | print --stderr $in
 
   if (
-    $log.subject | ansi strip
-    | all {|el| ($env.NO_TUI_GIT_PULL.FULL_COMMIT_SUBJECT | any {|sub| $el == $sub }) or ($env.NO_TUI_GIT_PULL.COMMIT_SUBJECT | any {|sub| $el =~ $sub }) }
+    (
+      $log.subject | ansi strip
+      | all {|el| ($env.NO_TUI_GIT_PULL.FULL_COMMIT_SUBJECT | any {|sub| $el == $sub }) or ($env.NO_TUI_GIT_PULL.COMMIT_SUBJECT | any {|sub| $el =~ $sub }) }
+    ) or $no_pause
   ) {
     print --stderr "The pull includes commits with subjects configured to skip the interactive pull wrapper.\nRunning git pull with provided arguments..."
     print (^git pull ...$rest)
