@@ -67,9 +67,9 @@ run = "start {nu} %s"
 desc = "Open with Nushell"
 orphan = true
 
-[[opener.docker-compose-pull]]
-run = "docker compose --file %s pull"
-desc = "Pull with Docker Compose"
+[[opener.lazydocker]]
+run = "lazydocker -f %s"
+desc = "Open with LazyDocker"
 block = true
 
 [[opener.bulk-rename]]
@@ -92,7 +92,7 @@ use = [
 [[open.rules]]
 url = "docker-compose.yaml"
 use = [
-  "docker-compose-pull",
+  "lazydocker",
   "edit",
   "reveal",
 ]
