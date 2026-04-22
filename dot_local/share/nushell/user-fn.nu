@@ -338,12 +338,16 @@ If you wish to set tracking information for this branch you can do so with:
     | all {|el| ($env.NO_TUI_GIT_PULL.FULL_COMMIT_SUBJECT | any {|sub| $el == $sub }) or ($env.NO_TUI_GIT_PULL.COMMIT_SUBJECT | any {|sub| $el =~ $sub }) }
   ) {
     print --stderr "The pull includes commits with subjects configured to skip the interactive pull wrapper.\nRunning git pull with provided arguments..."
-    print (^git pull ...$rest)
+    try {
+      print (^git pull ...$rest)
+    }
     return
   }
   if $no_pause {
     print --stderr "Running git pull with provided arguments without pause as --no-pause is set..."
-    print (^git pull ...$rest)
+    try {
+      print (^git pull ...$rest)
+    }
     return
   }
 
