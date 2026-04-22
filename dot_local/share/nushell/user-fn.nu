@@ -494,7 +494,11 @@ export def "kill with name" [
 # my custom pause function
 export def pause []: nothing -> nothing {
   print "Press any key to continue..."
-  input listen --types [key]
+  loop {
+    if (input listen --types [key] | get code) == enter {
+      break
+    }
+  }
   null
 }
 
