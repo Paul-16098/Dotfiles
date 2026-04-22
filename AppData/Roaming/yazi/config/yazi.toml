@@ -90,7 +90,7 @@ use = [
 
 # not work
 [[open.rules]]
-url = "docker-compose.yaml"
+url = "**/docker-compose.yaml"
 use = [
   "lazydocker",
   "edit",
