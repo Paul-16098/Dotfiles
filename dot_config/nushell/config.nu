@@ -15,6 +15,7 @@ $env.config.color_config.string = {
 }
 $env.config.show_banner = "short"
 $env.config.rm.always_trash = true
+$env.config.completions.quick = false
 $env.config.footer_mode = "auto"
 $env.config.filesize.precision = 2
 $env.config.highlight_resolved_externals = true
