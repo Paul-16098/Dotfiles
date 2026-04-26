@@ -50,6 +50,7 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |       README.md
 # => |
 # => +---.vscode
+# => |       settings.json
 # => |       tasks.json
 # => |       update-numd-doc.nu
 # => |       yazi-config-update.nu
