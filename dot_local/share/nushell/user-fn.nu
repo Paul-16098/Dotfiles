@@ -190,6 +190,8 @@ def git-log-subject-highlight [remote_url: string]: string -> string {
 # use in git log wrapper
 const NOREPLY_EMAIL = ["@users.noreply.github.com" "@noreply.codeberg.org"]
 
+def "complete git log" [spans: list<string>] { do $env.config.completions.external.completer [git log ...($spans | reject 0)] }
+
 # git log wrapper to format output as a table
 # 
 # noreply email is filtered out
@@ -197,7 +199,7 @@ const NOREPLY_EMAIL = ["@users.noreply.github.com" "@noreply.codeberg.org"]
 # commit messages are highlighted for common prefixes
 # version tags are highlighted
 # no sort
-@complete external
+@complete "complete git log"
 @category git
 export def --wrapped "git log" [...rest: string]: nothing -> table {
   const SPLIT_STR = "»¦«"
@@ -241,8 +243,10 @@ export-env {
     }
 }
 
+def "complete git pull" [spans: list<string>] { do $env.config.completions.external.completer [git pull ...($spans | reject 0)] }
+
 # git pull wrapper to show updated commits
-@complete external
+@complete "complete git pull"
 @category git
 export def --wrapped "git pull" [
   --no-pause # if set, skip the interactive prompt and directly pull, useful for automation or when the user is confident about the changes being pulled
@@ -364,7 +368,7 @@ If you wish to set tracking information for this branch you can do so with:
       {type: "key" key_type: "char" code: "s"} => {
         print --stderr "Showing changes..."
         try { git show $"($old_commit)..($new_commit)" } catch {
-          if $in.exit_code == 141 { } else { error make "Not expected error" }
+          if not $in.exit_code == 141 { error make "Not expected error" }
         }
         print --stderr $KEY_HINT
       }
@@ -381,6 +385,19 @@ If you wish to set tracking information for this branch you can do so with:
   }
 }
 export alias gp = git pull
+
+def "complete git status-or-show" [spans: list<string>] { do $env.config.completions.external.completer [git show ...($spans | reject 0)] }
+# a wrapper for git status and git show, if no arguments, run git status, otherwise run git show with the provided arguments, also handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
+@complete "complete git status-or-show"
+@category git
+export def --wrapped "git status-or-show" [...rest]: any -> string {
+  if ($rest | length) == 0 { git status } else {
+    try { git show ...$rest } catch {
+      if not $in.exit_code == 141 { error make "Not expected error" }
+    }
+  }
+}
+export alias gs = git status-or-show
 
 export alias gc = git clone
 
