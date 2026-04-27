@@ -72,6 +72,10 @@ run = "lazydocker -f %s"
 desc = "Open with LazyDocker"
 block = true
 
+[[opener.cargo-install]]
+run = "cargo install --path %d"
+desc = "Install Cargo Package"
+
 [[opener.bulk-rename]]
 run = "code-insiders --wait %s"
 block = true
@@ -92,6 +96,14 @@ use = [
 url = "**/docker-compose.yaml"
 use = [
   "lazydocker",
+  "edit",
+  "reveal",
+]
+
+[[open.rules]]
+url = "**/Cargo.toml"
+use = [
+  "cargo-install",
   "edit",
   "reveal",
 ]
