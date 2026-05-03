@@ -252,6 +252,12 @@ export def --wrapped "git pull" [
   --no-pause # if set, skip the interactive prompt and directly pull, useful for automation or when the user is confident about the changes being pulled
   ...rest: string
 ]: nothing -> nothing {
+  def --wrapped pull_wrapped [...rest] {
+    try { ^git pull ...$rest } catch {
+      ignore | error make --unspanned "git pull failed"
+    }
+  }
+
   use std/log
 
   let remote_url = git-remote_url
@@ -260,7 +266,7 @@ export def --wrapped "git pull" [
     | any {|el| $remote_url ends-with $el }
   ) {
     print --stderr $"Repository '(ansi green_bold)($remote_url)(ansi reset)' is configured to skip the interactive pull wrapper. Running git pull with provided arguments..."
-    print (^git pull ...$rest)
+    pull_wrapped ...$rest
     return
   }
 
@@ -342,16 +348,12 @@ If you wish to set tracking information for this branch you can do so with:
     | all {|el| ($env.NO_TUI_GIT_PULL.FULL_COMMIT_SUBJECT | any {|sub| $el == $sub }) or ($env.NO_TUI_GIT_PULL.COMMIT_SUBJECT | any {|sub| $el =~ $sub }) }
   ) {
     print --stderr $"(ansi grey)The pull includes commits with subjects configured to skip the interactive pull wrapper.\nRunning git pull with provided arguments...(ansi reset)"
-    try { ^git pull ...$rest } catch {
-      ignore | error make --unspanned "git pull failed"
-    }
+    pull_wrapped ...$rest
     return
   }
   if $no_pause {
     print --stderr $"(ansi grey)Running git pull with provided arguments without pause as --no-pause is set...(ansi reset)"
-    try { ^git pull ...$rest } catch {
-      ignore | error make --unspanned "git pull failed"
-    }
+    pull_wrapped ...$rest
     return
   }
 
@@ -361,15 +363,15 @@ If you wish to set tracking information for this branch you can do so with:
     match (input listen --types [key]) {
       {type: "key" key_type: "char" code: "p"} => {
         print --stderr "Pulling latest changes..."
-        print --no-newline (^git pull --quiet ...$rest)
+        pull_wrapped --quiet ...$rest
         print --stderr "Pull completed."
         break
       }
       {type: "key" key_type: "char" code: "s"} => {
         print --stderr "Showing changes..."
-        try { git show $"($old_commit)..($new_commit)" } catch {
-          if not $in.exit_code == 141 { error make "Not expected error" }
-        }
+
+        git show $"($old_commit)..($new_commit)"
+
         print --stderr $KEY_HINT
       }
       {type: "key" key_type: "char" code: "l"} => {
@@ -386,15 +388,20 @@ If you wish to set tracking information for this branch you can do so with:
 }
 export alias gp = git pull
 
+# git show wrapper to handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
+export def --wrapped "git show" [...rest]: any -> string {
+  try { ^git show ...$rest } catch {
+    if not ($in.exit_code == 141) { error make "Not expected error" }
+  }
+}
+
 def "complete git status-or-show" [spans: list<string>] { do $env.config.completions.external.completer [git show ...($spans | reject 0)] }
 # a wrapper for git status and git show, if no arguments, run git status, otherwise run git show with the provided arguments, also handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
 @complete "complete git status-or-show"
 @category git
 export def --wrapped "git status-or-show" [...rest]: any -> string {
   if ($rest | length) == 0 { git status } else {
-    try { git show ...$rest } catch {
-      if not $in.exit_code == 141 { error make "Not expected error" }
-    }
+    git show ...$rest
   }
 }
 export alias gs = git status-or-show
