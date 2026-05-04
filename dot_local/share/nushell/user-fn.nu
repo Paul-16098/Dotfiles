@@ -389,6 +389,7 @@ If you wish to set tracking information for this branch you can do so with:
 export alias gp = git pull
 
 # git show wrapper to handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
+@category git
 export def --wrapped "git show" [...rest]: any -> string {
   try { ^git show ...$rest } catch {
     if not ($in.exit_code == 141) { error make "Not expected error" }
@@ -537,11 +538,11 @@ def "nu-complete steamcmd" []: nothing -> record {
     }
     completions: [
       {
-        value: '"+login"'
+        value: '+login'
         description: 'Login to Steam: login <username> [<password>] [<Steam guard code>]'
       }
       {
-        value: '"+login anonymous"'
+        value: '+login anonymous'
         description: 'you may login anonymously using "login anonymous" if the content you
 wish to download is available for anonymous access.'
       }
@@ -550,7 +551,7 @@ wish to download is available for anonymous access.'
         description: 'Executing a sequence of commands via a script file'
       }
       {
-        value: 'workshop_download_item'
+        value: '+workshop_download_item'
         description: 'download an item using the workshop system: workshop_download_item <appid> <PublishedFileId>'
       }
 
@@ -563,9 +564,10 @@ wish to download is available for anonymous access.'
 }
 # steamcmd wrapper to login
 export def "steamcmd" [
+  --REPL # if set, run steamcmd in interactive mode, otherwise run with provided arguments, default is false
   ...args: string@"nu-complete steamcmd" # +COMMAND [ARG]...
 ]: nothing -> nothing {
-  /steamcmd/steamcmd.exe ...$args
+  /steamcmd/steamcmd.exe ...$args (if not $REPL { '+exit' } else { '' })
 }
 
 # https://yazi-rs.github.io/docs/quick-start#shell-wrapper
