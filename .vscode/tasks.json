@@ -12,7 +12,6 @@
 			"problemMatcher": [],
 			"isBackground": true,
 			"runOptions": {
-				// "runOn": "folderOpen",
 				"instanceLimit": 1,
 				"instancePolicy": "terminateOldest"
 			}
@@ -35,6 +34,13 @@
 					"NU_LIB_DIRS": "~\\.config\\nushell\\nupm\\modules"
 				}
 			}
+		},
+		{
+			"type": "process",
+			"label": "chezmoi: apply",
+			"command": "chezmoi",
+			"args": ["apply"],
+			"problemMatcher": []
 		}
 	]
 }
