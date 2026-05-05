@@ -809,22 +809,17 @@ export def '_atuin history' [
   --limit: int = 500
   --reverse
 ] {
-  atuin search --reverse=$reverse --limit $limit | parse "{date}\t{duration}\t{exit_with}\t{command}" | into datetime date | into int exit_with | update command { nu-highlight } | update duration {
-    match $in {
-      $_ if $_ ends-with "ms" => { str replace --regex 'ms$' '' | into duration --unit ms }
-      $_ if $_ ends-with "s" => { str replace --regex 's$' '' | into duration --unit sec }
-      $_ if $_ ends-with "m" => { str replace --regex 'm$' '' | into duration --unit min }
-      _ => {
-        error make {
-          msg: $"Unknown duration format: (ansi green)($in)(ansi reset)"
-          label: {
-            text: "here"
-            span: (metadata $in).span
-          }
-          help: "please provide a valid duration format, e.g. 100ms, 2s"
-        }
-      }
+  atuin search (if $reverse { "--reverse" } else { '' }) --limit $limit | parse "{date}\t{duration}\t{exit_with}\t{command}" | into datetime date | into int exit_with | update command { nu-highlight } | update duration {
+    regex '(?<num>\d+)(?<unit>\D+)' | let m
+
+    let num = $m | where capture_name == num | get 0.match
+    let unit = match ($m | where capture_name == unit | get 0.match) {
+      's' => 'sec'
+
+      $_ => $_
     }
+
+    $num | into duration --unit $unit
   }
 }
 # export def '_atuin_search_cmd' [...rest] {
