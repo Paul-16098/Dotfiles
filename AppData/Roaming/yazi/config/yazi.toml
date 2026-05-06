@@ -77,8 +77,9 @@ run = "cargo install --path %d"
 desc = "Install Cargo Package"
 
 [[opener.justfile]]
-run = "just --justfile %s --choose"
+run = "just --justfile %s --choose --chooser \"fzf --multi --preview 'just --unstable --color always --justfile \"%s\" --show {}'\""
 desc = "Run Justfile"
+block = true
 
 [[opener.bulk-rename]]
 run = "code-insiders --wait %s"
