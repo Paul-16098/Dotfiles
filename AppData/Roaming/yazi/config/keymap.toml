@@ -2,6 +2,101 @@
 # tombi: lint.rules.const-value.disabled = true
 
 [[mgr.keymap]]
+on = ["m", "s"]
+run = "linemode size"
+desc = "Linemode: 大小"
+
+[[mgr.keymap]]
+on = ["m", "p"]
+run = "linemode permissions"
+desc = "Linemode: 權限"
+
+[[mgr.keymap]]
+on = ["m", "b"]
+run = "linemode btime"
+desc = "Linemode: 創建日期"
+
+[[mgr.keymap]]
+on = ["m", "m"]
+run = "linemode mtime"
+desc = "Linemode: 修改日期"
+
+[[mgr.keymap]]
+on = ["m", "o"]
+run = "linemode owner"
+desc = "Linemode: 所有者"
+
+[[mgr.keymap]]
+on = ["m", "n"]
+run = "linemode none"
+desc = "Linemode: 無"
+
+[[mgr.keymap]]
+on = [",", "m"]
+run = ["sort mtime --reverse=no", "linemode mtime"]
+desc = "按修改時間排序"
+
+[[mgr.keymap]]
+on = [",", "M"]
+run = ["sort mtime --reverse=yes", "linemode mtime"]
+desc = "按修改時間排序(反向)"
+
+[[mgr.keymap]]
+on = [",", "b"]
+run = ["sort btime --reverse=no", "linemode btime"]
+desc = "按創建時間排序"
+
+[[mgr.keymap]]
+on = [",", "B"]
+run = ["sort btime --reverse=yes", "linemode btime"]
+desc = "按創建時間排序(反向)"
+
+[[mgr.keymap]]
+on = [",", "e"]
+run = "sort extension --reverse=no"
+desc = "按擴展名排序"
+
+[[mgr.keymap]]
+on = [",", "E"]
+run = "sort extension --reverse=yes"
+desc = "按擴展名排序(反向)"
+
+[[mgr.keymap]]
+on = [",", "a"]
+run = "sort alphabetical --reverse=no"
+desc = "按字母順序排序"
+
+[[mgr.keymap]]
+on = [",", "A"]
+run = "sort alphabetical --reverse=yes"
+desc = "按字母順序排序(反向)"
+
+[[mgr.keymap]]
+on = [",", "n"]
+run = "sort natural --reverse=no"
+desc = "按自然順序排序"
+
+[[mgr.keymap]]
+on = [",", "N"]
+run = "sort natural --reverse=yes"
+desc = "按自然順序排序(反向)"
+
+[[mgr.keymap]]
+on = [",", "s"]
+run = ["sort size --reverse=no", "linemode size"]
+desc = "按大小排序"
+
+[[mgr.keymap]]
+on = [",", "S"]
+run = ["sort size --reverse=yes", "linemode size"]
+desc = "按大小排序(反向)"
+
+[[mgr.keymap]]
+on = [",", "r"]
+run = "sort random --reverse=no"
+desc = "隨機排序"
+
+[[mgr.keymap]]
 on = "<C-c>"
 run = "yank"
 desc = "複製"
@@ -9,7 +104,7 @@ desc = "複製"
 [[mgr.keymap]]
 on = "<S-Down>"
 run = "seek 5"
-desc = "捲動預覽面板向下"
+desc = "滾動預覽面板向下"
 
 [[mgr.keymap]]
 on = "<C-x>"
@@ -19,12 +114,12 @@ desc = "剪切"
 [[mgr.keymap]]
 on = "<S-Up>"
 run = "seek -5"
-desc = "捲動預覽面板向上"
+desc = "滾動預覽面板向上"
 
 [[mgr.keymap]]
 on = "v"
 run = "paste"
-desc = "貼上已複製的檔案"
+desc = "粘貼已複製的文件"
 
 [[mgr.keymap]]
 on = ["F", "j"]
@@ -34,7 +129,7 @@ desc = "跳轉到字符"
 [[mgr.keymap]]
 on = "V"
 run = "paste --force"
-desc = "貼上已複製的檔案(如果目標位置已存在則覆蓋)"
+desc = "粘貼已複製的文件(如果目標位置已存在則覆蓋)"
 
 [[mgr.keymap]]
 on = ["F", "g"]
@@ -74,7 +169,7 @@ desc = "永久刪除所選文件"
 [[mgr.keymap]]
 on = "a"
 run = "create"
-desc = "創建文件（以 / 結尾表示目錄）"
+desc = "創建文件(以 / 結尾表示目錄)"
 
 [[mgr.keymap]]
 on = "r"
@@ -94,7 +189,7 @@ desc = "切換當前選擇狀態"
 [[mgr.keymap]]
 on = "<C-Space>"
 run = "plugin command"
-desc = "yazi命令提示符"
+desc = "yazi 命令提示符"
 
 [[mgr.keymap]]
 on = ["c", "c"]
@@ -179,7 +274,7 @@ desc = "退出可視模式、清除選擇或取消搜索"
 [[mgr.keymap]]
 on = "q"
 run = "close"
-desc = "關閉目前標籤頁"
+desc = "關閉當前標籤頁"
 
 [[mgr.keymap]]
 on = "Q"
@@ -242,7 +337,7 @@ desc = "選擇所有文件"
 [[mgr.keymap]]
 on = "<Tab>"
 run = "spot"
-desc = "點懸停文件"
+desc = "預覽懸停文件"
 
 [[mgr.keymap]]
 on = "<Right>"
@@ -273,12 +368,12 @@ desc = "打開幫助"
 [[cmp.keymap]]
 on = "<C-c>"
 run = "close"
-desc = "取消完成"
+desc = "取消補全"
 
 [[cmp.keymap]]
 on = "<Tab>"
 run = "close --submit"
-desc = "提交完成"
+desc = "提交補全"
 
 [[cmp.keymap]]
 on = "<Enter>"
@@ -286,7 +381,7 @@ run = [
   "close --submit",
   "input:close --submit",
 ]
-desc = "完成並提交輸入"
+desc = "補全並提交輸入"
 
 [[cmp.keymap]]
 on = "<Up>"
@@ -396,12 +491,12 @@ desc = "向前移動到當前或下一個單詞的末尾"
 [[input.keymap]]
 on = "<Home>"
 run = "move bol"
-desc = "移至 BOL"
+desc = "移至行首"
 
 [[input.keymap]]
 on = "<End>"
 run = "move eol"
-desc = "移至 EOL"
+desc = "移至行尾"
 
 [[input.keymap]]
 on = "<Backspace>"
@@ -416,17 +511,17 @@ desc = "刪除光標下的字符"
 [[input.keymap]]
 on = "<C-Backspace>"
 run = "kill backward"
-desc = "向後殺到當前單詞的開頭"
+desc = "向後刪除到當前單詞的開頭"
 
 [[input.keymap]]
 on = "<C-Delete>"
 run = "kill forward"
-desc = "前進殺到當前單詞的末尾"
+desc = "向前刪除到當前單詞的末尾"
 
 [[input.keymap]]
 on = "<C-z>"
 run = "undo"
-desc = "撤消"
+desc = "撤銷"
 
 [[input.keymap]]
 on = "<F1>"
@@ -466,7 +561,7 @@ desc = "關閉 spot"
 [[spot.keymap]]
 on = "c"
 run = "copy cell"
-desc = "複製選取的儲存格"
+desc = "複製選取的單元格"
 
 [[spot.keymap]]
 on = "<Tab>"
