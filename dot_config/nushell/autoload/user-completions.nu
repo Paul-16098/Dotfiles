@@ -196,7 +196,7 @@ export extern sudo [
   --version (-V) # show version information | 显示版本信息
 ]
 def "nu-complete ya pkg" [] {
-  ya pkg list | parse "\t{name} ({hash})" | get name
+  ya pkg list | lines | parse "\t{name} ({hash})" | get name
 }
 # delete yazi package | 删除 yazi 包
 export extern "ya pkg delete" [

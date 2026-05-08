@@ -322,25 +322,52 @@ url = "*.{otf,ttf,woff,woff2}"
 run = "font-sample"
 
 # spotters
-[[plugin.prepend_spotters]]
-mime = "audio/*"
+[[plugin.spotters]]
+# Multi-file
+mime = "multi/*"
+run = "multi"
+
+[[plugin.spotters]]
+# Folder
+url = "*/"
+run = "folder"
+
+[[plugin.spotters]]
+# Code
+mime = "text/*"
+run = "code"
+
+[[plugin.spotters]]
+mime = "{application/{mbox,javascript,wine-extension-ini},audio/mpegurl}"
+run = "code"
+
+[[plugin.spotters]]
+url = "audio/*"
 run = "spot-audio"
 
-[[plugin.prepend_spotters]]
+[[plugin.spotters]]
 mime = "image/*"
 run = "spot-image"
 
-[[plugin.prepend_spotters]]
-url = "video/*"
+[[plugin.spotters]]
+# Video
+mime = "video/*"
 run = "spot-video"
 
-[[plugin.prepend_spotters]]
-url = "*/"
-run = "spot"
+[[plugin.spotters]]
+# Virtual file system
+mime = "vfs/*"
+run = "vfs"
 
-[[plugin.prepend_spotters]]
+[[plugin.spotters]]
+# Error
+mime = "null/*"
+run = "file"
+
+[[plugin.spotters]]
+# Fallback
 url = "*"
-run = "spot"
+run = "file"
 
 [tasks]
 image_alloc = 1073741824
