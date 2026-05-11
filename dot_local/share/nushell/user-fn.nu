@@ -809,7 +809,7 @@ export def '_atuin history' [
   --limit: int = 500
   --reverse
 ] {
-  atuin search (if $reverse { "--reverse" } else { '' }) --limit $limit | parse "{date}\t{duration}\t{exit_with}\t{command}" | into datetime date | into int exit_with | update command { nu-highlight } | update duration {
+  atuin search (if $reverse { "--reverse" } else { '' }) --limit $limit | lines | parse "{date}\t{duration}\t{exit_with}\t{command}" | into datetime date | into int exit_with | update command { nu-highlight } | update duration {
     regex '(?<num>\d+)(?<unit>\D+)' | let m
 
     let num = $m | where capture_name == num | get 0.match
