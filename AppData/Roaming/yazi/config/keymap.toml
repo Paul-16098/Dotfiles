@@ -172,6 +172,11 @@ run = "create"
 desc = "創建文件(以 / 結尾表示目錄)"
 
 [[mgr.keymap]]
+on = "A"
+run = "bulk_create"
+desc = "大量創建文件"
+
+[[mgr.keymap]]
 on = "r"
 run = "rename --cursor=before_ext"
 desc = "重命名所選文件"

@@ -85,9 +85,17 @@ block = true
 run = "code-insiders --wait %s"
 block = true
 
+[[opener.bulk-create]]
+run = "code-insiders --wait %s"
+block = true
+
 [[open.prepend_rules]]
 url = "bulk-rename.txt"
 use = "bulk-rename"
+
+[[open.prepend_rules]]
+url = "bulk-create.txt"
+use = "bulk-create"
 
 [[open.rules]]
 url = "*.nu"
