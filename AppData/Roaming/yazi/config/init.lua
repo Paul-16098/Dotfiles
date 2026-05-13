@@ -175,7 +175,7 @@ require('spot'):setup {
 		section = 'green',
 		key = 'reset',
 		value = 'blue',
-		colorize_metadata = true,
+		colorize_metadata = false,
 		height = 20,
 		width = 60,
 		key_length = 15,
