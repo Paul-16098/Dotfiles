@@ -340,14 +340,14 @@ run = "multi"
 url = "*/"
 run = "folder"
 
-[[plugin.spotters]]
-# Code
-mime = "text/*"
-run = "code"
+# [[plugin.spotters]]
+# # Code
+# mime = "text/*"
+# run = "code"
 
-[[plugin.spotters]]
-mime = "{application/{mbox,javascript,wine-extension-ini},audio/mpegurl}"
-run = "code"
+# [[plugin.spotters]]
+# mime = "{application/{mbox,javascript,wine-extension-ini},audio/mpegurl}"
+# run = "code"
 
 [[plugin.spotters]]
 url = "audio/*"
@@ -367,15 +367,15 @@ run = "spot-video"
 mime = "vfs/*"
 run = "vfs"
 
-[[plugin.spotters]]
-# Error
-mime = "null/*"
-run = "file"
+# [[plugin.spotters]]
+# # Error
+# mime = "null/*"
+# run = "file"
 
 [[plugin.spotters]]
 # Fallback
 url = "*"
-run = "file"
+run = "spot"
 
 [tasks]
 image_alloc = 1073741824
