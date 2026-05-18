@@ -34,12 +34,14 @@
 [gpg]
 	{{- if eq .SIGN_BY "gpg" }}
 	format = openpgp
-	program = "C:\\Program Files\\GnuPG\\bin\\gpg.exe"
+	program = "{{ osClean (lookPath "gpg") | replace "\\" "\\\\" }}"
 	{{- else if eq .SIGN_BY "ssh" }}
 	format = ssh
 	{{- else }}
 	{{ warnf "Invalid signing method: %s. No signing will be used." .SIGN_BY}}
 	{{- end }}
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
 
 [http]
 	postBuffer = 524288000
