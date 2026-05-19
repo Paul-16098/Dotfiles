@@ -193,7 +193,7 @@ desc = "切換當前選擇狀態"
 
 [[mgr.keymap]]
 on = "<C-Space>"
-run = "plugin command"
+run = "plugin augment-command.emit"
 desc = "yazi 命令提示符"
 
 [[mgr.keymap]]
@@ -351,7 +351,7 @@ desc = "進入子目錄"
 
 [[mgr.keymap]]
 on = "<Enter>"
-run = "plugin augment-command -- enter"
+run = "plugin augment-command.enter"
 desc = "進入子目錄/打開文件"
 
 [[mgr.keymap]]

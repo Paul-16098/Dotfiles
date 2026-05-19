@@ -52,6 +52,10 @@ for = "windows"
 run = "ya pub extract --list %s"
 desc = "Extract here"
 
+[[opener.extract]]
+run = "ya pub augmented-extract --list %s"
+desc = "Extract here(augmented)"
+
 [[opener.nodejs]]
 run = 'start nu --config ~\\.config\\nushell\\config.nu --env-config ~\\.config\\nushell\\env.nu --commands "node %s;pause"'
 desc = "Run with Node.js"
