@@ -147,6 +147,10 @@ export def app-update [
     carapace _carapace nushell | save --force ($nu.user-autoload-dirs.0 | path join carapace.nu)
   }
 
+  # job spawn --description app-update-leadr {
+  #   leadr --nu | save -f ($nu.user-autoload-dirs | path join leadr.nu)
+  # }
+
   jobd spawn app-update-yazi {
     ya pkg upgrade
   }
