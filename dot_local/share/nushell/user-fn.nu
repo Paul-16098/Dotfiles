@@ -231,8 +231,6 @@ def git-remote_url []: nothing -> string {
   git config get remote.origin.url | complete | get stdout | str trim | str replace "git@ssh.gitgud.io:" "https://gitgud.io/" | str replace --regex "\\.git$" ""
 }
 
-export alias gl = git log
-
 export-env {
   # $env.NO_TUI_GIT_PULL to disable the wrapper for specific repos, useful for repos with very large number of commits to pull where counting commits can be slow, or repos with non-standard remote names where resolving upstream can be complicated
   # {
@@ -390,7 +388,6 @@ If you wish to set tracking information for this branch you can do so with:
     }
   }
 }
-export alias gp = git pull
 
 # git show wrapper to handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
 @category git
@@ -409,9 +406,6 @@ export def --wrapped "git status-or-show" [...rest]: any -> string {
     git show ...$rest
   }
 }
-export alias gs = git status-or-show
-
-export alias gc = git clone
 
 def rust-debug-complete []: nothing -> record {
   {

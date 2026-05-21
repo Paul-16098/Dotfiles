@@ -43,6 +43,16 @@ $env.config.hinter.closure = {|ctx|
     }
   }
 }
+$env.config.abbreviations = {
+  ll: 'ls --long'
+
+  py: python
+
+  gl: 'git log'
+  gp: 'git pull'
+  gs: 'git status-or-show'
+  gc: 'git clone'
+}
 
 $env.LS_COLORS = (vivid generate molokai)
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true

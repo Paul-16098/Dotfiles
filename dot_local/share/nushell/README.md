@@ -27,15 +27,11 @@ Output:
 # => | docker compose version | wrapper for docker compose version to output json parsed record |
 # => | docker compose volumes | wrapper for docker volumes to output json parsed table |
 # => | es | es wrapper to always output json parsed table |
-# => | gc | Alias for `git clone` |
 # => | get-dll | get dll dependencies of an exe file |
 # => | git log | git log wrapper to format output as a table |
 # => | git pull | git pull wrapper to show updated commits |
 # => | git show | git show wrapper to handle the case when git show is interrupted by user (exit code 141) to avoid showing error message |
 # => | git status-or-show | a wrapper for git status and git show, if no arguments, run git status, otherwise run git show with the provided arguments, also handle the case when git show is interrupted by user (exit code 141) to avoid showing error message |
-# => | gl | Alias for `git log` |
-# => | gp | Alias for `git pull` |
-# => | gs | Alias for `git status-or-show` |
 # => | highlight | use $color_code to highlight text in output |
 # => | kill with name | kill process by name |
 # => | meme | get meme and copy to clipboard |
