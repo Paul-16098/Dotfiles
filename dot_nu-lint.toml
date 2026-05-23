@@ -1,23 +1,24 @@
-sequential                 = false
-pipeline_placement         = "start"
-max_pipeline_length        = 80
+sequential = false
+pipeline_placement = "start"
+max_pipeline_length = 80
 skip_external_parse_errors = true
-explicit_optional_access   = false
+explicit_optional_access = false
 
 [groups]
 
 [rules]
-	# id = "off|hint|warning|error"
-	unchecked_cell_path_index   = "hint"
-	max_positional_params       = "off"
-	redundant_nu_subprocess     = "warning"
-	pipe_spacing                = "off"
-	non_final_failure_check     = "hint"
-	unchecked_get_index         = "off"
-	wrap_external_with_complete = "hint"
-	catch_builtin_error_try     = "hint"
-	error_make_for_non_fatal    = "off"
-	fragile_last_exit_code      = "hint"
+# id = "off|hint|warning|error"
+unchecked_cell_path_index = "hint"
+max_positional_params = "off"
+redundant_nu_subprocess = "warning"
+pipe_spacing = "off"
+non_final_failure_check = "hint"
+unchecked_get_index = "off"
+wrap_external_with_complete = "hint"
+catch_builtin_error_try = "hint"
+error_make_for_non_fatal = "off"
+fragile_last_exit_code = "hint"
+unhandled_external_error = "off"
 
-	# i use dev version of nushell, so i want to disable parse error for now
-	nu_parse_error = "off"
+# i use dev version of nushell, so i want to disable parse error for now
+nu_parse_error = "off"

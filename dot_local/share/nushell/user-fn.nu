@@ -196,6 +196,15 @@ const NOREPLY_EMAIL = ["@users.noreply.github.com" "@noreply.codeberg.org"]
 
 def "complete git log" [spans: list<string>] { do $env.config.completions.external.completer [git log ...($spans | reject 0)] }
 
+# use in git log wrapper to format author_email and committer_email, if it's a noreply email, show as "noreply email" in dark gray italic, otherwise add mailto link to the email
+def "format-git-email" [email: string] {
+  if ($NOREPLY_EMAIL | all {|suffix| not ($email | str ends-with $suffix) }) {
+    $"mailto:($email)" | ansi link --text $email
+  } else {
+    $"(ansi dark_gray_italic)noreply email(ansi reset)"
+  }
+}
+
 # git log wrapper to format output as a table
 # 
 # noreply email is filtered out
@@ -206,30 +215,36 @@ def "complete git log" [spans: list<string>] { do $env.config.completions.extern
 @complete "complete git log"
 @category git
 export def --wrapped "git log" [
-  --no-query-git-plugin # if set, skip the part that query git plugin for commit body
+  --query-git-plugin # if set, query the git plugin for commit body
   ...rest: string
 ]: nothing -> table {
-  const SPLIT_STR = "»¦«"
+  # use a rarely used unicode character sequence as the split string to avoid conflicts with commit messages, also this sequence is visually distinctive to make it easier to debug if the parsing goes wrong
+  const S = "»¦«"
 
   let remote_url = git-remote_url
 
-  ^git log --pretty=$"%h($SPLIT_STR)%s($SPLIT_STR)%aN($SPLIT_STR)%aE($SPLIT_STR)%aD" ...$rest
+  ^git log --pretty=$"%h($S)%s($S)%aN($S)%aE($S)%aI($S)%cN($S)%cE($S)%cI" ...$rest
   | lines
-  | split column $SPLIT_STR commit subject name email date
-  | into datetime date
-  | update email {|row|
-    let email = $row.email
-    if ($NOREPLY_EMAIL | all {|suffix| not ($email | str ends-with $suffix) }) {
-      $"mailto:($email)" | ansi link --text $email
-    } else {
-      $"(ansi dark_gray_italic)noreply email(ansi reset)"
-    }
-  } | default $"(ansi dark_gray_italic)N/A(ansi reset)" email
-  | update subject { $in | str trim | git-log-subject-highlight $remote_url }
-  | if not $no_query_git_plugin {
-    upsert body {|row|
-      query git --page-size 10 $"SELECT commit_id,title,message,author_name,author_email,datetime from commits where commit_id like '($row.commit)%' ORDER BY datetime DESC"
-      | rename commit subject body name email date | let res
+  | split column $S commit subject author_name author_email author_date committer_name committer_email committer_date
+  | into datetime committer_date author_date --format "%+"
+  # add links to author_email and committer_email if not a noreply email, otherwise show as "noreply email"
+  | update author_email {
+    format-git-email $in
+  }
+  | update committer_email {
+    format-git-email $in
+  }
+  # if author_email or committer_email is empty, show as "N/A"
+  | default $"(ansi dark_gray_italic)N/A(ansi reset)" author_email committer_email
+  # highlight subject and add links to PRs and branches for merge commits
+  | update subject { str trim | git-log-subject-highlight $remote_url }
+  | let git_log_res: table
+
+  # if `--query_git_plugin`, query git plugin for commit body and add to the table, also handle the case when multiple commits are found for the same short commit id (which should not happen) and the case when no commit is found (which also should not happen), show error in both cases
+  if $query_git_plugin {
+    $git_log_res | upsert body {|row|
+      query git --page-size 10 $"SELECT commit_id as commit,title as subject,message as body,author_name,author_email,datetime as committer_date from commits where commit_id like '($row.commit)%' ORDER BY committer_date DESC"
+      | let res
       $res | if ($in | length) > 1 {
         error make {
           msg: $"Multiple commits found for commit id: ($row.commit)"
@@ -253,7 +268,9 @@ export def --wrapped "git log" [
       }
     }
     | move body --after subject
-  } else { }
+    # highlight body with the same logic as subject, also add links for PRs and branches in the body if there are any, use the same remote_url for the links
+    | update body { str trim | git-log-subject-highlight $remote_url }
+  } else { $git_log_res }
 }
 
 # get git remote url and convert to https if it's an ssh url, also remove .git suffix
