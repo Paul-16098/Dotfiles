@@ -67,6 +67,7 @@ Output:
 # => | add-default-keybinding | CONTROL | char_c | {edit: CopySelectionSystem} | [emacs, vi_normal, vi_insert] |
 # => | add-default-keybinding | CONTROL | char_c | {send: CtrlC} | [emacs, vi_normal, vi_insert] |
 # => | add-default-keybinding | CONTROL | char_d | {send: CtrlD} | [emacs, vi_normal, vi_insert] |
+# => | add-default-keybinding | CONTROL | char_o | {send: OpenEditor} | [emacs, vi_normal, vi_insert] |
 # => | add-default-keybinding | CONTROL | char_v | {edit: PasteSystem} | [emacs, vi_normal, vi_insert] |
 # => | add-default-keybinding | CONTROL | char_x | {edit: CutSelectionSystem} | [emacs, vi_normal, vi_insert] |
 # => | add-default-keybinding | CONTROL | char_z | {edit: Undo} | [emacs, vi_normal, vi_insert] |

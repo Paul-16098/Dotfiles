@@ -93,6 +93,7 @@ export-env {
     (add-keybindings --name "add-default-keybinding" CONTROL char_c {send: CtrlC})
     (add-keybindings --name "add-default-keybinding" CONTROL char_d {send: CtrlD})
     (add-keybindings --name "add-default-keybinding" CONTROL char_z {edit: Undo})
+    (add-keybindings --name "add-default-keybinding" CONTROL char_o {send: OpenEditor})
     ## SHIFT_CONTROL
     (add-keybindings --name "add-default-keybinding" CONTROL_SHIFT Left {edit: MoveWordLeft select: true})
     (add-keybindings --name "add-default-keybinding" CONTROL_SHIFT Right {edit: MoveWordRight select: true})

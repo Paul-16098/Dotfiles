@@ -205,7 +205,10 @@ def "complete git log" [spans: list<string>] { do $env.config.completions.extern
 # no sort
 @complete "complete git log"
 @category git
-export def --wrapped "git log" [...rest: string]: nothing -> table {
+export def --wrapped "git log" [
+  --no-query-git-plugin # if set, skip the part that query git plugin for commit body
+  ...rest: string
+]: nothing -> table {
   const SPLIT_STR = "»¦«"
 
   let remote_url = git-remote_url
@@ -223,6 +226,34 @@ export def --wrapped "git log" [...rest: string]: nothing -> table {
     }
   } | default $"(ansi dark_gray_italic)N/A(ansi reset)" email
   | update subject { $in | str trim | git-log-subject-highlight $remote_url }
+  | if not $no_query_git_plugin {
+    upsert body {|row|
+      query git --page-size 10 $"SELECT commit_id,title,message,author_name,author_email,datetime from commits where commit_id like '($row.commit)%' ORDER BY datetime DESC"
+      | rename commit subject body name email date | let res
+      $res | if ($in | length) > 1 {
+        error make {
+          msg: $"Multiple commits found for commit id: ($row.commit)"
+          label: {
+            text: "here"
+            span: (metadata $in).span
+          }
+          help: "This should not happen, please check the git log output and the parsing logic."
+        }
+      } else if ($in | length) == 1 {
+        get 0.body
+      } else {
+        error make {
+          msg: $"Commit not found for commit id: ($row.commit)"
+          label: {
+            text: "here"
+            span: (metadata $in).span
+          }
+          help: "This should not happen, please check the git log output and the parsing logic."
+        }
+      }
+    }
+    | move body --after subject
+  } else { }
 }
 
 # get git remote url and convert to https if it's an ssh url, also remove .git suffix
@@ -359,7 +390,8 @@ If you wish to set tracking information for this branch you can do so with:
     return
   }
 
-  const KEY_HINT = $"(ansi green_underline)P(ansi reset_underline)ull(ansi reset), (ansi green_underline)S(ansi reset_underline)how(ansi reset), (ansi green_underline)L(ansi reset_underline)ogs(ansi reset) or (ansi green_underline)A(ansi reset_underline)bort(ansi reset)."
+  const KEY_HINT = $"_P_ull(ansi reset), _S_how(ansi reset), _L_ogs(ansi reset) or _A_bort(ansi reset)." | str replace --all --regex "_(.)_" $"(ansi green_underline)$1(ansi reset_underline)"
+
   print --stderr $KEY_HINT
   loop {
     match (input listen --types [key]) {

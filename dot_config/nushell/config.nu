@@ -1,5 +1,5 @@
 # config
-$env.config.buffer_editor = $env.EDITOR
+$env.config.buffer_editor = [(which --all $env.EDITOR | get 0.path) "--wait"]
 $env.config.table.missing_value_symbol = "[X]"
 $env.config.display_errors.exit_code = true
 $env.config.history.path = null
