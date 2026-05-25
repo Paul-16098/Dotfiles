@@ -618,8 +618,11 @@ export def "steamcmd" [
 }
 
 # https://yazi-rs.github.io/docs/quick-start#shell-wrapper
-export def --wrapped --env y [...args: string]: nothing -> nothing {
-  if ("YAZI_LEVEL" in $env) {
+export def --wrapped --env y [
+  --skip-check-is-yazi # if set, skip the check for YAZI_LEVEL environment variable, useful for advanced users who want to call yazi from another wrapper function, default is false
+  ...args: string
+]: nothing -> nothing {
+  if ("YAZI_LEVEL" in $env and not $skip_check_is_yazi) {
     error make {
       msg: "You are already running yazi."
       labels: [
