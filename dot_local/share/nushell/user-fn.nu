@@ -122,6 +122,7 @@ export def app-update [
   job spawn --description app-update-nu-plugins {
     # jobd wait app-update-cargo-packages
     for x in (glob ~/.cargo/bin/nu_*.exe) {
+      # nu-lint-ignore: redundant_nu_subprocess
       if (nu -c $"plugin add ($x)" | complete | get exit_code) != 0 {
         print $"app-update-nu-plugins: (ansi red)Failed to apply: ($x)(ansi reset)"
       } else {
@@ -192,7 +193,7 @@ def git-log-subject-highlight [remote_url: string]: string -> string {
 }
 
 # use in git log wrapper
-const NOREPLY_EMAIL = ["@users.noreply.github.com" "@noreply.codeberg.org"]
+const NOREPLY_EMAIL = ["@users.noreply.github.com" "@noreply.codeberg.org" "noreply@github.com"]
 
 def "complete git log" [spans: list<string>] { do $env.config.completions.external.completer [git log ...($spans | reject 0)] }
 
@@ -351,18 +352,28 @@ If you wish to set tracking information for this branch you can do so with:
   let current_branch = if $current_branch_info.exit_code == 0 {
     $current_branch_info.stdout | str trim
   } else {
-    ""
+    error make {
+      msg: "Failed to get current branch name."
+      inner: [{msg: ($current_branch_info | to json)}]
+    }
   }
 
   let upstream_info = (git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}" | complete)
   log debug $"git rev-parse @{upstream} output: ($upstream_info)"
-  # Prefer explicit upstream; fall back to origin/<branch> for repos without tracking config.
+  # Prefer explicit upstream; no fall back.
   let upstream_ref = if $upstream_info.exit_code == 0 {
     $upstream_info.stdout | str trim
-  } else if ($current_branch | is-not-empty) {
-    $"origin/($current_branch)"
   } else {
-    "origin/HEAD"
+    error make {
+      msg: "No upstream tracking information found."
+      labels: [
+        {
+          text: $"Current branch is '(ansi green_bold)($current_branch)(ansi reset)'"
+          span: (metadata $current_branch_info).span
+        }
+      ]
+      inner: [{msg: ($upstream_info | to json)}]
+    }
   }
 
   let old_commit = ($head_info.stdout | str trim)
@@ -370,23 +381,28 @@ If you wish to set tracking information for this branch you can do so with:
   let new_commit_info = (git rev-parse $upstream_ref | complete)
   log debug $"git rev-parse $upstream_ref output: ($new_commit_info)"
   if $new_commit_info.exit_code != 0 {
-    print --stderr $"Could not resolve upstream ref '(ansi green_bold)($upstream_ref)(ansi reset)'."
+    error make {
+      msg: $"Could not resolve upstream ref '(ansi green_bold)($upstream_ref)(ansi reset)'."
+      inner: [{msg: ($new_commit_info | to json)}]
+    }
     return
   }
   let new_commit = ($new_commit_info.stdout | str trim)
   log debug $"Upstream commit: ($new_commit)"
 
   if $old_commit == $new_commit {
-    print --stderr ((ansi grey) + "Already up to date." + (ansi reset))
+    print --stderr $"(ansi grey)Already up to date.(ansi reset)"
     return
   }
 
   # two-dot old..new means "reachable from new but not from old": commits to be pulled.
-  let commits_to_pull = (git rev-list --count $"($old_commit)..($new_commit)")
+  let commits_to_pull = git rev-list --count $"($old_commit)..($new_commit)"
   log debug $"Commits to pull from upstream: ($commits_to_pull)"
   if $commits_to_pull == "0" {
+    let commits_to_push = git rev-list --count $"($new_commit)..($old_commit)"
+
     # If upstream has no exclusive commits, local is ahead (or diverged without pullable commits).
-    print --stderr $"Your branch is ahead of '(ansi green_bold)($upstream_ref)(ansi reset)' by (ansi green_bold)(git rev-list --count $"($new_commit)..($old_commit)")(ansi reset) commit\(s)."
+    print --stderr $"Your branch is ahead of '(ansi green_bold)($upstream_ref)(ansi reset)' by (ansi green_bold)($commits_to_push)(ansi reset) commit\(s)."
     return
   }
 
