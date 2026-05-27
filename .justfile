@@ -9,7 +9,7 @@ lint:
 
 # warn: this is unstable
 fmt:
-    nufmt
+    nufmt .
 
 # update numd documentation
 update-numd-doc:
