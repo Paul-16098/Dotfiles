@@ -1,4 +1,4 @@
----- augment-command ----
+---- 增強指令 ----
 require("augment-command"):setup({
 	open_file_after_creation = true,
 	smooth_scrolling = true,
@@ -124,29 +124,28 @@ require("bunny"):setup({
 		{ key = "a", path = "~/AppData/Roaming", desc = "Roaming" },
 		{ key = "g", path = "~/OneDrive/文件/git", desc = "Git repos" },
 		{ key = "D", path = "~/OneDrive/文件" }
-		-- key and path attributes are required, desc is optional
+		-- key 和 path 屬性是必要的，desc 是可選的
 	},
-	desc_strategy = "path", -- If desc isn't present, use "path" or "filename", default is "path"
-	ephemeral = true,    -- Enable ephemeral hops, default is true
-	tabs = true,         -- Enable tab hops, default is true
-	notify = false,      -- Notify after hopping, default is false
-	fuzzy_cmd = "fzf",   -- Fuzzy searching command, default is "fzf"
+	desc_strategy = "path", -- 如果 desc 不存在，請使用“路徑”或“檔案名稱”，預設為“路徑”
+	ephemeral = true,    -- 啟用臨時跳躍，預設為 true
+	tabs = true,         -- 啟用製表符跳躍，預設為 true
+	notify = false,      -- 跳轉後通知，預設為 false
+	fuzzy_cmd = "fzf",   -- 模糊搜尋指令，預設為“fzf”
 })
 --- fg ---
 require("fg"):setup({
 })
 --- mime-ext ---
 require("mime-ext.local"):setup {
-	-- Expand the existing filename database (lowercase), for example:
+	-- 展開現有的檔案名稱資料庫（小寫），例如：
 	with_files = {
 	},
 
-	-- Expand the existing extension database (lowercase), for example:
+	-- 擴展現有的擴充資料庫（小寫），例如：
 	with_exts = {
 	},
 
-	-- If the MIME type is not in both filename and extension databases,
-	-- then fallback to Yazi's preset `mime.local` plugin, which uses `file(1)`
+	-- 如果 MIME 類型不在檔案名稱和副檔名資料庫中，則回退到 Yazi 預設的 `mime.local` 插件，該插件使用 `file(1)`
 	fallback_file1 = true,
 }
 --- font-sample ---
@@ -162,11 +161,11 @@ require('font-sample'):setup {
 require('spot'):setup {
 	metadata_section = {
 		enable = true,
-		hash_cmd = 'md5sum',      -- other hashing commands may be slower
-		hash_filesize_limit = 150, -- in MB, set 0 to disable
-		relative_time = true,     -- 2026-01-01 or n days ago
-		time_format = '%Y-%m-%d %H:%M', -- https://www.man7.org/linux/man-pages/man3/strftime.3.html
-		show_compression = 'size', ---@type false|"size"|"percentage"
+		hash_cmd = 'md5sum',      -- 其他哈希命令可能會更慢
+		hash_filesize_limit = 150, -- 以 MB 為單位，設定 0 表示停用
+		relative_time = true,     -- 2026-01-01 或 n 天前
+		time_format = '%Y-%m-%d %H:%M', -- https://www.man7.org/linux/manpages/man3/strftime.3.html
+		show_compression = true, ---@type boolean
 	},
 	plugins_section = {
 		enable = true,

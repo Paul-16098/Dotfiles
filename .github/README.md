@@ -62,6 +62,7 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |       |
 # => |       \---yazi
 # => |           \---config
+# => |               |   .luarc.json
 # => |               |   dot_luarc.json
 # => |               |   init.lua
 # => |               |   keymap.toml
