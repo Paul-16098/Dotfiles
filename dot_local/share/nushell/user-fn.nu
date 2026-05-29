@@ -100,6 +100,8 @@ export def app-update [
   }
 
   job spawn --description app-update-nu {
+    jobd wait app-update-rustup
+    jobd wait app-update-rust-toolchains
     if (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
       print --no-newline (char bel)
       print "A new version of NuShell is available, updateing."
