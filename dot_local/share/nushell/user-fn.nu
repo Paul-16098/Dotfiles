@@ -99,15 +99,12 @@ export def app-update [
     } else { _job spawn $fn }
   }
 
-  job spawn --description app-update-nu {
-    jobd wait app-update-rustup
-    jobd wait app-update-rust-toolchains
-    if (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
-      print --no-newline (char bel)
-      print "A new version of NuShell is available, updateing."
-      start ~/.config/nushell/scripts/nu-selfupdate.ps1
-    }
+  if ($cofg | get -o "app-update-nu" | default {status: on} | get status) == on and (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
+    print --no-newline (char bel)
+    print "A new version of NuShell is available, updateing."
+    start ~/.config/nushell/scripts/nu-selfupdate.ps1
   }
+
   jobd spawn app-update-rustup {
     rustup self update
   }
@@ -157,7 +154,7 @@ export def app-update [
   jobd spawn app-update-yazi {
     ya pkg upgrade --discard
     rm ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua
-    chezmoi apply ~/AppData/Roaming/yazi/config/init.lua
+    chezmoi apply ~/AppData/Roaming/yazi/config/init.lua --force
   }
 
   jobd wait
