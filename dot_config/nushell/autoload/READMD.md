@@ -14,12 +14,6 @@ Output:
 ```
 # => | name | description |
 # => | --- | --- |
-# => | chad | chezmoi |
-# => | chap | Alias for `chezmoi apply` |
-# => | chcd | Alias for `chezmoi cd` |
-# => | chda | Alias for `chezmoi data` |
-# => | chdf | Alias for `chezmoi diff` |
-# => | ched | Alias for `chezmoi edit` |
 # => | chezmoi | Manage your dotfiles across multiple diverse machines, securely |
 # => | chezmoi add | Add an existing file, directory, or symlink to the source state |
 # => | chezmoi age | Interact with age |
@@ -63,8 +57,4 @@ Output:
 # => | chezmoi update | Pull and apply any changes |
 # => | chezmoi upgrade | Upgrade chezmoi to the latest released version |
 # => | chezmoi verify | Exit with success if the destination state matches the target state, fail otherwise |
-# => | chm | Alias for `chezmoi merge` |
-# => | chma | Alias for `chezmoi merge-all` |
-# => | chrad | Alias for `chezmoi re-add` |
-# => | chst | Alias for `chezmoi status` |
 ```

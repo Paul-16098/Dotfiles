@@ -1436,14 +1436,6 @@ def "nu-complete managed-hasdiff" []: nothing -> record<options: record<completi
   }
 }
 
-# chezmoi
-export alias chad = chezmoi add
-export alias chap = chezmoi apply
-export alias chdf = chezmoi diff
-export alias chda = chezmoi data
-export alias ched = chezmoi edit
-export alias chst = chezmoi status
-export alias chm = chezmoi merge
-export alias chma = chezmoi merge-all
-export alias chrad = chezmoi re-add
-export alias chcd = chezmoi cd
+export-env {
+  $env.config.abbreviations.ch = 'chezmoi'
+}
