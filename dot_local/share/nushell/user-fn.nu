@@ -154,7 +154,7 @@ export def app-update [
   jobd spawn app-update-yazi {
     ya pkg upgrade --discard
     rm ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua
-    chezmoi apply ~/AppData/Roaming/yazi/config/init.lua --force
+    chezmoi apply ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --force
   }
 
   jobd wait
