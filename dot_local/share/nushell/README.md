@@ -35,7 +35,9 @@ Output:
 # => | highlight | use $color_code to highlight text in output |
 # => | kill with name | kill process by name |
 # => | meme | get meme and copy to clipboard |
+# => | netstat -ano | a wrapper for netstat -ano to output a table with Proto, Local Address, Foreign Address, State and PID columns, also parse the PID to int and filter out the first 3 lines of the output |
 # => | pause | my custom pause function |
+# => | ps port | a wrapper for ps command to filter processes by port, only implemented for windows, use netstat -ano to get the PID of the process listening on the specified port, then use ps to get the process information, also pass the rest arguments to ps command |
 # => | reload-config | used in keybindings.nu for F5 |
 # => | rust-debug | set rust debug env variables |
 # => | steamcmd | steamcmd wrapper to login |

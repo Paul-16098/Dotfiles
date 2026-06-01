@@ -87,15 +87,12 @@ export def app-update [
 ] {
   use jobd.nu
 
-  alias '_jobd spawn' = jobd spawn
-  alias "_job spawn" = job spawn
-
-  def 'jobd spawn' [name: string fn ...rest]: any -> any {
-    if ($cofg | get -o $name | default {status: on} | get status) == on { $in | _jobd spawn $name $fn }
+  def '_jobd spawn' [name: string fn ...rest]: any -> any {
+    if ($cofg | get -o $name | default {status: on} | get status) == on { $in | jobd spawn $name $fn }
   }
-  def 'job spawn' [--description (-d): string fn] {
+  def '_job spawn' [--description (-d): string fn] {
     if ($description | is-not-empty) {
-      if ($cofg | get -o $description | default {status: on} | get status) == on { _job spawn --description=$description $fn }
+      if ($cofg | get -o $description | default {status: on} | get status) == on { job spawn --description=$description $fn }
     } else { _job spawn $fn }
   }
 
@@ -105,20 +102,20 @@ export def app-update [
     start ~/.config/nushell/scripts/nu-selfupdate.ps1
   }
 
-  jobd spawn app-update-rustup {
+  _jobd spawn app-update-rustup {
     rustup self update
   }
-  jobd spawn app-update-rust-toolchains {
+  _jobd spawn app-update-rust-toolchains {
     rustup update
   }
-  jobd spawn app-update-airshipper {
+  _jobd spawn app-update-airshipper {
     airshipper upgrade
     airshipper update
   }
-  jobd spawn app-update-cargo-packages {
+  _jobd spawn app-update-cargo-packages {
     cargo install-update --all --git
   }
-  job spawn --description app-update-nu-plugins {
+  _job spawn --description app-update-nu-plugins {
     # jobd wait app-update-cargo-packages
     for x in (glob ~/.cargo/bin/nu_*.exe) {
       # nu-lint-ignore: redundant_nu_subprocess
@@ -130,28 +127,28 @@ export def app-update [
     }
   }
 
-  job spawn --description app-update-atuin {
+  _job spawn --description app-update-atuin {
     $env.ATUIN_NOBIND = "true"
     atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand)
   }
 
-  job spawn --description app-update-starship {
+  _job spawn --description app-update-starship {
     starship init nu | save --force ($nu.user-autoload-dirs.0 | path join starship.nu)
   }
 
-  job spawn --description app-update-my-http-server-completion {
+  _job spawn --description app-update-my-http-server-completion {
     my-http-server --generate-completion nushell | save --force ($nu.user-autoload-dirs.0 | path join my-http-server-completion.nu)
   }
 
-  job spawn --description app-update-carapace {
+  _job spawn --description app-update-carapace {
     carapace _carapace nushell | save --force ($nu.user-autoload-dirs.0 | path join carapace.nu)
   }
 
-  # job spawn --description app-update-leadr {
+  # _job spawn --description app-update-leadr {
   #   leadr --nu | save -f ($nu.user-autoload-dirs | path join leadr.nu)
   # }
 
-  jobd spawn app-update-yazi {
+  _jobd spawn app-update-yazi {
     ya pkg upgrade --discard
     rm ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua
     chezmoi apply ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --force
@@ -896,3 +893,28 @@ export def '_atuin history' [
 #     commandline edit ($s.command | ansi strip)
 #   }
 # }
+
+# a wrapper for netstat -ano to output a table with Proto, Local Address, Foreign Address, State and PID columns, also parse the PID to int and filter out the first 3 lines of the output
+export def "netstat -ano" []: nothing -> table {
+  if $nu.os-info.name == windows {
+    ^netstat -ano | lines | skip 3 | str trim
+    | parse --regex '^(?P<Proto>UDP|TCP)\s+(?P<Local Address>\S+)\s+(?P<Foreign Address>\S+)\s+(?P<State>LISTENING|ESTABLISHED|TIME_WAIT)\s+(?P<PID>\d+)$'
+    | into int PID
+  } else {
+    error make 'netstat -ano wrapper is only implemented for windows'
+  }
+}
+
+# a wrapper for ps command to filter processes by port, only implemented for windows, use netstat -ano to get the PID of the process listening on the specified port, then use ps to get the process information, also pass the rest arguments to ps command
+export def "ps port" [
+  port: int
+  --long (-l)
+]: nothing -> table {
+  let pid = if $nu.os-info.name == windows {
+    netstat -ano | where 'Local Address' ends-with $":($port)" | get 0.PID
+  } else {
+    error make 'ps port wrapper is only implemented for windows'
+  }
+
+  ps --long=$long | where pid == $pid
+}
