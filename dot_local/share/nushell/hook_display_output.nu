@@ -18,28 +18,26 @@ def classify []: record -> record {
   }
   | insert head $head
   | insert source $md.source?
+  # | tee { print --stderr $in }
 }
 
 export-env {
   $env.config.hooks.display_output = {
     metadata access {|meta|
-      # print --stderr $meta
-      # nu-lint-ignore: try_instead_of_do
       do {|class|
-        # print --stderr $class
         match $class {
           {nu: true} => { nu-highlight }
-          {source: ls} => { sort-by type modified size name --custom {|a b| $a == dir } }
-          {head: ps} => { move pid ppid --last | sort-by mem virtual cpu --reverse }
+          # {head: ls} => { sort-by type modified size name --custom {|a b| $a == dir } }
+          # {head: ps} => { move pid ppid --last | sort-by mem virtual cpu --reverse }
           _ => { }
         }
         | match $class {
-          {video: true} | {image: true} => {
-            ^($env.ProgramFiles | path join VideoLAN\VLC\vlc.exe) -
-          }
+          # {video: true} | {image: true} => {
+          #   ^($env.ProgramFiles | path join VideoLAN\VLC\vlc.exe) -
+          # }
 
           $data => {
-            table --expand=((term size).columns >= 100) --icons=(($data.source) == "ls")
+            table --expand=((term size).columns >= 100) --icons=(($data.head) == "ls")
           }
         }
       } ($meta | classify)

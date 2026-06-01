@@ -5,7 +5,6 @@ export def "config user-aliases" []: nothing -> nothing {
 }
 
 alias code = code-insiders
-alias ls = ls --all --threads
 alias cargo = cargo auditable
 alias python = ^(uv python find)
 alias pip = uv pip
