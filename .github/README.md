@@ -40,7 +40,6 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   dot_actrc
 # => |   dot_eget.toml
 # => |   dot_gitconfig.tmpl
-# => |   dot_nu-lint.toml
 # => |   dot_prettierrc
 # => |   dot_wakatime.cfg.tmpl
 # => |   rustfmt.toml
@@ -57,6 +56,8 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |
 # => +---AppData
 # => |   \---Roaming
+# => |       |   nu-lint.toml
+# => |       |
 # => |       +---Everything
 # => |       |       Filters-1.5a.csv
 # => |       |
