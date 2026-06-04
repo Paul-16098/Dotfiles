@@ -118,7 +118,7 @@ desc = "滾動預覽面板向上"
 
 [[mgr.keymap]]
 on = "v"
-run = ["paste", "plugin clipboard -- --action=paste"]
+run = "paste"
 desc = "粘貼已複製的文件"
 
 [[mgr.keymap]]
@@ -128,7 +128,7 @@ desc = "跳轉到字符"
 
 [[mgr.keymap]]
 on = "V"
-run = ["paste --force", "plugin clipboard -- --action=paste"]
+run = "paste --force"
 desc = "粘貼已複製的文件(如果目標位置已存在則覆蓋)"
 
 [[mgr.keymap]]
