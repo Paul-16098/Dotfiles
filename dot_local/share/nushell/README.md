@@ -29,7 +29,8 @@ Output:
 # => | es | es wrapper to always output json parsed table |
 # => | get-dll | get dll dependencies of an exe file |
 # => | git log | git log wrapper to format output as a table |
-# => | git pull | git pull wrapper to show updated commits |
+# => | git pull | git pull wrapper to show updated commits
+# => and add hooks for pre-pull and post-pull scripts if they exist in .git/hooks/pre-pull and .git/hooks/post-pull, also add options to skip hooks and skip pause, and add config to disable the wrapper for specific repos or specific commit subjects, if the pull includes commits with subjects that match the configured ones, skip the interactive prompt and directly pull, also handle the case when there is no tracking information for the current branch and show a helpful error message |
 # => | git show | git show wrapper to handle the case when git show is interrupted by user (exit code 141) to avoid showing error message |
 # => | git status-or-show | a wrapper for git status and git show, if no arguments, run git status, otherwise run git show with the provided arguments, also handle the case when git show is interrupted by user (exit code 141) to avoid showing error message |
 # => | highlight | use $color_code to highlight text in output |
@@ -41,7 +42,6 @@ Output:
 # => | reload-config | used in keybindings.nu for F5 |
 # => | rust-debug | set rust debug env variables |
 # => | steamcmd | steamcmd wrapper to login |
-# => | vt scan file |  |
 # => | whois | whois wrapper to format output as a table |
 # => | y | https://yazi-rs.github.io/docs/quick-start#shell-wrapper |
 ```

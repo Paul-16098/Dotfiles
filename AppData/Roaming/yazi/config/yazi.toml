@@ -85,6 +85,13 @@ run = "just --justfile %s --choose --chooser \"fzf --multi --preview 'just --uns
 desc = "Run Justfile"
 block = true
 
+[[opener.add-to-path]]
+desc = "Add to PATH"
+run = '''
+pwsh -Command "[Environment]::SetEnvironmentVariable('PATH', [Environment]::GetEnvironmentVariable('PATH', 'User') + ';%s', 'User')"
+'''
+for = "windows"
+
 [[opener.bulk-rename]]
 run = "code-insiders --wait %s"
 block = true
@@ -230,6 +237,7 @@ use = [
 url = "*/"
 use = [
   "edit",
+  "add-to-path",
   "reveal",
 ]
 

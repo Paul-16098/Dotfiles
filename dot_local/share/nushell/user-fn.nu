@@ -87,19 +87,24 @@ export def app-update [
 ] {
   use jobd.nu
 
+  # nu-lint-ignore: missing_in_type, missing_output_type, kebab_case_commands, add_type_hints_arguments, unused_parameter
   def '_jobd spawn' [name: string fn ...rest]: any -> any {
     if ($cofg | get -o $name | default {status: on} | get status) == on { $in | jobd spawn $name $fn }
   }
+  # nu-lint-ignore: missing_in_type, missing_output_type, kebab_case_commands, add_type_hints_arguments, unused_parameter
   def '_job spawn' [--description (-d): string fn] {
     if ($description | is-not-empty) {
       if ($cofg | get -o $description | default {status: on} | get status) == on { job spawn --description=$description $fn }
     } else { _job spawn $fn }
   }
 
-  if ($cofg | get -o "app-update-nu" | default {status: on} | get status) == on and (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) {
+  if (($cofg | get -o "app-update-nu" | default {status: on} | get status) == on and (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) or ($cofg | get -o "app-update-nu" | default {debug-run: false} | get debug-run)) {
     print --no-newline (char bel)
     print "A new version of NuShell is available, updateing."
-    start ~/.config/nushell/scripts/nu-selfupdate.ps1
+    with-env ({NU_COMMANDLINE: (commandline)}) {
+      print $"run ($env.NU_COMMANDLINE) after update NuShell."
+      start ~/.config/nushell/scripts/nu-selfupdate.ps1
+    }
   }
 
   _jobd spawn app-update-rustup {
@@ -193,10 +198,10 @@ def git-log-subject-highlight [remote_url: string]: string -> string {
 # use in git log wrapper
 const NOREPLY_EMAIL = ["@users.noreply.github.com" "@noreply.codeberg.org" "noreply@github.com"]
 
-def "complete git log" [spans: list<string>] { do $env.config.completions.external.completer [git log ...($spans | reject 0)] }
+def "complete git log" [spans: list<string>]: nothing -> any { do $env.config.completions.external.completer [git log ...($spans | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
 
 # use in git log wrapper to format author_email and committer_email, if it's a noreply email, show as "noreply email" in dark gray italic, otherwise add mailto link to the email
-def "format-git-email" [email: string] {
+def "format-git-email" [email: string]: nothing -> string {
   if ($NOREPLY_EMAIL | all {|suffix| not ($email | str ends-with $suffix) }) {
     $"mailto:($email)" | ansi link --text $email
   } else {
@@ -292,18 +297,32 @@ export-env {
     }
 }
 
-def "complete git pull" [spans: list<string>] { do $env.config.completions.external.completer [git pull ...($spans | reject 0)] }
+def "complete git pull" [spans: list<string>]: nothing -> any { do $env.config.completions.external.completer [git pull ...($spans | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
 
 # git pull wrapper to show updated commits
+# and add hooks for pre-pull and post-pull scripts if they exist in .git/hooks/pre-pull and .git/hooks/post-pull, also add options to skip hooks and skip pause, and add config to disable the wrapper for specific repos or specific commit subjects, if the pull includes commits with subjects that match the configured ones, skip the interactive prompt and directly pull, also handle the case when there is no tracking information for the current branch and show a helpful error message
 @complete "complete git pull"
 @category git
 export def --wrapped "git pull" [
   --no-pause # if set, skip the interactive prompt and directly pull, useful for automation or when the user is confident about the changes being pulled
+  --no-hooks # if set, skip running pre-pull and post-pull hooks
   ...rest: string
 ]: nothing -> nothing {
-  def --wrapped pull_wrapped [...rest] {
+  def --wrapped pull_wrapped [...rest: string]: nothing -> nothing {
+    if ("./.git/hooks/pre-pull" | path exists) and not $no_hooks {
+      nu ./.git/hooks/pre-pull
+      if $env.LAST_EXIT_CODE != 0 {
+        error make --unspanned "pre-pull hook failed, aborting pull"
+      }
+    }
     try { ^git pull ...$rest } catch {
       ignore | error make --unspanned "git pull failed"
+    }
+    if ("./.git/hooks/post-pull" | path exists) and not $no_hooks {
+      nu ./.git/hooks/post-pull
+      if $env.LAST_EXIT_CODE != 0 {
+        error make --unspanned "post-pull hook failed"
+      }
     }
   }
 
@@ -454,17 +473,18 @@ If you wish to set tracking information for this branch you can do so with:
 
 # git show wrapper to handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
 @category git
-export def --wrapped "git show" [...rest]: any -> string {
+export def --wrapped "git show" [...rest: string]: any -> string {
   try { ^git show ...$rest } catch {
     if not ($in.exit_code == 141) { error make "Not expected error" }
   }
 }
 
-def "complete git status-or-show" [spans: list<string>] { do $env.config.completions.external.completer [git show ...($spans | reject 0)] }
+def "complete git status-or-show" [spans: list<string>]: nothing -> any { do $env.config.completions.external.completer [git show ...($spans | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
+
 # a wrapper for git status and git show, if no arguments, run git status, otherwise run git show with the provided arguments, also handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
 @complete "complete git status-or-show"
 @category git
-export def --wrapped "git status-or-show" [...rest]: any -> string {
+export def --wrapped "git status-or-show" [...rest: string]: any -> string {
   if ($rest | length) == 0 { git status } else {
     git show ...$rest
   }
@@ -864,15 +884,11 @@ export def --env alternative-buffer [
   $out
 }
 
-export def --wrapped 'vt scan file' [path: path ...rest]: any -> any {
-  ^vt scan file $path ...$rest --silent --wait | from yaml
-}
-
 # a wrapper for atuin history command to output a table with date, duration, exit code and command, also parse the duration to a duration type and exit code to int, also highlight the command using nu-highlight
 export def '_atuin history' [
   --limit: int = 500
   --reverse
-] {
+]: nothing -> table {
   atuin search (if $reverse { "--reverse" } else { '' }) --limit $limit | lines | parse "{date}\t{duration}\t{exit_with}\t{command}" | into datetime date | into int exit_with | update command { nu-highlight } | update duration {
     regex '(?<num>\d+)(?<unit>\D+)' | let m
 
