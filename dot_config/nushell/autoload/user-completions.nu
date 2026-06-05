@@ -195,7 +195,7 @@ export extern sudo [
   --help (-h) # show help message | 显示帮助信息
   --version (-V) # show version information | 显示版本信息
 ]
-def "nu-complete ya pkg" [] {
+def "nu-complete ya pkg" []: nothing -> list<string> {
   ya pkg list | lines | parse "\t{name} ({hash})" | get name
 }
 # delete yazi package | 删除 yazi 包
@@ -266,3 +266,11 @@ export extern "gsudo status" [
 
 # gsudo help-style quick aliases
 export extern "gsudo !" [] # re-run last command as admin (shell-specific behavior) | 以管理员重跑上一个命令
+
+def "nu-complete exe" []: nothing -> record {
+  use complete-tools.nu complete-file
+  complete-file "exe"
+}
+
+# x64dbg completions | x64dbg 补全
+export extern "x96dbg" [file: path@"nu-complete exe"]
