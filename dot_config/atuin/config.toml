@@ -1,273 +1,368 @@
-## 在哪裡儲存您的資料庫，預設為系統的資料目錄
-## Linux/Mac: ~/.local/share/atuin/history.db
-## Windows: %USERPROFILE%/.local/share/atuin/history.db
+## Base directory for Atuin data files (databases, keys, session, etc.)
+## All data file paths default to being relative to this directory.
+## linux/mac: ~/.local/share/atuin (or XDG_DATA_HOME/atuin)
+## windows: %USERPROFILE%/.local/share/atuin
+# data_dir = "~/.local/share/atuin"
+
+## where to store your database, default is your system data directory
+## linux/mac: ~/.local/share/atuin/history.db
+## windows: %USERPROFILE%/.local/share/atuin/history.db
 # db_path = "~/.history.db"
 
-## 將加密金鑰存放的位置，預設為系統的資料目錄  
-## Linux/Mac: ~/.local/share/atuin/key  
-## Windows: %USERPROFILE%/.local/share/atuin/key  
-# key_path = "~/.key"  
+## where to store your encryption key, default is your system data directory
+## linux/mac: ~/.local/share/atuin/key
+## windows: %USERPROFILE%/.local/share/atuin/key
+# key_path = "~/.key"
 
-## 將您的身份驗證會話令牌儲存的位置，預設為系統資料目錄  
-## Linux/Mac: ~/.local/share/atuin/session  
-## Windows: %USERPROFILE%/.local/share/atuin/session  
-# session_path = "~/.session"  
+## where to store your auth session token, default is your system data directory
+## linux/mac: ~/.local/share/atuin/session
+## windows: %USERPROFILE%/.local/share/atuin/session
+# session_path = "~/.session"
 
-## 日期格式使用，"us" 或 "uk"
+## date format used, either "us" or "uk"
 # dialect = "us"
 
-## 顯示時間時使用的預設時區  
-## 可以是 "l"、"local" 表示使用系統當前的本地時區，或者是從 UTC 偏移的格式  
-## 格式為 "<+|->H[H][:M[M][:S[S]]]"  
-## 例如: "+9"、"-05"、"+03:30"、"-01:23:45" 等  
-# timezone = "local"  
+## default timezone to use when displaying time
+## either "l", "local" to use the system's current local timezone, or an offset
+## from UTC in the format of "<+|->H[H][:M[M][:S[S]]]"
+## for example: "+9", "-05", "+03:30", "-01:23:45", etc.
+# timezone = "local"
 
-## 啟用或停用自動同步
+## enable or disable automatic sync
 # auto_sync = true
 
-## 啟用或停用自動更新檢查
+## enable or disable automatic update checks
 # update_check = true
 
-## 同步伺服器的地址
+## address of the sync server
 # sync_address = "https://api.atuin.sh"
 
-## 多久同步一次歷史記錄。請注意，這僅在執行命令時觸發，
-## 因此同步間隔可能會更長
-## 設置為 0 表示每次執行命令後都進行同步
+## how often to sync history. note that this is only triggered when a command
+## is ran, so sync intervals may well be longer
+## set it to 0 to sync after every command
 # sync_frequency = "10m"
 
-## 使用哪種搜尋模式  
-## 可用值：prefix、fulltext、fuzzy、skim  
-# search_mode = "fuzzy"  
+## which search mode to use
+## possible values: prefix, fulltext, fuzzy, skim
+# search_mode = "fuzzy"
 
-## 預設使用哪種篩選模式  
-## 可用值："global"、"host"、"session"、"session-preload"、"directory"、"workspace"  
-## 考慮使用 search.filters 自訂篩選模式的啟用和順序  
-# filter_mode = "global"  
+## which filter mode to use by default
+## possible values: "global", "host", "session", "session-preload", "directory", "workspace"
+## consider using search.filters to customize the enablement and order of filter modes
+# filter_mode = "global"
 
-# 啟用工作區篩選後，Atuin 將篩選在任何 git 儲存庫樹中的目錄執行的命令（預設：false）。
-# 若要在可用時預設使用工作區模式，請將此設為 true，並將 filter_mode 設為 "workspace" 或保持未指定，
-# 並將 search.filters 設置為在其他篩選模式之前包含 "workspace"。
+## With workspace filtering enabled, Atuin will filter for commands executed
+## in any directory within a git repository tree (default: false).
+##
+## To use workspace mode by default when available, set this to true and
+## set filter_mode to "workspace" or leave it unspecified and
+## set search.filters to include "workspace" before other filter modes.
 workspaces = true
 
-## 當從 shell 的向上鍵綁定調用 atuin 時使用哪種過濾模式  
-## 可接受的值與 "filter_mode" 的值相同  
-## 如果未指定，則使用 "filter_mode" 中設置的相同模式  
-filter_mode_shell_up_key_binding = "session-preload"
+## which filter mode to use when atuin is invoked from a shell up-key binding
+## the accepted values are identical to those of "filter_mode"
+## leave unspecified to use same mode set in "filter_mode"
+# filter_mode_shell_up_key_binding = "global"
 
-## 當從 shell 的上鍵綁定調用 atuin 時使用哪種搜索模式  
-## 可接受的值與 "search_mode" 的值相同  
-## 如果未指定，則使用 "search_mode" 中設置的相同模式  
-# search_mode_shell_up_key_binding = "fuzzy"  
+## which search mode to use when atuin is invoked from a shell up-key binding
+## the accepted values are identical to those of "search_mode"
+## leave unspecified to use same mode set in "search_mode"
+# search_mode_shell_up_key_binding = "fuzzy"
 
-## 使用哪種樣式  
-## 可能的值：auto、full、compact  
-style = "auto"
+## which style to use
+## possible values: auto, full, compact
+# style = "auto"
 
-## 介面應佔用的最大行數  
-## 設為 0 以始終全螢幕顯示  
-# inline_height = 0  
+## the maximum number of lines the interface should take up
+## set it to 0 to always go full screen
+# inline_height = 0
 
-## 介面應佔用的最大行數  
-## 當 atuin 從 shell 的上鍵綁定中調用時  
-## 可接受的值與 "inline_height" 的值相同  
-# inline_height_shell_up_key_binding = 0  
+## the maximum number of lines the interface should take up
+## when atuin is invoked from a shell up-key binding
+## the accepted values are identical to those of "inline_height"
+# inline_height_shell_up_key_binding = 0
 
-## 反轉使用者介面 - 將搜尋列放在頂部，預設為 `false`
+## Invert the UI - put the search bar at the top , Default to `false`
 # invert = false
 
-## 啟用或停用顯示所選命令的預覽  
-## 當命令長度超過終端寬度且被截斷時非常有用  
-# show_preview = true  
+## enable or disable showing a preview of the selected command
+## useful when the command is longer than the terminal width and is cut off
+# show_preview = true
 
-## 當搜尋時按下 Escape 鍵該怎麼做  
-## 可選值：return-original, return-query  
-# exit_mode = "return-original"  
+## what to do when the escape key is pressed when searching
+## possible values: return-original, return-query
+# exit_mode = "return-original"
 
-## 可能的值：emacs, subl
+## possible values: emacs, subl
 # word_jump_mode = "emacs"
 
-## 作為單詞一部分的字符  
-# word_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"  
+## characters that count as a part of a word
+# word_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-## 滾動頁面時顯示的上下文行數
+## number of context lines to show when scrolling by pages
 # scroll_context_lines = 1
 
-## 使用 Ctrl 鍵而非 Alt 鍵作為數字 UI 快捷鍵的修飾鍵  
-## Alt-0 .. Alt-9  
-# ctrl_n_shortcuts = false  
+## use ctrl instead of alt as the shortcut modifier key for numerical UI shortcuts
+## alt-0 .. alt-9
+# ctrl_n_shortcuts = false
 
-## 在 TUI 中顯示列表項目旁的數字快捷鍵 (1..9)
-## 如果覺得移動的數字會分心，設為 false 隱藏
+## Show numeric shortcuts (1..9) beside list items in the TUI
+## set to false to hide the moving numbers if you find them distracting
 # show_numeric_shortcuts = true
 
-## 預設歷史記錄列表格式 - 也可以使用 --format 參數指定  
+## default history list format - can also be specified with the --format arg
 history_format = "{time}\t{duration}\t{exit}\t{command}"
 
-## 防止與以下正則表達式匹配的命令被寫入歷史記錄。
-## 請注意，這些正則表達式是非錨定的，即如果它們不以 ^ 開頭或以 $ 結尾，
-## 則會匹配命令中的任何位置。
-## 有關支持的正則表達式語法的詳細信息，請參見
-## https://docs.rs/regex/latest/regex/#syntax
-history_filter = [
-	"^exit",
-	"^_$",
-]
+## Defaults to true. If enabled, strip trailing spaces and tabs from commands
+## before saving them to history.
+## Escaped trailing spaces (for example `printf foo\\ `) are preserved.
+# strip_trailing_whitespace = true
 
-## 防止執行目錄符合以下任意正則表達式的命令被寫入歷史記錄
-## 請注意，這些正則表達式是非錨定的，即如果它們未以 ^ 開頭或 $ 結尾，
-## 則會匹配 CWD 中的任何位置。
-## 有關支援的正則表達式語法詳細資訊，請參見
+## prevent commands matching any of these regexes from being written to history.
+## Note that these regular expressions are unanchored, i.e. if they don't start
+## with ^ or end with $, they'll match anywhere in the command.
+## For details on the supported regular expression syntax, see
+## https://docs.rs/regex/latest/regex/#syntax
+history_filter = ["^exit", "^_$", "^(r#)?(\"|')"]
+
+## prevent commands run with cwd matching any of these regexes from being written
+## to history. Note that these regular expressions are unanchored, i.e. if they don't
+## start with ^ or end with $, they'll match anywhere in CWD.
+## For details on the supported regular expression syntax, see
 ## https://docs.rs/regex/latest/regex/#syntax
 # cwd_filter = [
 #   "^/very/secret/area",
 # ]
 
-# 配置預覽顯示的最大高度。
-# 當歷史記錄中有較長的腳本且希望通過多於前幾行來區分時非常有用。
-max_preview_height = 4
+## Configure the maximum height of the preview to show.
+## Useful when you have long scripts in your history that you want to distinguish
+## by more than the first few lines.
+# max_preview_height = 4
 
-# 配置是否顯示幫助列，其中包括當前的 Atuin 版本（以及是否有可用更新）、鍵位提示以及歷史記錄中的命令總數。
-show_help = true
+## Configure whether or not to show the help row, which includes the current Atuin
+## version (and whether an update is available), a keymap hint, and the total
+## amount of commands in your history.
+# show_help = true
 
-## 配置是否顯示搜尋和檢查的標籤
+## Configure whether or not to show tabs for search and inspect
 # show_tabs = true
 
-# 配置是否允許自動隱藏標籤列，包括當前的 Atuin 標籤，例如搜尋或檢查器，以及您可能希望查看的其他標籤。只有當可用行數少於此數量時才會隱藏，且不影響使用鍵盤快捷鍵切換標籤。0 表示永不自動隱藏，預設為 8（行）。
-# 此設定僅在 `compact` 模式下有效。
-auto_hide_height = 8
+## Configure whether or not the tabs row may be auto-hidden, which includes the current Atuin
+## tab, such as Search or Inspector, and other tabs you may wish to see. This will
+## only be hidden if there are fewer than this count of lines available, and does not affect the use
+## of keyboard shortcuts to switch tab. 0 to never auto-hide, default is 8 (lines).
+## This is ignored except in `compact` mode.
+# auto_hide_height = 8
 
-## 預設為 true。這會根據一組預設的正則表達式檢查歷史記錄，如果匹配則不會保存。預設包括  
-## 1. AWS 金鑰 ID  
-## 2. Github 個人訪問權杖（舊版和新版）  
-## 3. Slack OAuth 權杖（機器人、使用者）  
-## 4. Slack Webhooks  
-## 5. Stripe Live/Test 金鑰  
-# secrets_filter = true  
+## Defaults to true. This matches history against a set of default regex, and will not save it if we get a match. Defaults include
+## 1. AWS key id
+## 2. Github pat (old and new)
+## 3. Slack oauth tokens (bot, user)
+## 4. Slack webhooks
+## 5. Stripe live/test keys
+# secrets_filter = true
 
-## 預設為 true。如果啟用，按下 Enter 後，Atuin 將立即執行命令。按下 Tab 鍵可返回 shell 進行編輯。
-# 這適用於新安裝。舊安裝將保持舊行為，除非另行配置。
+## Defaults to true. If enabled, upon hitting enter Atuin will immediately execute the command,
+## whereas tab will put the command in the prompt for editing.
+## If set to false, both enter and tab will place the command in the prompt for editing.
+## This applies for new installs. Old installs will keep the old behaviour unless configured otherwise.
 enter_accept = false
 
-## 預設為 false。如果啟用，當在 &&、|| 或 | 之後觸發時，Atuin 將完成命令以進行鏈接，而不是替換當前行。
+## Defaults to false. If enabled, when triggered after &&, || or |, Atuin will complete commands to chain rather than replace the current line.
 # command_chaining = false
 
-# 預設為 "emacs"。這指定了 `atuin search` 啟動時的鍵盤映射。如果設置為 "auto"，Atuin 搜索的啟動鍵盤映射模式將根據定義鍵綁定的 shell 鍵盤映射自動選擇。如果設置為 "emacs"、"vim-insert" 或 "vim-normal"，Atuin 搜索的啟動鍵盤映射模式將被強制為指定的模式。
-keymap_mode = "auto"
+## Defaults to "emacs".  This specifies the keymap on the startup of `atuin
+## search`.  If this is set to "auto", the startup keymap mode in the Atuin
+## search is automatically selected based on the shell's keymap where the
+## keybinding is defined.  If this is set to "emacs", "vim-insert", or
+## "vim-normal", the startup keymap mode in the Atuin search is forced to be
+## the specified one.
+# keymap_mode = "auto"
 
-# 每個鍵盤模式中的游標樣式。如果指定，游標樣式會在進入時改變  
-# 可用的值為 "default" 和 "{blink,steady}-{block,underline,bar}"。
+## Cursor style in each keymap mode.  If specified, the cursor style is changed
+## in entering the cursor shape.  Available values are "default" and
+## "{blink,steady}-{block,underline,bar}".
+# keymap_cursor = { emacs = "blink-block", vim_insert = "blink-block", vim_normal = "steady-block" }
 
-# network_connect_timeout = 5  
-# network_timeout = 5  
+# network_connect_timeout = 5
+# network_timeout = 5
 
-## 獲取本地資料庫連線（sqlite）的超時時間（以秒為單位）
+## Timeout (in seconds) for acquiring a local database connection (sqlite)
 # local_timeout = 5
 
-## 將此設置為 true，Atuin 將最小化 UI 中的動態 - 計時器將不會即時更新等。
-## 或者，設置環境變數 NO_MOTION=true
-prefers_reduced_motion = true
+## Set this to true and Atuin will minimize motion in the UI - timers will not update live, etc.
+## Alternatively, set env NO_MOTION=true
+# prefers_reduced_motion = false
 
 [stats]
-	## 設定應考慮子命令進行統計的命令。例如，kubectl get 與僅 kubectl
-	# common_subcommands = [
-	#   "apt",
-	#   "cargo",
-	#   "composer",
-	#   "dnf",
-	#   "docker",
-	#   "dotnet",
-	#   "git",
-	#   "go",
-	#   "ip",
-	#   "jj",
-	#   "kubectl",
-	#   "nix",
-	#   "nmcli",
-	#   "npm",
-	#   "pecl",
-	#   "pnpm",
-	#   "podman",
-	#   "port",
-	#   "systemctl",
-	#   "tmux",
-	#   "yarn",
-	# ]
+## Set commands where we should consider the subcommand for statistics. Eg, kubectl get vs just kubectl
+# common_subcommands = [
+#   "apt",
+#   "cargo",
+#   "composer",
+#   "dnf",
+#   "docker",
+#   "dotnet",
+#   "git",
+#   "go",
+#   "ip",
+#   "jj",
+#   "kubectl",
+#   "nix",
+#   "nmcli",
+#   "npm",
+#   "pecl",
+#   "pnpm",
+#   "podman",
+#   "port",
+#   "systemctl",
+#   "tmux",
+#   "yarn",
+# ]
 
-	## 設定應該完全刪除並從統計中忽略的命令
-	# common_prefix = ["sudo"]
+## Set commands that should be totally stripped and ignored from stats
+# common_prefix = ["sudo"]
 
-	## 設定將完全從統計中忽略的命令
-	# ignored_commands = [
-	#   "cd",
-	#   "ls",
-	#   "vi"
-	# ]
+## Set commands that will be completely ignored from stats
+# ignored_commands = [
+#   "cd",
+#   "ls",
+#   "vi"
+# ]
 
 [keys]
-	# 預設為 true。如果禁用，當滾動超過第一/最後一個條目時，使用上下鍵不會退出 TUI。  
-	scroll_exits = true
-	# 預設為 true。向左箭頭鍵在滾動到第一個字符之前會退出 TUI。  
-	exit_past_line_start = true
-	# 預設為 true。向右箭頭鍵執行與 Tab 相同的功能，並將選定的行複製到命令行以進行修改。  
-	accept_past_line_end = true
-	# 預設為 false。向左箭頭鍵執行與 Tab 相同的功能，並將選定的行複製到命令行以進行修改。  
-	accept_past_line_start = false
-	# 預設為 false。當位於行首時，退格鍵執行與 Tab 相同的功能，並將選定的行複製到命令行以進行修改。  
-	accept_with_backspace = false
+# Defaults to true. If disabled, using the up/down key won't exit the TUI when scrolled past the first/last entry.
+# scroll_exits = true
+
+# Defaults to true. The left arrow key will exit the TUI when scrolling before the first character
+# exit_past_line_start = true
+
+# Defaults to true. The right arrow key performs the same functionality as Tab and copies the selected line to the command line to be modified.
+# accept_past_line_end = true
+
+# Defaults to false. The left arrow key performs the same functionality as Tab and copies the selected line to the command line to be modified.
+# accept_past_line_start = false
+
+# Defaults to false. The backspace key performs the same functionality as Tab and copies the selected line to the command line to be modified when at the start of the line.
+# accept_with_backspace = false
 
 [sync]
-	# 預設啟用同步 v2  
-	# 這確保僅對新安裝啟用同步 v2  
-	# 在之後的版本中，它將成為全面的預設設定  
-	records = true
+# Enable sync v2 by default
+# This ensures that sync v2 is enabled for new installs only
+# In a later release it will become the default across the board
+records = true
 
 [preview]
-	## 使用哪種預覽策略來計算預覽高度（遵循 max_preview_height）。
-	## 可用值：auto, static
-	## auto：選定命令的長度。
-	## static：歷史記錄中存儲的最長命令的長度。
-	## fixed：使用 max_preview_height 作為固定高度。
-	# strategy = "auto"
+## which preview strategy to use to calculate the preview height (respects max_preview_height).
+## possible values: auto, static
+## auto: length of the selected command.
+## static: length of the longest command stored in the history.
+## fixed: use max_preview_height as fixed height.
+# strategy = "auto"
 
 [daemon]
-	## 啟用使用守護程序進行同步。需要守護程序在背景中運行。使用 `atuin daemon` 啟動它
-	# enabled = false
+## Enables using the daemon to sync.
+# enabled = false
 
-	## 守護程序應該每隔多少秒同步一次
-	# sync_frequency = 300
+## Automatically start and manage the daemon when needed.
+## Not compatible with `systemd_socket = true`.
+# autostart = false
 
-	## 守護程序使用的 Unix 套接字路徑（在 Unix 系統上）
-	## Linux/Mac: ~/.local/share/atuin/atuin.sock
-	## Windows: 不支援
-	# socket_path = "~/.local/share/atuin/atuin.sock"
+## How often the daemon should sync in seconds
+# sync_frequency = 300
 
-	## 使用 systemd 套接字啟動，而不是打開指定的路徑（路徑對於客戶端仍然必須正確）
-	## linux: false
-	## mac/windows: 不支援
-	# systemd_socket = false
+## The path to the unix socket used by the daemon (on unix systems)
+## linux/mac: ~/.local/share/atuin/atuin.sock
+## windows: Not Supported
+# socket_path = "~/.local/share/atuin/atuin.sock"
 
-	## 非 Unix 系統上應該用於 TCP 的埠
-	# tcp_port = 8889
+## The daemon pidfile used for lifecycle management.
+## Defaults to the Atuin data directory.
+# pidfile_path = "~/.local/share/atuin/atuin-daemon.pid"
 
-	# [主題]
-	## 用於在終端中渲染的顏色主題。
-	## 有一些內建主題，包括基礎主題（"default"）、"autumn" 和 "marine"。
-	## 您可以將自己的主題添加到 Atuin 配置的 "./themes" 子目錄中
-	## （或者如果提供了 ATUIN_THEME_DIR，則添加到該目錄），作為 TOML 文件，
-	## 其鍵應該是 AlertInfo、AlertWarn、AlertError、Annotation、Base、Guidance、Important
-	## 中的一個或多個，並且字串值應為以下列表中的小寫條目：
-	##    https://ogeon.github.io/docs/palette/master/palette/named/index.html
-	## 如果您提供自定義主題文件，應將其命名為 "NAME.toml"，並且下面的主題應為主幹，
-	## 即對於您選擇的 NAME，設置 `theme = "NAME"`。
-	# name = "autumn"
+## Use systemd socket activation rather than opening the given path (the path must still be correct for the client)
+## linux: false
+## mac/windows: Not Supported
+# systemd_socket = false
 
-	## 主題管理器是否應輸出正常或額外資訊以協助修復主題。
-	## 布林值，true 或 false。如果未設定，則由主題管理器決定。
-	# debug = true
+## The port that should be used for TCP on non unix systems
+# tcp_port = 8889
+
+# [theme]
+## Color theme to use for rendering in the terminal.
+## There are some built-in themes, including the base theme ("default"),
+## "autumn" and "marine". You can add your own themes to the "./themes" subdirectory of your
+## Atuin config (or ATUIN_THEME_DIR, if provided) as TOML files whose keys should be one or
+## more of AlertInfo, AlertWarn, AlertError, Annotation, Base, Guidance, Important, and
+## the string values as lowercase entries from this list:
+##    https://ogeon.github.io/docs/palette/master/palette/named/index.html
+## If you provide a custom theme file, it should be  called "NAME.toml" and the theme below
+## should be the stem, i.e. `theme = "NAME"` for your chosen NAME.
+# name = "autumn"
+
+## Whether the theme manager should output normal or extra information to help fix themes.
+## Boolean, true or false. If unset, left up to the theme manager.
+# debug = true
 
 [search]
-	## 啟用的過濾模式列表，按優先順序排列。
-	## 當不在工作區或 workspaces = false 時，將跳過 "workspace" 模式。
-	## 預設過濾模式可使用 filter_mode 設定覆蓋。
-	# filters = [ "global", "host", "session", "session-preload", "workspace", "directory" ]
+## The list of enabled filter modes, in order of priority.
+## The "workspace" mode is skipped when not in a workspace or workspaces = false.
+## Default filter mode can be overridden with the filter_mode setting.
+# filters = [ "global", "host", "session", "session-preload", "workspace", "directory" ]
+
+[tmux]
+## Enable using atuin with tmux popup (requires tmux >= 3.2)
+## When enabled and running inside tmux, Atuin will use a popup window for interactive search.
+## Set to false to disable the popup.
+## This can also be controlled with the ATUIN_TMUX_POPUP environment variable.
+## Note: The tmux popup is currently supported in zsh, bash, and fish shells. This currently doesn't work with iTerm native tmux integration.
+# enabled = false
+
+## Width of the tmux popup window
+## Can be a percentage, or integer (e.g. "100" means 100 characters wide)
+# width = "80%"
+
+## Height of the tmux popup window
+## Can be a percentage, or integer (e.g. "100" means 100 lines tall)
+# height = "60%"
+
+[ui]
+## Columns to display in the interactive search, from left to right.
+## The selection indicator (" > ") is always shown first implicitly.
+##
+## Each column can be specified as a simple string (uses default width)
+## or as an object with type, width, and expand:
+##   { type = "directory", width = 30, expand = true }
+##
+## Available column types (with default widths):
+##   duration  (5)  - Command execution duration (e.g., "123ms")
+##   time      (8)  - Relative time since execution (e.g., "59m ago")
+##   datetime  (16) - Absolute timestamp (e.g., "2025-01-22 14:35")
+##   directory (20) - Working directory (truncated if too long)
+##   host      (15) - Hostname where command was run
+##   user      (10) - Username
+##   exit      (3)  - Exit code (colored by success/failure)
+##   command   (*)  - The command itself (expands by default)
+##
+## The "expand" option (default: true for command, false for others) makes a
+## column fill remaining space. Only one column should have expand = true.
+##
+## Default:
+# columns = ["duration", "time", "command"]
+##
+## Examples:
+##
+## Minimal - more space for commands:
+# columns = ["duration", "command"]
+##
+## With wider directory column:
+# columns = ["duration", { type = "directory", width = 30 }, "command"]
+##
+## Show host for multi-machine sync users:
+# columns = ["duration", "time", "host", "command"]
+##
+## Show exit codes prominently:
+# columns = ["exit", "duration", "command"]
+##
+## Make directory expand instead of command:
+# columns = ["duration", "time", { type = "directory", expand = true }, { type = "command", expand = false }]
