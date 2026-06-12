@@ -926,11 +926,16 @@ export def "ps port" [
   port: int
   --long (-l)
 ]: nothing -> table {
-  let pid = if $nu.os-info.name == windows {
-    netstat -ano | where 'Local Address' ends-with $":($port)" | get 0.PID
+  let pid: list<int> = if $nu.os-info.name == windows {
+    netstat -ano | where 'Local Address' ends-with $":($port)" | get PID
   } else {
     error make 'ps port wrapper is only implemented for windows'
   }
 
-  ps --long=$long | where pid == $pid
+  ps --long=$long | where pid in $pid
+}
+
+# a wrapper for ps command to filter processes by name, use ps to get the process information, then filter the processes by name using regex match, also pass the rest arguments to ps command
+export def "ps name" [name: string --long (-l)]: nothing -> table {
+  ps --long=$long | where name =~ $name
 }

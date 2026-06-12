@@ -89,6 +89,9 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   +---atuin
 # => |   |       config.toml
 # => |   |
+# => |   +---direnv
+# => |   |       direnv.toml
+# => |   |
 # => |   +---gh
 # => |   |       config.yml
 # => |   |

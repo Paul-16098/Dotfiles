@@ -1,0 +1,4 @@
+[global]
+bash_path = 'C:\Program Files\Git\usr\bin\bash.exe'
+load_dotenv = true
+strict_env = true

@@ -23,8 +23,7 @@ export-env {
             const CODE = "overlay use toolkit.nu"
             print $"(ansi green)toolkit.nu(ansi reset) is exists in this directory, but not loaded.\nrun next line to activate it:"
             print ($CODE | nu-highlight)
-            # not working
-            # commandline edit $CODE
+            commandline edit $CODE
           }
         }
         {
@@ -38,8 +37,7 @@ export-env {
             const CODE = "overlay hide toolkit"
             print $"(ansi green)toolkit.nu(ansi reset) is not exists in this directory, but toolkit overlay is loaded.\nrun next line to deactivate it:"
             print ($CODE | nu-highlight)
-            # not working
-            # commandline edit $CODE
+            commandline edit $CODE
           }
         }
         # venv
@@ -49,8 +47,7 @@ export-env {
             const CODE = "overlay use ./.venv/Scripts/activate.nu"
             print $"venv is exists in this directory, but not activated.\nrun next line to activate it:"
             print ($CODE | nu-highlight)
-            # not working
-            # commandline edit $CODE
+            commandline edit $CODE
           }
         }
         {
@@ -59,8 +56,17 @@ export-env {
             const CODE = "overlay hide activate"
             print $"venv is not exists in this directory, but activated.\nrun next line to deactivate it:"
             print ($CODE | nu-highlight)
-            # not working
-            # commandline edit $code
+            commandline edit $CODE
+          }
+        }
+        # direnv
+        {
+          code: {||
+            if (which direnv | is-empty) {
+              return
+            }
+
+            direnv export json | from json | default {} | load-env
           }
         }
       ]
