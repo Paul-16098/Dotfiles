@@ -3,44 +3,45 @@
 {{ $USE_SIGN := promptBoolOnce . "use_sign" "Do you want to sign your commits and tags" -}}
 
 [data]
-    EMAIL = {{ $EMAIL | quote }}
-    GH_NAME = {{ $GH_NAME | quote }}
+EMAIL = {{ $EMAIL | quote }}
+GH_NAME = {{ $GH_NAME | quote }}
 
-    {{- if $USE_SIGN -}}
-    {{ $SIGN_BY := promptChoiceOnce . "sign_by" "What you want to use for signing commits and tags" (list "gpg" "ssh") }}
-    {{ $SIGN_KEY_ID := promptStringOnce . "sign_key_id" "Your GPG key ID if use GPG for signing else ssh key ID" }}
-    SIGN_BY = {{ $SIGN_BY | quote }}
-    SIGN_KEY_ID = {{ $SIGN_KEY_ID | quote }}
-    {{- end }}
+{{- if $USE_SIGN -}}
+{{ $SIGN_BY := promptChoiceOnce . "sign_by" "What you want to use for signing commits and tags" (list "gpg" "ssh") }}
+{{ $SIGN_KEY_ID := promptStringOnce . "sign_key_id" "Your GPG key ID if use GPG for signing else ssh key ID" }}
+SIGN_BY = {{ $SIGN_BY | quote }}
+SIGN_KEY_ID = {{ $SIGN_KEY_ID | quote }}
+{{- end }}
 
 encryption = "gpg"
 
 [diff]
-    command = "code-insiders"
-    args = [
-        "--wait",
-        "--diff",
-    ]
+command = "code-insiders"
+args = [
+  "--wait",
+  "--diff",
+]
 
 [keepassxc]
-    database = {{ promptStringOnce . "keepassxc_database" "What is the path to your KeePassXC database" | quote }}
+database = {{ promptStringOnce . "keepassxc_database" "What is the path to your KeePassXC database" | quote }}
 
 [merge]
-    command = "code-insiders"
-    args = [
-        "--new-window",
-        "--wait",
-        "--merge",
-        "{{ "{{ .Destination }}" }}",
-        "{{ "{{ .Target }}" }}",
-        '{{ "{{ printf \"%s.base\" .Target }}" }}',
-        "{{ "{{ .Source }}" }}",
-    ]
+command = "code-insiders"
+args = [
+  "--new-window",
+  "--wait",
+  "--merge",
+  "{{ .Destination }}",
+  "{{ .Target }}",
+  '{{ printf "%s.base" .Target }}',
+  "{{ .Source }}",
+]
 
 [git]
-    autoAdd    = true
-    autoCommit = true
+autoAdd = true
+autoCommit = true
+
 {{- if promptBoolOnce . "use_pinentry" "Do you want to use pinentry for password input" }}
 [pinentry]
-    command = 'pinentry'
+command = 'pinentry'
 {{- end }}
