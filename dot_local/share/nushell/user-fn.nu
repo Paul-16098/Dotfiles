@@ -439,6 +439,11 @@ If you wish to set tracking information for this branch you can do so with:
     pull_wrapped ...$rest
     return
   }
+  if not $nu.is-interactive {
+    print --stderr $"(ansi grey)Not running in interactive mode, skipping interactive pull wrapper.\nRunning git pull with provided arguments...(ansi reset)"
+    pull_wrapped ...$rest
+    return
+  }
 
   const KEY_HINT = $"_P_ull(ansi reset), _S_how(ansi reset), _L_ogs(ansi reset) or _A_bort(ansi reset)." | str replace --all --regex "_(.)_" $"(ansi green_underline)$1(ansi reset_underline)"
 
