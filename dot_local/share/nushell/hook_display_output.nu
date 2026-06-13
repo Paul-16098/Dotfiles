@@ -5,6 +5,7 @@ export def "config user-display-output" []: nothing -> nothing {
   run-external $env.config.buffer_editor ($self)
 }
 
+# nu-lint-ignore: unused_helper_functions
 def classify []: record -> record {
   let md = $in
   # print --stderr ($md | to json)

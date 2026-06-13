@@ -198,7 +198,7 @@ def git-log-subject-highlight [remote_url: string]: string -> string {
 # use in git log wrapper
 const NOREPLY_EMAIL = ["@users.noreply.github.com" "@noreply.codeberg.org" "noreply@github.com"]
 
-def "complete git log" [spans: list<string>]: nothing -> any { do $env.config.completions.external.completer [git log ...($spans | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
+def "complete git log" [spans: list<string>]: nothing -> table<value: string, display: string, description: string, style: record<fg: string, attr: string>> { do $env.config.completions.external.completer [git log ...($spans | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
 
 # use in git log wrapper to format author_email and committer_email, if it's a noreply email, show as "noreply email" in dark gray italic, otherwise add mailto link to the email
 def "format-git-email" [email: string]: nothing -> string {
@@ -297,7 +297,7 @@ export-env {
     }
 }
 
-def "complete git pull" [spans: list<string>]: nothing -> any { do $env.config.completions.external.completer [git pull ...($spans | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
+def "complete git pull" [spans: list<string>]: nothing -> table<value: string, display: string, description: string, style: record<fg: string, attr: string>> { do $env.config.completions.external.completer [git pull ...($spans | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
 
 # git pull wrapper to show updated commits
 # and add hooks for pre-pull and post-pull scripts if they exist in .git/hooks/pre-pull and .git/hooks/post-pull, also add options to skip hooks and skip pause, and add config to disable the wrapper for specific repos or specific commit subjects, if the pull includes commits with subjects that match the configured ones, skip the interactive prompt and directly pull, also handle the case when there is no tracking information for the current branch and show a helpful error message
@@ -479,7 +479,7 @@ export def --wrapped "git show" [...rest: string]: any -> string {
   }
 }
 
-def "complete git status-or-show" [spans: list<string>]: nothing -> any { do $env.config.completions.external.completer [git show ...($spans | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
+def "complete git status-or-show" [spans: list<string>]: nothing -> table<value: string, display: string, description: string, style: record<fg: string, attr: string>> { do $env.config.completions.external.completer [git show ...($spans | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
 
 # a wrapper for git status and git show, if no arguments, run git status, otherwise run git show with the provided arguments, also handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
 @complete "complete git status-or-show"

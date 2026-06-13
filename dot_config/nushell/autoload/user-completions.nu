@@ -97,6 +97,7 @@ export extern _es [
 ]
 
 # java completions | Java 补全
+# nu-lint-ignore: unused_helper_functions
 def "nu-complete java" []: nothing -> record {
   use complete-tools.nu complete-file
   complete-file java
@@ -104,6 +105,7 @@ def "nu-complete java" []: nothing -> record {
 
 export extern java [command?: string@"nu-complete java"]
 
+# nu-lint-ignore: unused_helper_functions
 def "nu-complete bz-command" []: nothing -> list<record> {
   [
     {value: "a" description: "Add files to archive | 添加文件到压缩包"}
@@ -116,6 +118,7 @@ def "nu-complete bz-command" []: nothing -> list<record> {
   ]
 }
 
+# nu-lint-ignore: unused_helper_functions
 def "nu-complete bz-switch" []: nothing -> list<record> {
   [
     {value: "-l:5" description: "Compression level 0-9 (default 5) | 压缩级别"}
@@ -151,6 +154,7 @@ def "nu-complete bz-switch" []: nothing -> list<record> {
   ]
 }
 
+# nu-lint-ignore: unused_helper_functions
 def "nu-complete zip" []: nothing -> record {
   use complete-tools.nu complete-file
   complete-file "{zip,7z,apk}"
@@ -162,6 +166,7 @@ export extern bz [
   ...args: string@"nu-complete bz-switch"
 ]
 
+# nu-lint-ignore: unused_helper_functions
 def "nu-complete sudo-command" []: nothing -> list<record> {
   [
     {
@@ -179,6 +184,7 @@ def "nu-complete sudo-command" []: nothing -> list<record> {
   ]
 }
 
+# nu-lint-ignore: unused_helper_functions
 def "nu-complete exec" []: nothing -> record {
   use complete-tools.nu complete-file
   complete-file "{exe,bat,cmd,ps1}"
@@ -195,6 +201,7 @@ export extern sudo [
   --help (-h) # show help message | 显示帮助信息
   --version (-V) # show version information | 显示版本信息
 ]
+# nu-lint-ignore: unused_helper_functions
 def "nu-complete ya pkg" []: nothing -> list<string> {
   ya pkg list | lines | parse "\t{name} ({hash})" | get name
 }
@@ -267,6 +274,7 @@ export extern "gsudo status" [
 # gsudo help-style quick aliases
 export extern "gsudo !" [] # re-run last command as admin (shell-specific behavior) | 以管理员重跑上一个命令
 
+# nu-lint-ignore: unused_helper_functions
 def "nu-complete exe" []: nothing -> record {
   use complete-tools.nu complete-file
   complete-file "exe"

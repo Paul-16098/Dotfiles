@@ -98,9 +98,6 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   +---just
 # => |   |       justfile
 # => |   |
-# => |   +---nextest
-# => |   |       empty_config.toml
-# => |   |
 # => |   +---nushell
 # => |   |   |   config.nu
 # => |   |   |   env.nu
@@ -114,7 +111,6 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   |   |
 # => |   |   \---scripts
 # => |   |           complete-tools.nu
-# => |   |           i18n.nu
 # => |   |           nu-selfupdate.ps1
 # => |   |
 # => |   +---uv
