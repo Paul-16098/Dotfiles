@@ -1432,7 +1432,7 @@ def "nu-complete managed-hasdiff" []: nothing -> record<options: record<completi
       completions: (chezmoi status | detect columns --no-headers | rename status path | get path | par-each --keep-order { "~/" + ($in) })
     }
   } else {
-    nu-complete chezmoi managed
+    nu-complete managed
   }
 }
 

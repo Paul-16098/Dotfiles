@@ -103,10 +103,8 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   |   |   README.md
 # => |   |   |
 # => |   |   +---autoload
-# => |   |   |       chezmoi-completion.nu
 # => |   |   |       READMD.md
 # => |   |   |       user-aliases.nu
-# => |   |   |       user-completions.nu
 # => |   |   |
 # => |   |   \---scripts
 # => |   |           complete-tools.nu
@@ -128,10 +126,12 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => +---dot_local
 # => |   \---share
 # => |       \---nushell
+# => |               chezmoi-completion.nu
 # => |               hooks.nu
 # => |               hook_display_output.nu
 # => |               keybindings.nu
 # => |               README.md
+# => |               user-completions.nu
 # => |               user-fn.nu
 # => |
 # => +---dot_ssh

@@ -1,3 +1,4 @@
+# nu-lint-ignore-file: dynamic_script_import
 # config
 $env.config.buffer_editor = [(which --all $env.EDITOR | get 0.path) "--wait"]
 $env.config.table.missing_value_symbol = "[X]"
@@ -71,6 +72,11 @@ overlay use ($nu.data-dir | path join hook_display_output.nu)
 
 # keybindings
 overlay use ($nu.data-dir | path join keybindings.nu)
+
+# completions
+overlay new completions
+use ($nu.data-dir | path join chezmoi-completion.nu)
+use ($nu.data-dir | path join user-completions.nu)
 
 # nupm
 # overlay use nupm/nupm/ --prefix

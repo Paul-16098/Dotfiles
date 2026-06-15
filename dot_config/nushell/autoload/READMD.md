@@ -5,7 +5,7 @@
 ## chezmoi-completion.nu
 
 ```nu s
-use ./chezmoi-completion.nu
+use chezmoi-completion
 ls-commands chezmoi-completion | to md
 ```
 
