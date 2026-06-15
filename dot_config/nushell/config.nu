@@ -76,4 +76,7 @@ overlay use ($nu.data-dir | path join keybindings.nu)
 # overlay use nupm/nupm/ --prefix
 # $env.NU_LIB_DIRS = $env.NU_LIB_DIRS ++ [($env.NUPM_HOME | path join modules)]
 
+alias 'ast md' = from md
+alias 'from md' = print --stderr 'Please use "ast md" instead.'
+
 $env | reject --optional --ignore-case config FILE_PWD CURRENT_FILE PWD | transpose key val | str uppercase key | transpose --as-record --header-row | load-env

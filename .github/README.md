@@ -40,7 +40,6 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   dot_actrc
 # => |   dot_eget.toml
 # => |   dot_gitconfig.tmpl
-# => |   dot_prettierrc
 # => |   dot_wakatime.cfg.tmpl
 # => |   rustfmt.toml
 # => |   tsconfig.json

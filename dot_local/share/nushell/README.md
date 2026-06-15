@@ -34,7 +34,6 @@ Output:
 # => | git show | git show wrapper to handle the case when git show is interrupted by user (exit code 141) to avoid showing error message |
 # => | git status-or-show | a wrapper for git status and git show, if no arguments, run git status, otherwise run git show with the provided arguments, also handle the case when git show is interrupted by user (exit code 141) to avoid showing error message |
 # => | highlight | use $color_code to highlight text in output |
-# => | kill with name | kill process by name |
 # => | meme | get meme and copy to clipboard |
 # => | netstat -ano | a wrapper for netstat -ano to output a table with Proto, Local Address, Foreign Address, State and PID columns, also parse the PID to int and filter out the first 3 lines of the output |
 # => | pause | my custom pause function |

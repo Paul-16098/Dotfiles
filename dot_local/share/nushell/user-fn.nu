@@ -598,14 +598,6 @@ export def get-dll [
   } | flatten
 }
 
-# kill process by name
-export def "kill with name" [
-  name: string # process name to kill
-  --force (-f) # force kill the process
-]: nothing -> nothing {
-  ps | where name =~ $name | kill ...$in.pid --force=$force
-}
-
 # my custom pause function
 export def pause []: nothing -> nothing {
   print "Press any key to continue..."

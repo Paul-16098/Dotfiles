@@ -31,7 +31,7 @@ export def complete-path [
     | if $sort { sort-path } else { $in }
     | if not $raw {
       par-each --keep-order {
-        if ($in | str contains " ") {
+        if $in =~ " " {
           log debug $"Path contains spaces, wrapping in quotes: ($in)"
           $"'($in)'"
         } else { $in }
@@ -84,5 +84,5 @@ export def complete-mime [...mime_type: string]: nothing -> record {
     }
   }
 
-  base | update completions ($out | par-each { if ($in | str contains " ") { $"'($in)'" } else { $in } } | sort-path)
+  base | update completions ($out | par-each { if $in =~ " " { $"'($in)'" } else { $in } } | sort-path)
 }
