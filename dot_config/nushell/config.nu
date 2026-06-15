@@ -75,7 +75,6 @@ overlay use ($nu.data-dir | path join keybindings.nu)
 
 # completions
 overlay new completions
-use ($nu.data-dir | path join chezmoi-completion.nu)
 use ($nu.data-dir | path join user-completions.nu)
 
 # nupm

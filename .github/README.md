@@ -103,7 +103,6 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   |   |   README.md
 # => |   |   |
 # => |   |   +---autoload
-# => |   |   |       READMD.md
 # => |   |   |       user-aliases.nu
 # => |   |   |
 # => |   |   \---scripts
@@ -126,7 +125,6 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => +---dot_local
 # => |   \---share
 # => |       \---nushell
-# => |               chezmoi-completion.nu
 # => |               hooks.nu
 # => |               hook_display_output.nu
 # => |               keybindings.nu
