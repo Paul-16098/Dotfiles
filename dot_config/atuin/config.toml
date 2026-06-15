@@ -124,11 +124,22 @@ history_format = "{time}\t{duration}\t{exit}\t{command}"
 ## For details on the supported regular expression syntax, see
 ## https://docs.rs/regex/latest/regex/#syntax
 history_filter = [
+  # exclude common non-commands that are often accidentally entered, such as just "exit"
   "^exit",
-  "^_$",
+  # exclude commands that start with a quote
   "^(r#)?(\"|')",
+  # exclude commands that start with a number
+  "^\\d+",
+  # exclude commands that start with a list
+  "^\\[",
+  # exclude commands that start with a record
+  "^\\{",
+  # exclude commands that start with #, which are often used for notes or to temporarily disable a command without deleting it. This is optional and can be removed if you want to keep such commands in your history.
   "^#",
-  "overlay use ./.venv/Scripts/activate.nu"
+  # exclude commands that activate python venv
+  "^overlay use ./.venv/Scripts/activate.nu$",
+  # exclude commands that are just get help
+  " (--help|-h)$"
 ]
 
 ## prevent commands run with cwd matching any of these regexes from being written
@@ -175,7 +186,7 @@ history_filter = [
 enter_accept = false
 
 ## Defaults to false. If enabled, when triggered after &&, || or |, Atuin will complete commands to chain rather than replace the current line.
-# command_chaining = false
+command_chaining = true
 
 ## Defaults to "emacs".  This specifies the keymap on the startup of `atuin
 ## search`.  If this is set to "auto", the startup keymap mode in the Atuin
