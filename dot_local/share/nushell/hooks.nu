@@ -38,7 +38,7 @@ export-env {
           }
           code: {|old new|
             $env.toolkit_hide_hooks_is_notified = true
-            const CODE = "overlay hide toolkit"
+            const CODE = "overlay hide toolkit --keep-env [PWD]"
             print $"(ansi green)toolkit.nu(ansi reset) is not exists in this directory, but toolkit overlay is loaded.\nrun next line to deactivate it:"
             print ($CODE | nu-highlight)
             commandline edit $CODE
@@ -71,7 +71,7 @@ export-env {
           }
           code: {|old new|
             $env.venv_hide_hooks_is_notified = true
-            const CODE = "overlay hide activate"
+            const CODE = "overlay hide activate --keep-env [PWD]"
             print $"venv is not exists in this directory, but activated.\nrun next line to deactivate it:"
             print ($CODE | nu-highlight)
             commandline edit $CODE
