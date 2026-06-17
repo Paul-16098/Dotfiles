@@ -620,7 +620,7 @@ def "nu-complete steamcmd" []: nothing -> record {
         description: 'Login to Steam: login <username> [<password>] [<Steam guard code>]'
       }
       {
-        value: '+login anonymous'
+        value: '"+login anonymous"'
         description: 'you may login anonymously using "login anonymous" if the content you
 wish to download is available for anonymous access.'
       }
@@ -865,7 +865,7 @@ export def highlight [
 # alternative buffer wrapper, use callback to run commands in alternative buffer and get the output, the callback should return the output as a string, the alternative buffer will be cleared after the callback is executed
 # nu-lint-ignore: missing_in_type, missing_output_type
 export def --env alternative-buffer [
-  callback: closure # a callback to run commands in alternative buffer, the callback should return the output as a string
+  fn: closure # a callback to run commands in alternative buffer, the callback should return the output as a string
 
   --keep-env # Keep the environment defined inside the command.
 
@@ -874,7 +874,7 @@ export def --env alternative-buffer [
 ]: any -> any {
   print --no-newline (ansi --escape ?1049h)
 
-  $in | do --env=$keep_env $callback ...$rest | let out
+  $in | do --env=$keep_env $fn ...$rest | let out
 
   print --no-newline (ansi --escape ?1049l)
 
