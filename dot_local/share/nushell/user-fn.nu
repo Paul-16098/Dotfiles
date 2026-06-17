@@ -892,9 +892,12 @@ export def '_atuin history' [
     let num = $m | where capture_name == num | get 0.match
     let unit = match ($m | where capture_name == unit | get 0.match) {
       's' => 'sec'
+      'm' => 'min'
 
       $_ => $_
     }
+
+    # print $"num=($num);unit=($unit)"
 
     $num | into duration --unit $unit
   }
