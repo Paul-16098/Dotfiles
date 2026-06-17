@@ -2,21 +2,20 @@ const self = path self
 
 # Edit this config.
 export def "config user-hooks" []: nothing -> nothing {
-  run-external $env.config.buffer_editor ($self)
+    run-external $env.config.buffer_editor ($self)
 }
 
-# export alias l = ls
 export-env {
   $env.config = (
     $env.config | upsert hooks.env_change.PWD {|config|
-      let o = ($config | get --optional hooks.env_change.PWD)
+      let o = $config | get --optional hooks.env_change.PWD
       let val = [
         # toolkit
         # load
         {
           condition: {|old new|
             let file_exists = "./toolkit.nu" | path exists
-            let file_active = (overlay list | where name == "toolkit" | get --optional 0?.active | default false)
+            let file_active = overlay list | where name == "toolkit" | get --optional 0?.active | default false
 
             ($file_exists and not $file_active and not ($env.toolkit_load_hooks_is_notified? | default false))
           }
@@ -32,7 +31,7 @@ export-env {
         {
           condition: {|old new|
             let file_exists = "./toolkit.nu" | path exists
-            let file_active = (overlay list | where name == "toolkit" | get --optional 0?.active | default false)
+            let file_active = overlay list | where name == "toolkit" | get --optional 0?.active | default false
 
             (not $file_exists and $file_active and not ($env.toolkit_hide_hooks_is_notified? | default false))
           }
@@ -49,7 +48,7 @@ export-env {
         {
           condition: {|old new|
             let file_exists = "./.venv/Scripts/activate.nu" | path exists
-            let file_active = (overlay list | where name == "activate" | get --optional 0?.active | default false)
+            let file_active = overlay list | where name == "activate" | get --optional 0?.active | default false
 
             ($file_exists and not $file_active and not ($env.venv_load_hooks_is_notified? | default false))
           }
@@ -65,7 +64,7 @@ export-env {
         {
           condition: {|old new|
             let file_exists = "./.venv/Scripts/activate.nu" | path exists
-            let file_active = (overlay list | where name == "activate" | get --optional 0?.active | default false)
+            let file_active = overlay list | where name == "activate" | get --optional 0?.active | default false
 
             (not $file_exists and $file_active and not ($env.venv_hide_hooks_is_notified? | default false))
           }
