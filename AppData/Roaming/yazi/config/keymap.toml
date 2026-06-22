@@ -459,9 +459,9 @@ run = "arrow next"
 desc = "下一行"
 
 [[help.keymap]]
-on = "f"
-run = "filter"
-desc = "過濾幫助內容"
+on = "<Enter>"
+run = "close --submit"
+desc = "Close help menu and run selected action(s)"
 
 [[input.keymap]]
 on = "<Enter>"
