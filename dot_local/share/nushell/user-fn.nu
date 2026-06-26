@@ -77,7 +77,7 @@ export def --wrapped whois [
 
 # es wrapper to always output json parsed table
 export def --wrapped es [...rest: string]: nothing -> table {
-  ^es "-instance" 1.5a ...$rest "--json"
+  ^es -instance 1.5a ...$rest --json | from json
 }
 
 # for each app update job, check if the update is enabled in the config before spawning the job, the config should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}}
