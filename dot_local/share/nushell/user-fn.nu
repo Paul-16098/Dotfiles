@@ -914,7 +914,7 @@ export def '_atuin history' [
 export def "netstat -ano" []: nothing -> table {
   if $nu.os-info.name == windows {
     ^netstat -ano | lines | skip 3 | str trim
-    | parse --regex '^(?P<Proto>UDP|TCP)\s+(?P<Local Address>\S+)\s+(?P<Foreign Address>\S+)\s+(?P<State>LISTENING|ESTABLISHED|TIME_WAIT)\s+(?P<PID>\d+)$'
+    | parse --regex '^(?P<Proto>UDP|TCP)\s+(?P<Local Address>\S+)\s+(?P<Foreign Address>\S+)\s+(?P<State>LISTENING|ESTABLISHED|TIME_WAIT|)\s+(?P<PID>\d+)$'
     | into int PID
   } else {
     error make 'netstat -ano wrapper is only implemented for windows'
