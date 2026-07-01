@@ -105,6 +105,7 @@ export def app-update [
       print $"run ($env.NU_COMMANDLINE) after update NuShell."
       start ~/.config/nushell/scripts/nu-selfupdate.ps1
     }
+    exit
   }
 
   _jobd spawn app-update-rustup {
@@ -155,7 +156,7 @@ export def app-update [
 
   _jobd spawn app-update-yazi {
     ya pkg upgrade --discard
-    rm ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua
+    rm ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --permanent
     chezmoi apply ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --force
   }
 
