@@ -99,6 +99,7 @@ use ($nu.data-dir | path join user-completions.nu)
 # overlay hide no-external
 
 alias 'ast md' = from md
-alias 'from md' = do { print --stderr 'Please use "ast md" instead.'; $in }
+# alias 'from md' = do { print --stderr 'Please use "ast md" instead.'; $in }
+def 'from md' [] { print --stderr 'Please use "ast md" instead.'; $in }
 
 $env | reject --optional --ignore-case config FILE_PWD CURRENT_FILE PWD | transpose key val | str uppercase key | transpose --as-record --header-row | load-env
