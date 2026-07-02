@@ -1,7 +1,7 @@
 # nu-lint-ignore-file: dynamic_script_import
 # config
 $env.config.buffer_editor = [(which --all $env.EDITOR | get 0.path) "--wait"]
-$env.config.table.missing_value_symbol = "[X]"
+$env.config.table.missing_value_symbol = "∅"
 $env.config.display_errors.exit_code = true
 $env.config.history.path = null
 $env.config.history.file_format = "sqlite"
@@ -99,6 +99,6 @@ use ($nu.data-dir | path join user-completions.nu)
 # overlay hide no-external
 
 alias 'ast md' = from md
-alias 'from md' = print --stderr 'Please use "ast md" instead.';$in
+alias 'from md' = do { print --stderr 'Please use "ast md" instead.'; $in }
 
 $env | reject --optional --ignore-case config FILE_PWD CURRENT_FILE PWD | transpose key val | str uppercase key | transpose --as-record --header-row | load-env
