@@ -1,40 +1,18 @@
-#:schema https://starship.rs/config-schema.json
-
+"$schema" = "https://starship.rs/config-schema.json"
 format = "$time$all"
 right_format = "${env_var.yazi_level}$shlvl$cmd_duration$battery "
+
+[aws]
+symbol = " "
+
+[azure]
+symbol = " "
 
 [battery]
 disabled = false
 
 [[battery.display]]
 threshold = 50
-
-[shlvl]
-disabled = false
-symbol = ""
-
-[git_metrics]
-disabled = false
-
-[directory]
-truncation_length = 5
-truncation_symbol = ".../"
-read_only = " 󰌾"
-
-[time]
-disabled = false
-time_format = "%R"
-
-[env_var.yazi_level]
-description = "Indicate the shell was launched by `yazi`"
-variable = "YAZI_LEVEL"
-symbol = " "
-format = "[$symbol]($style)"
-style = "yellow bold"
-
-# https://starship.rs/presets/nerd-font <
-[aws]
-symbol = " "
 
 [buf]
 symbol = " "
@@ -51,26 +29,46 @@ symbol = " "
 [cmake]
 symbol = " "
 
+[cobol]
+symbol = " "
+
 [conda]
-symbol = " "
+symbol = " "
+
+[container]
+symbol = " "
 
 [crystal]
 symbol = " "
 
 [dart]
-symbol = " "
+symbol = " "
 
 [deno]
 symbol = " "
 
+[direnv]
+symbol = " "
+
+[directory]
+truncation_length = 5
+truncation_symbol = ".../"
+read_only = " 󰌾"
+
 [docker_context]
 symbol = " "
+
+[dotnet]
+symbol = " "
 
 [elixir]
 symbol = " "
 
 [elm]
 symbol = " "
+
+[erlang]
+symbol = " "
 
 [fennel]
 symbol = " "
@@ -82,7 +80,10 @@ symbol = " "
 symbol = " "
 
 [gcloud]
-symbol = " "
+symbol = "󱇶 "
+
+[gleam]
+symbol = " "
 
 [git_branch]
 symbol = " "
@@ -105,6 +106,9 @@ symbol = " "
 [haxe]
 symbol = " "
 
+[helm]
+symbol = " "
+
 [hg_branch]
 symbol = " "
 
@@ -112,7 +116,7 @@ symbol = " "
 ssh_symbol = " "
 
 [java]
-symbol = " "
+symbol = " "
 
 [julia]
 symbol = " "
@@ -120,8 +124,14 @@ symbol = " "
 [kotlin]
 symbol = " "
 
+[kubernetes]
+symbol = "󱃾 "
+
 [lua]
 symbol = " "
+
+[maven]
+symbol = " "
 
 [memory_usage]
 symbol = "󰍛 "
@@ -129,8 +139,17 @@ symbol = "󰍛 "
 [meson]
 symbol = "󰔷 "
 
+[mojo]
+symbol = "󰈸 "
+
+[nats]
+symbol = " "
+
+[netns]
+symbol = "󰛳 "
+
 [nim]
-symbol = "󰆥 "
+symbol = " "
 
 [nix_shell]
 symbol = " "
@@ -141,28 +160,41 @@ symbol = " "
 [ocaml]
 symbol = " "
 
+[odin]
+symbol = "󰟢 "
+
+[opa]
+symbol = " "
+
+[openstack]
+symbol = " "
+
 [os.symbols]
+AIX = " "
+AlmaLinux = " "
 Alpaquita = " "
 Alpine = " "
-AlmaLinux = " "
+ALTLinux = " "
 Amazon = " "
 Android = " "
 AOSC = " "
 Arch = " "
 Artix = " "
+Bluefin = " "
 CachyOS = " "
 CentOS = " "
 Debian = " "
 DragonFly = " "
 Elementary = " "
-Emscripten = " "
-EndeavourOS = " "
+Emscripten = " "
+EndeavourOS = " "
 Fedora = " "
 FreeBSD = " "
-Garuda = "󰛓 "
+Garuda = " "
 Gentoo = " "
 HardenedBSD = "󰞌 "
-Illumos = "󰈸 "
+Illumos = " "
+InstantOS = " "
 Ios = "󰀷 "
 Kali = " "
 Linux = " "
@@ -175,19 +207,24 @@ Mint = " "
 NetBSD = " "
 NixOS = " "
 Nobara = " "
-OpenBSD = "󰈺 "
+OpenBSD = " "
+OpenCloudOS = " "
+openEuler = " "
 openSUSE = " "
-OracleLinux = "󰌷 "
+OracleLinux = "󰺡 "
+PikaOS = " "
 Pop = " "
 Raspbian = " "
-Redhat = " "
-RedHatEnterprise = " "
-RockyLinux = " "
+Redhat = "󱄛 "
+RedHatEnterprise = "󱄛 "
 Redox = "󰀘 "
-Solus = "󰠳 "
+RockyLinux = " "
+Solus = " "
 SUSE = " "
 Ubuntu = " "
+Ultramarine = " "
 Unknown = " "
+Uos = " "
 Void = " "
 Windows = "󰍲 "
 Zorin = " "
@@ -207,8 +244,20 @@ symbol = " "
 [pixi]
 symbol = "󰏗 "
 
+[pulumi]
+symbol = " "
+
+[purescript]
+symbol = " "
+
 [python]
 symbol = " "
+
+[raku]
+symbol = "󱖊 "
+
+[red]
+symbol = "󱍼 "
 
 [rlang]
 symbol = "󰟔 "
@@ -222,16 +271,55 @@ symbol = "󱘗 "
 [scala]
 symbol = " "
 
-[status]
-symbol = " "
+[shlvl]
 disabled = false
+
+[singularity]
+symbol = " "
+
+[solidity]
+symbol = " "
+
+[spack]
+symbol = " "
+
+[status]
+disabled = false
+
+[sudo]
+symbol = " "
 
 [swift]
 symbol = " "
+
+[terraform]
+symbol = " "
+
+[vlang]
+symbol = " "
+
+[typst]
+symbol = " "
+
+[vagrant]
+symbol = " "
 
 [xmake]
 symbol = " "
 
 [zig]
 symbol = " "
-# >
+
+[git_metrics]
+disabled = false
+
+[time]
+disabled = false
+time_format = "%R"
+
+[env_var.yazi_level]
+description = "Indicate the shell was launched by `yazi`"
+variable = "YAZI_LEVEL"
+symbol = " "
+format = "[$symbol]($style)"
+style = "yellow bold"

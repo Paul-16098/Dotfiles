@@ -58,8 +58,8 @@ $env.config.abbreviations = {
 $env.LS_COLORS = (vivid generate molokai)
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 
-$env.TRANSIENT_PROMPT_COMMAND = { starship module time }
-$env.TRANSIENT_PROMPT_INDICATOR = { (starship module directory) + $"(ansi wd)$(ansi reset) " }
+$env.TRANSIENT_PROMPT_COMMAND = { (starship module time) + (starship module directory) + $"(ansi wd)$(ansi reset) " }
+# $env.TRANSIENT_PROMPT_COMMAND_RIGHT = ""
 
 source "~/.local/share/atuin/init.nu"
 
@@ -100,6 +100,6 @@ use ($nu.data-dir | path join user-completions.nu)
 
 alias 'ast md' = from md
 # alias 'from md' = do { print --stderr 'Please use "ast md" instead.'; $in }
-def 'from md' [] { print --stderr 'Please use "ast md" instead.'; $in }
+def 'from md' [] { do {} (print --stderr 'Please use "ast md" instead.') }
 
 $env | reject --optional --ignore-case config FILE_PWD CURRENT_FILE PWD | transpose key val | str uppercase key | transpose --as-record --header-row | load-env

@@ -1,0 +1,35 @@
+#:schema https://starship.rs/config-schema.json
+
+format = "$time$all"
+right_format = "${env_var.yazi_level}$shlvl$cmd_duration$battery "
+
+[battery]
+disabled = false
+
+[[battery.display]]
+threshold = 50
+
+[shlvl]
+disabled = false
+
+[git_metrics]
+disabled = false
+
+[directory]
+truncation_length = 5
+truncation_symbol = ".../"
+read_only = " 󰌾"
+
+[time]
+disabled = false
+time_format = "%R"
+
+[env_var.yazi_level]
+description = "Indicate the shell was launched by `yazi`"
+variable = "YAZI_LEVEL"
+symbol = " "
+format = "[$symbol]($style)"
+style = "yellow bold"
+
+[status]
+disabled = false

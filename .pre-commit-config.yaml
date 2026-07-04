@@ -11,6 +11,16 @@ repos:
         args:
           - .vscode/yazi-config-update.nu
 
+      - id: update-starship-config
+        name: update-starship-config
+        pass_filenames: false
+        language: system
+        files: dot_config/\.starship\.toml
+        verbose: true
+        entry: nu
+        args:
+          - .vscode/update-starship.nu
+
       # - id: update-doc
       #   name: update-doc
       #   pass_filenames: false
