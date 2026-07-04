@@ -1,7 +1,9 @@
 #:schema https://starship.rs/config-schema.json
 
 format = "$time$all"
-right_format = "${env_var.yazi_level}$shlvl$cmd_duration$battery "
+right_format = "${env_var.yazi_level}$shlvl$cmd_duration$battery$memory_usage"
+
+add_newline = false
 
 [battery]
 disabled = false
@@ -32,4 +34,11 @@ format = "[$symbol]($style)"
 style = "yellow bold"
 
 [status]
+disabled = false
+
+[direnv]
+disabled = false
+detect_files = [".envrc", ".env"]
+
+[memory_usage]
 disabled = false

@@ -7,7 +7,7 @@
 			"command": "nu",
 			"args": [
 				"-c",
-				"watch ./AppData/Roaming/yazi/config/yazi.raw.toml | each { nu .vscode/yazi-config-update.nu }"
+				"watch ./AppData/Roaming/yazi/config/yazi.raw.toml | each { run .vscode/yazi-config-update.nu }"
 			],
 			"problemMatcher": [],
 			"isBackground": true,
@@ -34,6 +34,28 @@
 					"NU_LIB_DIRS": "~\\.config\\nushell\\nupm\\modules"
 				}
 			}
+		},
+		{
+			"type": "process",
+			"label": "update starship config",
+			"command": "nu",
+			"args": [".vscode/update-starship.nu"],
+			"problemMatcher": []
+		},
+		{
+			"type": "process",
+			"label": "watch: update starship config",
+			"command": "nu",
+			"args": [
+				"-c",
+				"watch dot_config\\.starship.toml | each { run .vscode/update-starship.nu }"
+			],
+			"isBackground": true,
+			"runOptions": {
+				"instanceLimit": 1,
+				"instancePolicy": "terminateOldest"
+			},
+			"problemMatcher": []
 		},
 		{
 			"type": "process",
