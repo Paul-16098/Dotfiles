@@ -217,9 +217,14 @@ run = "copy name_without_ext"
 desc = "複製不帶擴展名的文件名"
 
 [[mgr.keymap]]
-desc = "開始書籤"
+desc = "書籤"
 on = "g"
-run = "plugin bunny"
+run = "plugin whoosh jump_by_key"
+
+[[mgr.keymap]]
+desc = "將 cwd 儲存到書籤"
+on = "G"
+run = "plugin whoosh save_cwd"
 
 [[mgr.keymap]]
 on = "f"

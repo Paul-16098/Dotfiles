@@ -74,8 +74,7 @@ overlay use ($nu.data-dir | path join hook_display_output.nu)
 overlay use ($nu.data-dir | path join keybindings.nu)
 
 # completions
-overlay new completions
-use ($nu.data-dir | path join user-completions.nu)
+overlay use ($nu.data-dir | path join user-completions.nu)
 
 # nupm
 # overlay use nupm/nupm/ --prefix

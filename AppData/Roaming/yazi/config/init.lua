@@ -111,27 +111,6 @@ function Yatline.coloreds.get:symlink()
 	return symlink
 end
 
----- bunny ----
-require("bunny"):setup({
-	hops = {
-		{ key = "/", path = "/", },
-		{ key = "~", path = "~", desc = "Home" },
-		{ key = "c", path = "~/.config", desc = "Config files" },
-		{ key = "t", path = "~/tools/tools", desc = "Tools" },
-		{ key = "d", path = "~/Downloads", desc = "Downloads" },
-		{ key = "l", path = "~/.local", desc = "Local" },
-		{ key = "s", path = "~/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup", desc = "Startup" },
-		{ key = "a", path = "~/AppData/Roaming", desc = "Roaming" },
-		{ key = "g", path = "~/OneDrive/文件/git", desc = "Git repos" },
-		{ key = "D", path = "~/OneDrive/文件" }
-		-- key 和 path 屬性是必要的，desc 是可選的
-	},
-	desc_strategy = "path", -- 如果 desc 不存在，請使用“路徑”或“檔案名稱”，預設為“路徑”
-	ephemeral = true,    -- 啟用臨時跳躍，預設為 true
-	tabs = true,         -- 啟用製表符跳躍，預設為 true
-	notify = false,      -- 跳轉後通知，預設為 false
-	fuzzy_cmd = "fzf",   -- 模糊搜尋指令，預設為“fzf”
-})
 --- fg ---
 require("fg"):setup({
 })
@@ -185,4 +164,8 @@ require("git"):setup()
 --- sync_yanked ---
 require("session"):setup {
 	sync_yanked = true,
+}
+--- bookmark ---
+require("whoosh"):setup {
+	keys = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~/"
 }
