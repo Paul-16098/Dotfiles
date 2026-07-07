@@ -790,7 +790,7 @@ export def "meme" [
     }
 
     nushell => {
-      $meme_path = ls | input list --multi | get name
+      $meme_path = ls | input list --multi | default {name:[]} | get name
     }
 
     $_ => {
