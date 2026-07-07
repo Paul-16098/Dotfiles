@@ -98,7 +98,7 @@ desc = "隨機排序"
 
 [[mgr.keymap]]
 on = "<C-c>"
-run = ["yank", "plugin clipboard -- --action=copy"]
+run = ["yank"]
 desc = "複製"
 
 [[mgr.keymap]]
@@ -108,7 +108,7 @@ desc = "滾動預覽面板向下"
 
 [[mgr.keymap]]
 on = "<C-x>"
-run = ["yank --cut", "plugin clipboard -- --action=copy"]
+run = ["yank --cut"]
 desc = "剪切"
 
 [[mgr.keymap]]
