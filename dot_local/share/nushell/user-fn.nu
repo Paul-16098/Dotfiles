@@ -496,30 +496,15 @@ export def --wrapped "git status-or-show" [...rest: string]: any -> string {
   }
 }
 
-def rust-debug-complete []: nothing -> record {
-  {
-    options: {
-      case_sensitive: false
-      sort: false
-    }
-    completions: [
-      trace
-      debug
-      info
-      warn
-      error
-      {
-        value: off
-        description: "Disable all logging"
-      }
-    ]
-  }
-}
 # set rust debug env variables
-export def --env rust-debug [lv: string@rust-debug-complete]: nothing -> nothing {
-  load-env {
-    RUST_LOG: $lv
-    RUST_BACKTRACE: full
+# use as `with-env (rust-debug --log-lv debug --backtrace full) { ... }`
+export def rust-debug [
+  --log-lv: string@[trace debug info warn error off] = 'info' # set RUST_LOG level
+  --backtrace: string@['1' full] = 'full' # set RUST_BACKTRACE level
+]: nothing -> record {
+  {
+    RUST_LOG: $log_lv
+    RUST_BACKTRACE: $backtrace
   }
 }
 
