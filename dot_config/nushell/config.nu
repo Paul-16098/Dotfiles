@@ -76,6 +76,9 @@ overlay use ($nu.data-dir | path join keybindings.nu)
 # completions
 overlay use ($nu.data-dir | path join user-completions.nu)
 
+# aliases
+overlay use ($nu.data-dir | path join user-aliases.nu)
+
 # nupm
 # overlay use nupm/nupm/ --prefix
 # $env.NU_LIB_DIRS = $env.NU_LIB_DIRS ++ [($env.NUPM_HOME | path join modules)]
