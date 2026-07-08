@@ -100,6 +100,8 @@ overlay use ($nu.data-dir | path join user-aliases.nu)
 # }
 # overlay hide no-external
 
+overlay new REPL
+
 alias 'ast md' = from md
 # alias 'from md' = do { print --stderr 'Please use "ast md" instead.'; $in }
 def 'from md' [] { do {} (print --stderr 'Please use "ast md" instead.') }
