@@ -80,8 +80,8 @@ overlay use ($nu.data-dir | path join user-completions.nu)
 overlay use ($nu.data-dir | path join user-aliases.nu)
 
 # nupm
-# overlay use nupm/nupm/ --prefix
-# $env.NU_LIB_DIRS = $env.NU_LIB_DIRS ++ [($env.NUPM_HOME | path join modules)]
+use nupm/modules/nupm
+$env.NU_LIB_DIRS = $env.NU_LIB_DIRS ++ [($env.NUPM_HOME | path join modules)]
 
 # overlay new no-external
 # # 避免意外呼叫外部指令
@@ -103,7 +103,6 @@ overlay use ($nu.data-dir | path join user-aliases.nu)
 overlay new REPL
 
 alias 'ast md' = from md
-# alias 'from md' = do { print --stderr 'Please use "ast md" instead.'; $in }
-def 'from md' [] { do {} (print --stderr 'Please use "ast md" instead.') }
+def 'from md' []: string -> nothing { do {} (print --stderr 'Please use "ast md" instead.') }
 
 $env | reject --optional --ignore-case config FILE_PWD CURRENT_FILE PWD | transpose key val | str uppercase key | transpose --as-record --header-row | load-env

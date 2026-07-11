@@ -105,7 +105,7 @@ export def app-update [
       print $"run ($env.NU_COMMANDLINE) after update NuShell."
       start ~/.config/nushell/scripts/nu-selfupdate.ps1
     }
-    exit
+    return
   }
 
   _jobd spawn app-update-rustup {
@@ -220,7 +220,7 @@ def "format-git-email" [email: string]: nothing -> string {
 @complete "complete git log"
 @category git
 export def --wrapped "git log" [
-  --query-git-plugin # if set, query the git plugin for commit body
+  # --query-git-plugin # if set, query the git plugin for commit body
   ...rest: string
 ]: nothing -> table {
   # use a rarely used unicode character sequence as the split string to avoid conflicts with commit messages, also this sequence is visually distinctive to make it easier to debug if the parsing goes wrong
@@ -246,9 +246,10 @@ export def --wrapped "git log" [
   | let git_log_res: table
 
   # if `--query_git_plugin`, query git plugin for commit body and add to the table, also handle the case when multiple commits are found for the same short commit id (which should not happen) and the case when no commit is found (which also should not happen), show error in both cases
-  if $query_git_plugin {
+  # if $query_git_plugin {
+  if false {
     $git_log_res | upsert body {|row|
-      query git --page-size 10 $"SELECT commit_id as commit,title as subject,message as body,author_name,author_email,datetime as committer_date from commits where commit_id like '($row.commit)%' ORDER BY committer_date DESC"
+      # query git --page-size 10 $"SELECT commit_id as commit,title as subject,message as body,author_name,author_email,datetime as committer_date from commits where commit_id like '($row.commit)%' ORDER BY committer_date DESC"
       | let res
       $res | if ($in | length) > 1 {
         error make {
@@ -790,7 +791,7 @@ export def "meme" [
     }
 
     nushell => {
-      $meme_path = ls | input list --multi | default {name:[]} | get name
+      $meme_path = ls | input list --multi | default {name: []} | get name
     }
 
     $_ => {

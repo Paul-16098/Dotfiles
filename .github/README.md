@@ -51,6 +51,7 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |       settings.json
 # => |       tasks.json
 # => |       update-numd-doc.nu
+# => |       update-starship.nu
 # => |       yazi-config-update.nu
 # => |
 # => +---AppData
@@ -79,6 +80,7 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |       config.toml
 # => |
 # => +---dot_config
+# => |   |   .starship.toml
 # => |   |   starship.toml
 # => |   |
 # => |   +---act
@@ -100,11 +102,8 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   +---nushell
 # => |   |   |   config.nu
 # => |   |   |   env.nu
-# => |   |   |   README.md
 # => |   |   |
 # => |   |   +---autoload
-# => |   |   |       user-aliases.nu
-# => |   |   |
 # => |   |   \---scripts
 # => |   |           complete-tools.nu
 # => |   |           nu-selfupdate.ps1
@@ -129,6 +128,7 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |               hook_display_output.nu
 # => |               keybindings.nu
 # => |               README.md
+# => |               user-aliases.nu
 # => |               user-completions.nu
 # => |               user-fn.nu
 # => |

@@ -96,15 +96,6 @@ export extern _es [
   --help (-h) # display help | 显示帮助
 ]
 
-# java completions | Java 补全
-# nu-lint-ignore: unused_helper_functions
-def "nu-complete java" []: nothing -> record {
-  use complete-tools.nu complete-file
-  complete-file java
-}
-
-export extern java [command?: string@"nu-complete java"]
-
 # nu-lint-ignore: unused_helper_functions
 def "nu-complete bz-command" []: nothing -> list<record> {
   [

@@ -9,8 +9,8 @@ lint:
 fmt:
     nufmt .
 # update numd documentation
-# update-numd-doc:
-#     nu .vscode/update-numd-doc.nu
+update-numd-doc:
+    nu .vscode/update-numd-doc.nu
 push:
     chezmoi apply
     chezmoi merge-all
