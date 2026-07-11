@@ -7,37 +7,9 @@ require("augment-command"):setup({
 require("yatline"):setup({
 	theme = require("yatline-catppuccin"):setup("macchiato"),
 
-	section_separator = { open = "", close = "" },
-	part_separator = { open = "", close = "" },
-	inverse_separator = { open = "", close = "" },
-
-	padding = { inner = 1, outer = 1 },
-
-	permissions_t_fg = "green",
-	permissions_r_fg = "yellow",
-	permissions_w_fg = "red",
-	permissions_x_fg = "cyan",
-	permissions_s_fg = "white",
-
-	tab_width = 20,
-
-	selected = { icon = "󰻭", fg = "yellow" },
-	copied = { icon = "", fg = "green" },
-	cut = { icon = "", fg = "red" },
-
-	files = { icon = "", fg = "blue" },
-	filtereds = { icon = "", fg = "magenta" },
-
 	total = { icon = "󰮍", fg = "yellow" },
 	success = { icon = "", fg = "green" },
 	failed = { icon = "", fg = "red" },
-
-	show_background = true,
-
-	display_header_line = true,
-	display_status_line = true,
-
-	component_positions = { "header", "tab", "status" },
 
 	header_line = {
 		left = {
@@ -50,9 +22,14 @@ require("yatline"):setup({
 		},
 		right = {
 			section_a = {
-				{ type = "string", name = "filter_query" }
+				{ type = "coloreds", custom = false,            name = "count",      params = { true, false } },
+				{ type = "coloreds", custom = false,            name = "task_states" },
+				{ type = "string",   name = "cursor_position" },
+				{ type = "string",   name = "cursor_percentage" },
 			},
-			section_b = {},
+			section_b = {
+				{ type = "string", name = "filter_query" },
+			},
 			section_c = {},
 		},
 	},
@@ -64,21 +41,16 @@ require("yatline"):setup({
 			},
 			section_b = {
 				{ type = "string", name = "hovered_size" },
-				-- { type = "coloreds", name = "created_time" }
 			},
 			section_c = {
 				{ type = "string",   name = "hovered_path" },
-				{ type = "coloreds", name = "symlink" },
-				{ type = "coloreds", name = "count",       params = { true, true } },
+				{ type = "coloreds", custom = false,       name = "symlink" },
 			},
 		},
 		right = {
 			section_a = {
-				{ type = "coloreds", custom = false,          name = "task_states" },
-				{ type = "string",   name = "cursor_position" },
 			},
 			section_b = {
-				{ type = "string", name = "cursor_percentage" },
 			},
 			section_c = {
 				{ type = "string",   name = "hovered_mime" },
@@ -87,29 +59,7 @@ require("yatline"):setup({
 		},
 	},
 })
-require("yatline-created-time"):setup()
-function Yatline.coloreds.get:symlink()
-	local symlink = {}
-	local h = cx.active.current.hovered
-
-	if not h then
-		-- ya.dbg("no hovered")
-		return nil
-	end
-	if not h.cha.is_link then
-		-- ya.dbg("not a symlink")
-		return nil
-	end
-
-	local link_target = h.link_to:strip_prefix(tostring(cx.active.current.cwd))
-	if link_target == nil then
-		-- ya.dbg("link target is nil")
-		return nil
-	end
-	local link_target_str = ("symlink:.\\" .. tostring(link_target))
-	table.insert(symlink, { link_target_str, th.mgr.cwd:fg() })
-	return symlink
-end
+require("yatline-symlink"):setup()
 
 --- fg ---
 require("fg"):setup({

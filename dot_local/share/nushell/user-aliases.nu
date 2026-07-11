@@ -7,6 +7,5 @@ export def "config user-aliases" []: nothing -> nothing {
 export alias python = ^(uv python find)
 export alias pip = uv pip
 export alias cls = clear
-export alias "ya pack -a" = ya pkg add
 export alias lzd = lazydocker
 export alias my-http-server = my-http-server --port (port)
