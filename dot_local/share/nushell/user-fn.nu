@@ -98,9 +98,13 @@ export def app-update [
     } else { _job spawn $fn }
   }
 
-  if (($cofg | get -o "app-update-nu" | default {status: on} | get status) == on and (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash) or ($cofg | get -o "app-update-nu" | default {debug-run: false} | get debug-run)) {
+  if (
+    ($cofg | get --optional "app-update-nu" | default {status: on} | get status) == on
+    and (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash)
+    or ($cofg | get --optional "app-update-nu" | default {debug-run: false} | get debug-run? | default false)
+  ) {
     print --no-newline (char bel)
-    print "A new version of NuShell is available, updateing."
+    print "A new version of NuShell is available, updating."
     with-env ({NU_COMMANDLINE: (commandline)}) {
       print $"run ($env.NU_COMMANDLINE) after update NuShell."
       start ~/.config/nushell/scripts/nu-selfupdate.ps1
@@ -119,7 +123,7 @@ export def app-update [
     airshipper update
   }
   _jobd spawn app-update-cargo-packages {
-    cargo install-update --all --git
+    cargo install-update --all --git --filter !name=nu
   }
   _job spawn --description app-update-nu-plugins {
     # jobd wait app-update-cargo-packages
@@ -149,10 +153,6 @@ export def app-update [
   _job spawn --description app-update-carapace {
     carapace _carapace nushell | save --force ($nu.user-autoload-dirs.0 | path join carapace.nu)
   }
-
-  # _job spawn --description app-update-leadr {
-  #   leadr --nu | save -f ($nu.user-autoload-dirs | path join leadr.nu)
-  # }
 
   _jobd spawn app-update-yazi {
     ya pkg upgrade --discard
