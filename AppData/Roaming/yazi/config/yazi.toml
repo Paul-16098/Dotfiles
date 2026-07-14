@@ -66,11 +66,6 @@ run = 'start nu --config ~\\.config\\nushell\\config.nu --env-config ~\\.config\
 desc = "Run with Python"
 orphan = true
 
-[[opener.nushell]]
-run = "start nu --config ~\\.config\\nushell\\config.nu --env-config ~\\.config\\nushell\\env.nu %s"
-desc = "Open with Nushell"
-orphan = true
-
 [[opener.lazydocker]]
 run = "lazydocker -f %s"
 desc = "Open with LazyDocker"
@@ -107,14 +102,6 @@ use = "bulk-rename"
 [[open.prepend_rules]]
 url = "bulk-create.txt"
 use = "bulk-create"
-
-[[open.rules]]
-url = "*.nu"
-use = [
-  "nushell",
-  "edit",
-  "reveal",
-]
 
 [[open.rules]]
 url = "**/docker-compose.yaml"
