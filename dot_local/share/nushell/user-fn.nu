@@ -497,16 +497,38 @@ export def --wrapped "git status-or-show" [...rest: string]: any -> string {
   }
 }
 
-# set rust debug env variables
-# use as `with-env (rust-debug --log-lv debug --backtrace full) { ... }`
-export def rust-debug [
-  --log-lv: string@[trace debug info warn error off] = 'info' # set RUST_LOG level
-  --backtrace: string@['1' full] = 'full' # set RUST_BACKTRACE level
-]: nothing -> record {
+def "complete nu-log-lv" [] {
   {
-    RUST_LOG: $log_lv
-    RUST_BACKTRACE: $backtrace
+    options: {match_description: true}
+    completions: (
+      log log-level | transpose description value
+    )
   }
+}
+
+# set debug env variables
+# use as `with-env (set-debug-env --log-lv debug --backtrace full) { ... }`
+export def set-debug-env [
+  --rust-log-lv: string@[trace debug info warn error off] # set RUST_LOG level
+  --rust-backtrace: string@['1' full] # set RUST_BACKTRACE level
+  --nu-log-lv: int@"complete nu-log-lv" # set nu std/log level
+]: nothing -> record {
+  mut fin_env = {}
+
+  for d in (
+    [
+      ["env-name" "value"];
+      [RUST_LOG $rust_log_lv]
+      [RUST_BACKTRACE $rust_backtrace]
+      [NU_LOG_LEVEL $nu_log_lv]
+    ]
+  ) {
+    if ($d.value | is-not-empty) {
+      $fin_env = $fin_env | upsert $d.env-name $d.value
+    }
+  }
+
+  $fin_env
 }
 
 def "nu-complete exe" []: nothing -> record {

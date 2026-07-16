@@ -83,10 +83,6 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   |   .starship.toml
 # => |   |   starship.toml
 # => |   |
-# => |   +---act
-# => |   |       actrc
-# => |   |       dot_actrc
-# => |   |
 # => |   +---atuin
 # => |   |       config.toml
 # => |   |

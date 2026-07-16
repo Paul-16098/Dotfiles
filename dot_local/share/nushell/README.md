@@ -335,19 +335,20 @@ used in keybindings.nu for F5
 user-fn reload-config    # `nothing -> string`
 ```
 
-### `user-fn rust-debug`
+### `user-fn set-debug-env`
 
-set rust debug env variables
-use as `with-env (rust-debug --log-lv debug --backtrace full) { ... }`
+set debug env variables
+use as `with-env (set-debug-env --log-lv debug --backtrace full) { ... }`
 
 ```nushell no-run
-user-fn rust-debug    # `nothing -> record`
+user-fn set-debug-env    # `nothing -> record`
 ```
 
 **Flags:**
 
-- `--log-lv: string` — set RUST_LOG level (default: `"info"`)
-- `--backtrace: string` — set RUST_BACKTRACE level (default: `"full"`)
+- `--rust-log-lv: string` — set RUST_LOG level
+- `--rust-backtrace: string` — set RUST_BACKTRACE level
+- `--nu-log-lv: int` — set nu std/log level
 
 ### `user-fn steamcmd`
 
