@@ -21,15 +21,15 @@ repos:
         args:
           - .vscode/update-starship.nu
 
-      - id: update-doc
-        name: update-doc
-        pass_filenames: false
-        language: system
-        files: \.(nu|md)$
-        verbose: true
-        entry: just
-        args:
-          - update-numd-doc
+      # - id: update-doc
+      #   name: update-doc
+      #   pass_filenames: false
+      #   language: system
+      #   files: \.(nu|md)$
+      #   verbose: true
+      #   entry: just
+      #   args:
+      #     - update-numd-doc
 
       - id: nu-check
         name: nu-check
