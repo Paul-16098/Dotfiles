@@ -312,18 +312,18 @@ export def --wrapped "git pull" [
 ]: nothing -> nothing {
   def --wrapped pull_wrapped [...rest: string]: nothing -> nothing {
     if ("./.git/hooks/pre-pull" | path exists) and not $no_hooks {
-      nu ./.git/hooks/pre-pull
-      if $env.LAST_EXIT_CODE != 0 {
-        error make --unspanned "pre-pull hook failed, aborting pull"
+      if not ($in.details.code == "nu::shell::non_zero_exit_code") {
+        error make --unspanned "pre-pull hook failed"
       }
     }
     try { ^git pull ...$rest } catch {
       ignore | error make --unspanned "git pull failed"
     }
     if ("./.git/hooks/post-pull" | path exists) and not $no_hooks {
-      nu ./.git/hooks/post-pull
-      if $env.LAST_EXIT_CODE != 0 {
-        error make --unspanned "post-pull hook failed"
+      try { nu ./.git/hooks/post-pull } catch {
+        if not ($in.details.code == "nu::shell::non_zero_exit_code") {
+          error make --unspanned "post-pull hook failed"
+        }
       }
     }
   }
@@ -497,7 +497,7 @@ export def --wrapped "git status-or-show" [...rest: string]: any -> string {
   }
 }
 
-def "complete nu-log-lv" [] {
+def "complete nu-log-lv" []: nothing -> record<options: record<match_description: bool>, completions: any> {
   {
     options: {match_description: true}
     completions: (
@@ -512,15 +512,17 @@ export def set-debug-env [
   --rust-log-lv: string@[trace debug info warn error off] # set RUST_LOG level
   --rust-backtrace: string@['1' full] # set RUST_BACKTRACE level
   --nu-log-lv: int@"complete nu-log-lv" # set nu std/log level
+  --yazi-log-lv: string@[debug info warn error] # set yazi log level
 ]: nothing -> record {
   mut fin_env = {}
 
   for d in (
     [
       ["env-name" "value"];
-      [RUST_LOG $rust_log_lv]
-      [RUST_BACKTRACE $rust_backtrace]
-      [NU_LOG_LEVEL $nu_log_lv]
+      [RUST_LOG $rust_log_lv] # nu-lint-ignore: check_typed_flag_before_use
+      [RUST_BACKTRACE $rust_backtrace] # nu-lint-ignore: check_typed_flag_before_use
+      [NU_LOG_LEVEL $nu_log_lv] # nu-lint-ignore: check_typed_flag_before_use
+      [YAZI_LOG $yazi_log_lv] # nu-lint-ignore: check_typed_flag_before_use
     ]
   ) {
     if ($d.value | is-not-empty) {
