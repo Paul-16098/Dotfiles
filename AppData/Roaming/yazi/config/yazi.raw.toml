@@ -95,6 +95,14 @@ block = true
 run = "code-insiders --wait %s"
 block = true
 
+[[opener.trash]]
+run = "ya pub trash-restore --list %S"
+desc = "Restore selected files"
+
+[[opener.trash]]
+run = "ya pub trash-empty --list %S"
+desc = "Empty trash bin"
+
 [[open.prepend_rules]]
 url = "bulk-rename.txt"
 use = "bulk-rename"
@@ -102,6 +110,14 @@ use = "bulk-rename"
 [[open.prepend_rules]]
 url = "bulk-create.txt"
 use = "bulk-create"
+
+[[open.rules]]
+url = "trash://*"
+use = ["open", "trash"]
+
+[[open.rules]]
+url = "trash://*/"
+use = ["edit", "trash"]
 
 [[open.rules]]
 url = "**/docker-compose.yaml"
@@ -233,6 +249,12 @@ group = "mime"
 url = "local://*"
 run = "mime-ext.local"
 prio = "high"
+
+[[plugin.prepend_fetchers]]
+url = "trash://*"
+run = "mime.local"
+prio = "high"
+group = "mime"
 
 [[plugin.prepend_fetchers]]
 group = "mime"
