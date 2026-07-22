@@ -141,7 +141,7 @@ history_filter = [
   # exclude commands that are just get help
   " (--help|-h)$",
   # exclude yazi commands
-  "^(y|yazi)"
+  "^(y|yazi)$"
 ]
 
 ## prevent commands run with cwd matching any of these regexes from being written
