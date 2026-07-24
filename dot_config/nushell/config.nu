@@ -64,20 +64,20 @@ $env.TRANSIENT_PROMPT_COMMAND = { (starship module time) + (starship module dire
 source "~/.local/share/atuin/init.nu"
 
 # user functions
-overlay use ($nu.data-dir | path join user-fn.nu)
+overlay use ('.' | path join user-fn.nu)
 
 # hooks
-overlay use ($nu.data-dir | path join hooks.nu)
-overlay use ($nu.data-dir | path join hook_display_output.nu)
+overlay use ('.' | path join hooks.nu)
+overlay use ('.' | path join hook_display_output.nu)
 
 # keybindings
-overlay use ($nu.data-dir | path join keybindings.nu)
+overlay use ('.' | path join keybindings.nu)
 
 # completions
-overlay use ($nu.data-dir | path join user-completions.nu)
+overlay use ('.' | path join user-completions.nu)
 
 # aliases
-overlay use ($nu.data-dir | path join user-aliases.nu)
+overlay use ('.' | path join user-aliases.nu)
 
 # nupm
 use nupm/modules/nupm
