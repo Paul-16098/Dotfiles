@@ -109,7 +109,7 @@ export def app-update [
       print $"run ($env.NU_COMMANDLINE) after update NuShell."
       start ~/.config/nushell/scripts/nu-selfupdate.ps1
     }
-    return
+    exit # nu-lint-ignore: exit_only_in_main
   }
 
   _jobd spawn app-update-rustup {
@@ -690,7 +690,7 @@ export def --env "chezmoi cd" [] {
 # used in keybindings.nu for F5
 export def reload-config []: nothing -> string {
   [
-    'let _pwd = pwd'
+    ' let _pwd = pwd'
     'source ($nu.env-path)'
     'source ($nu.config-path)'
 
