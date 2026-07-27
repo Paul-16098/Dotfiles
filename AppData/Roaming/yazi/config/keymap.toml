@@ -1,5 +1,9 @@
 #:schema https://yazi-rs.github.io/schemas/keymap.json
-# tombi: lint.rules.const-value.disabled = true
+
+[[mgr.keymap]]
+on = "<F5>"
+run = "refresh"
+desc = "刷新"
 
 [[mgr.keymap]]
 on = ["m", "s"]
@@ -203,7 +207,7 @@ desc = "複製文件路徑"
 
 [[mgr.keymap]]
 on = ["c", "d"]
-run = "copy dirname"
+run = "copy dirpath"
 desc = "複製目錄路徑"
 
 [[mgr.keymap]]

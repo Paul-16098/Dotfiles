@@ -1,3 +1,10 @@
+require("chronos"):setup({
+	enable = false,
+	notify_mode = "detailed", -- "summary" | "detailed"
+	detail_chunk_size = 12,
+})
+
+
 ---- 增強指令 ----
 require("augment-command"):setup({
 	open_file_after_creation = true,
