@@ -12,6 +12,17 @@ config.font = wezterm.font_with_fallback {
 	{ family = 'FiraCode Nerd Font Mono', harfbuzz_features = { 'calt', 'liga' } },
 	'YouYuan'
 }
+config.default_cursor_style = "SteadyBar"
+config.cursor_thickness = 2
+
+config.hide_mouse_cursor_when_typing = false
+config.enable_kitty_keyboard = true
+
+config.quick_select_patterns = {
+}
+
+config.hyperlink_rules = {
+}
 
 config.disable_default_key_bindings = true
 config.keys = {
@@ -35,6 +46,11 @@ config.keys = {
 		key = 'T',
 		mods = 'CTRL',
 		action = wezterm.action.ShowLauncher,
+	},
+	{
+		key = 'c',
+		mods = 'ALT',
+		action = wezterm.action.QuickSelect
 	}
 }
 
