@@ -133,7 +133,8 @@ history_filter = [
   "^overlay use ./.venv/Scripts/activate.nu$",
   " (--help|-h)$",
   "^(y|yazi)$",
-  "^http "
+  "^http ",
+  '^\./'
 ]
 
 ## prevent commands run with cwd matching any of these regexes from being written
