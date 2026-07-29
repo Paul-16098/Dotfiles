@@ -3,6 +3,7 @@
 $env.config.buffer_editor = [(which --all $env.EDITOR | get 0.path) "--wait"]
 $env.config.table.missing_value_symbol = "∅"
 $env.config.display_errors.exit_code = true
+$env.config.use_kitty_protocol = true
 $env.config.history.path = null
 $env.config.history.file_format = "sqlite"
 $env.config.history.sync_on_enter = false
@@ -54,6 +55,7 @@ $env.config.abbreviations = {
   gs: 'git status-or-show'
   gc: 'git clone'
 }
+$env.config.menus = $env.config.menus | where name == completion_menu
 
 $env.LS_COLORS = (vivid generate molokai)
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true

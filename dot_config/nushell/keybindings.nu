@@ -81,6 +81,8 @@ export-env {
     (add-keybindings --name "add-default-keybinding" none Esc {send: Esc})
     (add-keybindings --name "add-default-keybinding" none Home {edit: MoveToLineStart})
     (add-keybindings --name "add-default-keybinding" none End {edit: MoveToLineEnd})
+
+    (add-keybindings --name "add-default-keybinding-menu" none Tab {send: menu name: completion_menu})
     ## CONTROL
     (add-keybindings --name "add-default-keybinding" CONTROL Backspace {edit: BackspaceWord})
     (add-keybindings --name "add-default-keybinding" CONTROL Delete {edit: DeleteWord})
