@@ -1,0 +1,39 @@
+#:tombi schema.strict = false
+#:tombi toml-version = "v1.1.0"
+
+[window]
+startup_mode = "Maximized"
+
+[font]
+builtin_box_drawing = false
+normal = { family = "FiraCode Nerd Font Propo" }
+
+[cursor]
+style.shape = "Beam"
+
+[terminal]
+shell = "nu"
+osc52 = "Disabled"
+
+[keyboard]
+# [key]
+bindings = [{ mods = "Control", key = "t", action = "CreateNewWindow" }]
+
+[hints]
+alphabet = "1234567890"
+
+[[hints.enabled]]
+command = { program = "cmd", args = ["/c", "start", "yazi"] }
+regex = '(file://|\\\\\?\\)?([a-zA-Z]:\\).+'
+hyperlinks = true
+post_processing = false
+persist = false
+mouse = { enabled = true, mods = "Control" }
+
+[[hints.enabled]]
+command = { program = "cmd", args = ["/c", "start", ""] }
+hyperlinks = true
+post_processing = true
+persist = false
+mouse = { enabled = true, mods = "Control" }
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`\\\\]+"
