@@ -888,12 +888,14 @@ export def --env alternative-buffer [
   $out
 }
 
-# a wrapper for atuin history command to output a table with date, duration, exit code and command, also parse the duration to a duration type and exit code to int, also highlight the command using nu-highlight
-export def '_atuin history' [
-  --limit: int = 500
+# a wrapper for atuin history list command to output a table with date, duration, exit code and command, also parse the duration to a duration type and exit code to int, also highlight the command using nu-highlight
+export def '_atuin history list' [
   --reverse
+  --limit (-n) = 100 # limit the number of history entries to show
 ]: nothing -> table {
-  atuin search (if $reverse { "--reverse" } else { '' }) --limit $limit | lines | parse "{date}\t{duration}\t{exit_with}\t{command}" | into datetime date | into int exit_with | update command { nu-highlight } | update duration {
+  const format = "{user}\t{host}\t{directory}\t{time}\t{duration}\t{exit}\t{command}"
+
+  atuin history list --format $format --reverse $reverse | lines | first $limit | parse $format | into datetime time | into int exit | update command { nu-highlight } | update duration {
     regex '(?<num>\d+)(?<unit>\D+)' | let m
 
     let num = $m | where capture_name == num | get 0.match
