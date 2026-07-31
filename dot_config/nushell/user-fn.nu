@@ -535,10 +535,7 @@ def "nu-complete exe" []: nothing -> record {
 }
 
 # check if input is a valid exe file
-def is-exe [exe_file: path]: [
-  nothing -> nothing
-  nothing -> error
-] {
+def is-exe [exe_file: path]: nothing -> nothing {
   if not ($exe_file | str ends-with ".exe") {
     error make {
       msg: "Input file is not an .exe file"
