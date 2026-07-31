@@ -386,8 +386,11 @@ If you wish to set tracking information for this branch you can do so with:
           text: $"Current branch is '(ansi green_bold)($current_branch)(ansi reset)'"
           span: (metadata $current_branch_info).span
         }
+        {
+          text: ($upstream_info | to json)
+          span: (metadata $upstream_info).span
+        }
       ]
-      inner: [{msg: ($upstream_info | to json)}]
     }
   }
 
