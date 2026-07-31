@@ -9,6 +9,7 @@ require("chronos"):setup({
 require("augment-command"):setup({
 	open_file_after_creation = true,
 	smooth_scrolling = true,
+	enter_archives = false
 })
 ---- yatline ----
 require("yatline"):setup({

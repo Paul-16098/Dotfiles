@@ -19,6 +19,7 @@ config.hide_mouse_cursor_when_typing = false
 config.enable_kitty_keyboard = true
 
 config.quick_select_patterns = {
+	'(?:\\$ )[^\n]+'
 }
 
 config.hyperlink_rules = {
