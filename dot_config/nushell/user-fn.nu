@@ -945,3 +945,22 @@ export def "ps port" [
 export def "ps name" [name: string --long (-l)]: nothing -> table {
   ps --long=$long | where name =~ $name
 }
+
+# aic wrapper to run ollama server and then run aic command, if ollama server is already running, it will not start a new server
+export def aic []: nothing -> nothing {
+  let id: oneof<int, nothing> = if (ps port 11434 | length) == 0 {
+    job spawn --description "ollama server for aic" {
+      ollama serve | job send 0
+    }
+  }
+
+  try {
+    ^aic
+  }
+
+  if ($id | is-not-empty) {
+    job kill $id
+  }
+}
+
+export extern 'aic setup' []
