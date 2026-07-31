@@ -92,7 +92,6 @@ export-env {
         until: [{send: HistoryHintWordComplete} {edit: MoveWordRight}]
       }
     )
-    (add-keybindings --name "add-default-keybinding" CONTROL char_c {send: CtrlC})
     (add-keybindings --name "add-default-keybinding" CONTROL char_d {send: CtrlD})
     (add-keybindings --name "add-default-keybinding" CONTROL char_z {edit: Undo})
     (add-keybindings --name "add-default-keybinding" CONTROL char_o {send: OpenEditor})
@@ -107,7 +106,7 @@ export-env {
     (add-keybindings --name "add-default-keybinding" SHIFT Down {edit: MoveLineDown select: true})
     # add custom keybindings
     (add-keybindings --name "add-default-keybinding" CONTROL char_a {edit: SelectAll})
-    (add-keybindings --name "add-default-keybinding" CONTROL char_c {edit: CopySelectionSystem})
+    (add-keybindings --name "add-default-keybinding" CONTROL char_c {until: [{edit: CopySelectionSystem} {send: CtrlC}]})
     (add-keybindings --name "add-default-keybinding" CONTROL char_v {edit: PasteSystem})
     (add-keybindings --name "add-default-keybinding" CONTROL char_x {edit: CutSelectionSystem})
 
