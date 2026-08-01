@@ -964,19 +964,28 @@ export def "ps name" [name: string --long (-l)]: nothing -> table {
   ps --long=$long | where name =~ $name
 }
 
-# aic wrapper to run ollama server and then run aic command, if ollama server is already running, it will not start a new server
-export def 'ollama aic' []: nothing -> nothing {
+# an wrapper to run ollama server and then run a callback function, if ollama server is already running, it will not start a new server, the callback function should return the output as a string
+# nu-lint-ignore: missing_in_type, missing_output_type, add_type_hints_arguments
+export def 'ollama wrapper-if-not-run' [fn: closure ...rest: any]: any -> any {
   let id: oneof<int, nothing> = if (ps port 11434 | length) == 0 {
     job spawn --description "ollama server for aic" {
       ollama serve | job send 0
     }
   }
 
-  try {
-    ^aic
-  }
+  $in | do $fn ...$rest | let out
 
   if ($id | is-not-empty) {
     job kill $id
   }
+
+  $out
+}
+
+# aic wrapper to run ollama server and then run aic command, if ollama server is already running, it will not start a new server
+@complete external
+export def aic --wrapped [...rest]: nothing -> nothing {
+  ollama wrapper-if-not-run {|...rest|
+    ^aic ...$rest
+  } ...$rest
 }
