@@ -372,9 +372,14 @@ If you wish to set tracking information for this branch you can do so with:
   let current_branch = if $current_branch_info.exit_code == 0 {
     $current_branch_info.stdout | str trim
   } else {
-    error make {
+    error make --unspanned {
       msg: "Failed to get current branch name."
-      inner: [{msg: ($current_branch_info | to json)}]
+      labels: [
+        {
+          text: ($current_branch_info | to json)
+          span: (metadata $current_branch_info).span
+        }
+      ]
     }
   }
 
@@ -384,7 +389,7 @@ If you wish to set tracking information for this branch you can do so with:
   let upstream_ref = if $upstream_info.exit_code == 0 {
     $upstream_info.stdout | str trim
   } else {
-    error make {
+    error make --unspanned {
       msg: "No upstream tracking information found."
       labels: [
         {
