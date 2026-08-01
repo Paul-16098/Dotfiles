@@ -2,8 +2,10 @@ const self = path self
 
 # Edit this config.
 export def "config user-hooks" []: nothing -> nothing {
-    run-external $env.config.buffer_editor ($self)
+  run-external $env.config.buffer_editor ($self)
 }
+
+# in commandline edit, add ' ' before the command, so that it will be executed in the history
 
 export-env {
   $env.config = (
@@ -21,7 +23,7 @@ export-env {
           }
           code: {|old new|
             $env.toolkit_load_hooks_is_notified = true
-            const CODE = "overlay use toolkit.nu"
+            const CODE = " overlay use toolkit.nu"
             print $"(ansi green)toolkit.nu(ansi reset) is exists in this directory, but not loaded.\nrun next line to activate it:"
             print ($CODE | nu-highlight)
             commandline edit $CODE
@@ -37,7 +39,7 @@ export-env {
           }
           code: {|old new|
             $env.toolkit_hide_hooks_is_notified = true
-            const CODE = "overlay hide toolkit --keep-env [PWD]"
+            const CODE = " overlay hide toolkit --keep-env [PWD]"
             print $"(ansi green)toolkit.nu(ansi reset) is not exists in this directory, but toolkit overlay is loaded.\nrun next line to deactivate it:"
             print ($CODE | nu-highlight)
             commandline edit $CODE
@@ -54,7 +56,7 @@ export-env {
           }
           code: {|old new|
             $env.venv_load_hooks_is_notified = true
-            const CODE = "overlay use ./.venv/Scripts/activate.nu"
+            const CODE = " overlay use ./.venv/Scripts/activate.nu"
             print $"venv is exists in this directory, but not activated.\nrun next line to activate it:"
             print ($CODE | nu-highlight)
             commandline edit $CODE
@@ -70,7 +72,7 @@ export-env {
           }
           code: {|old new|
             $env.venv_hide_hooks_is_notified = true
-            const CODE = "overlay hide activate --keep-env [PWD]"
+            const CODE = " overlay hide activate --keep-env [PWD]"
             print $"venv is not exists in this directory, but activated.\nrun next line to deactivate it:"
             print ($CODE | nu-highlight)
             commandline edit $CODE
