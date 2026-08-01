@@ -411,7 +411,12 @@ If you wish to set tracking information for this branch you can do so with:
   if $new_commit_info.exit_code != 0 {
     error make {
       msg: $"Could not resolve upstream ref '(ansi green_bold)($upstream_ref)(ansi reset)'."
-      inner: [{msg: ($new_commit_info | to json)}]
+      labels: [
+        {
+          text: ($new_commit_info | to json)
+          span: (metadata $new_commit_info).span
+        }
+      ]
     }
     return
   }
