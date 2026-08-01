@@ -136,11 +136,6 @@ run = "paste --force"
 desc = "粘貼已複製的文件(如果目標位置已存在則覆蓋)"
 
 [[mgr.keymap]]
-on = ["F", "g"]
-run = "plugin fg -- fzf"
-desc = "按文件名查找文件"
-
-[[mgr.keymap]]
 on = "x"
 run = "unyank"
 desc = "取消已複製狀態"
