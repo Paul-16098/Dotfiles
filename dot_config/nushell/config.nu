@@ -51,6 +51,8 @@ $env.config.abbreviations = {
   py: python
 
   gl: 'git log'
+  glf: 'git log FETCH_HEAD..HEAD'
+
   gp: 'git pull'
   gs: 'git status-or-show'
   gc: 'git clone'
