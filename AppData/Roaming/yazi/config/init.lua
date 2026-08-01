@@ -69,9 +69,6 @@ require("yatline"):setup({
 })
 require("yatline-symlink"):setup()
 
---- fg ---
-require("fg"):setup({
-})
 --- mime-ext ---
 require("mime-ext.local"):setup {
 	-- 展開現有的檔案名稱資料庫（小寫），例如：
