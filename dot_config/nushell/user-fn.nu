@@ -342,7 +342,12 @@ export def --wrapped "git pull" [
   if $fetch_out.exit_code != 0 {
     error make --unspanned {
       msg: "git pull: Failed to fetch remote refs before pull"
-      inner: [{msg: $fetch_out.stderr}]
+      labels: [
+        {
+          text: ($fetch_out | to json)
+          span: (metadata $fetch_out).span
+        }
+      ]
     }
   }
 
