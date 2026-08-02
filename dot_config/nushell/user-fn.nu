@@ -975,7 +975,7 @@ export def 'ollama wrapper-if-not-run' [fn: closure ...rest: any]: any -> any {
     job spawn --description "ollama server for aic" {
       ollama serve | job send 0
     }
-  }
+  } else { null }
 
   $in | do $fn ...$rest | let out
 
