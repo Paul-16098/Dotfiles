@@ -986,6 +986,6 @@ export def 'ollama wrapper-if-not-run' [fn: closure ...rest: any]: any -> any {
 @complete external
 export def aic --wrapped [...rest]: nothing -> nothing {
   ollama wrapper-if-not-run {|...rest|
-    ^aic ...$rest
+    try { ^aic ...$rest }
   } ...$rest
 }
