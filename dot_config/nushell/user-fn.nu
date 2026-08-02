@@ -8,8 +8,10 @@ export def "config user-fn" []: nothing -> nothing {
 }
 
 # whois wrapper to format output as a table
+@complete external
 export def --wrapped whois [
   --use-akae_re_api # use whois.akae.re API to get whois information
+  --raw # if set, return raw output from whois-cli
   ...rest: string # a rest that to whois-cli
 ]: nothing -> table {
   if $use_akae_re_api {
@@ -20,6 +22,8 @@ export def --wrapped whois [
         } | url build-query
       )
     )
+  } else if ($raw) {
+    ^whois-cli ...$rest
   } else {
     let process_output = (whois-cli --no-color ...$rest | complete)
     if $process_output.exit_code != 0 {
