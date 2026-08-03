@@ -360,6 +360,15 @@ run = "font-sample"
 mime = "multi/*"
 run = "multi"
 
+# trash
+[[plugin.spotters]]
+url = "trash://*"
+run = "trash"
+
+[[plugin.spotters]]
+url = "trash://*/"
+run = "trash"
+
 [[plugin.spotters]]
 # Folder
 url = "*/"
