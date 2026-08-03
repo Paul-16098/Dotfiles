@@ -1,6 +1,6 @@
 const self = path self
 
-export def main [] {
+export def main []: nothing -> nothing {
   use ~\.config\nushell\nupm\modules\numd
   $env.config.table.missing_value_symbol = "[X]"
   (glob **/*.md --no-dir | par-each {|e| numd run $e --use-host-config --ignore-git-check --eval (view source ls-commands) | reject filename | upsert path ($e | path relative-to (pwd)) | move path --first })
