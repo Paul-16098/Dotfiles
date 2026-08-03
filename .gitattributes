@@ -1,2 +1,4 @@
 # update by .vscode/yazi-config-update.nu
 AppData/Roaming/yazi/config/yazi.toml linguist-generated
+# update by .vscode/update-starship.nu
+dot_config\starship.toml linguist-generated
