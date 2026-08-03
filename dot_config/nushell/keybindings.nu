@@ -9,12 +9,12 @@ const MODIFIER = [none control alt shift shift_alt alt_shift control_alt alt_con
 const MODE = [emacs vi_normal vi_insert]
 
 export def add-keybindings [
-  --mode (-m) = [emacs vi_normal vi_insert]
-  --name (-n) = "custom-keybinding"
+  --mode (-m): list<string> = [emacs vi_normal vi_insert]
+  --name (-n): string
   modifier: string@$MODIFIER
   keycode: string
   event: oneof<record, list<record>>
-]: nothing -> record<name: string, modifier: string, keycode: string, mode: list<string>, event: oneof<record, list<record>>> {
+]: nothing -> record<name: oneof<string, nothing>, modifier: string, keycode: string, mode: list<string>, event: oneof<record, list<record>>> {
   {
     name: $name
     modifier: $modifier
@@ -63,52 +63,52 @@ export-env {
     ...(remove-default-keybindings { true })
     # add default keybinding
     ## none
-    (add-keybindings --name "add-default-keybinding" none Backspace {edit: Backspace})
-    (add-keybindings --name "add-default-keybinding" none Delete {edit: Delete})
+    (add-keybindings none Backspace {edit: Backspace})
+    (add-keybindings none Delete {edit: Delete})
     (
-      add-keybindings --name "add-default-keybinding" none Down {
+      add-keybindings none Down {
         until: [{send: MenuDown} {send: executehostcommand cmd: " commandline edit --replace ''"}]
       }
     )
     (
-      add-keybindings --name "add-default-keybinding" none Up {
+      add-keybindings none Up {
         until: [{send: MenuUp} {send: executehostcommand cmd: (_atuin_search_cmd '--shell-up-key-binding')}]
       }
     )
-    (add-keybindings --name "add-default-keybinding" none Left {until: [{send: MenuLeft} {send: Left}]})
-    (add-keybindings --name "add-default-keybinding" none Right {until: [{send: HistoryHintComplete} {send: MenuRight} {send: Right}]})
-    (add-keybindings --name "add-default-keybinding" none Enter {send: Enter})
-    (add-keybindings --name "add-default-keybinding" none Esc {send: Esc})
-    (add-keybindings --name "add-default-keybinding" none Home {edit: MoveToLineStart})
-    (add-keybindings --name "add-default-keybinding" none End {edit: MoveToLineEnd})
+    (add-keybindings none Left {until: [{send: MenuLeft} {send: Left}]})
+    (add-keybindings none Right {until: [{send: HistoryHintComplete} {send: MenuRight} {send: Right}]})
+    (add-keybindings none Enter {send: Enter})
+    (add-keybindings none Esc {send: Esc})
+    (add-keybindings none Home {edit: MoveToLineStart})
+    (add-keybindings none End {edit: MoveToLineEnd})
 
-    (add-keybindings --name "add-default-keybinding-menu" none Tab {send: menu name: completion_menu})
+    (add-keybindings none Tab {send: menu name: completion_menu})
     ## CONTROL
-    (add-keybindings --name "add-default-keybinding" CONTROL Backspace {edit: BackspaceWord})
-    (add-keybindings --name "add-default-keybinding" CONTROL Delete {edit: DeleteWord})
-    (add-keybindings --name "add-default-keybinding" CONTROL Left {edit: MoveWordLeft})
+    (add-keybindings CONTROL Backspace {edit: BackspaceWord})
+    (add-keybindings CONTROL Delete {edit: DeleteWord})
+    (add-keybindings CONTROL Left {edit: MoveWordLeft})
     (
-      add-keybindings --name "add-default-keybinding" CONTROL Right {
+      add-keybindings CONTROL Right {
         until: [{send: HistoryHintWordComplete} {edit: MoveWordRight}]
       }
     )
-    (add-keybindings --name "add-default-keybinding" CONTROL char_d {send: CtrlD})
-    (add-keybindings --name "add-default-keybinding" CONTROL char_z {edit: Undo})
-    (add-keybindings --name "add-default-keybinding" CONTROL char_o {send: OpenEditor})
+    (add-keybindings CONTROL char_d {send: CtrlD})
+    (add-keybindings CONTROL char_z {edit: Undo})
+    (add-keybindings CONTROL char_o {send: OpenEditor})
     ## SHIFT_CONTROL
-    (add-keybindings --name "add-default-keybinding" CONTROL_SHIFT Left {edit: MoveWordLeft select: true})
-    (add-keybindings --name "add-default-keybinding" CONTROL_SHIFT Right {edit: MoveWordRight select: true})
+    (add-keybindings CONTROL_SHIFT Left {edit: MoveWordLeft select: true})
+    (add-keybindings CONTROL_SHIFT Right {edit: MoveWordRight select: true})
     ## SHIFT
-    (add-keybindings --name "add-default-keybinding" SHIFT Enter {edit: InsertNewline})
-    (add-keybindings --name "add-default-keybinding" SHIFT Left {edit: MoveLeft select: true})
-    (add-keybindings --name "add-default-keybinding" SHIFT Right {edit: MoveRight select: true})
-    (add-keybindings --name "add-default-keybinding" SHIFT Up {edit: MoveLineUp select: true})
-    (add-keybindings --name "add-default-keybinding" SHIFT Down {edit: MoveLineDown select: true})
+    (add-keybindings SHIFT Enter {edit: InsertNewline})
+    (add-keybindings SHIFT Left {edit: MoveLeft select: true})
+    (add-keybindings SHIFT Right {edit: MoveRight select: true})
+    (add-keybindings SHIFT Up {edit: MoveLineUp select: true})
+    (add-keybindings SHIFT Down {edit: MoveLineDown select: true})
     # add custom keybindings
-    (add-keybindings --name "add-default-keybinding" CONTROL char_a {edit: SelectAll})
-    (add-keybindings --name "add-default-keybinding" CONTROL char_c {until: [{edit: CopySelectionSystem} {send: CtrlC}]})
-    (add-keybindings --name "add-default-keybinding" CONTROL char_v {edit: PasteSystem})
-    (add-keybindings --name "add-default-keybinding" CONTROL char_x {edit: CutSelectionSystem})
+    (add-keybindings CONTROL char_a {edit: SelectAll})
+    (add-keybindings CONTROL char_c {until: [{edit: CopySelectionSystem} {send: CtrlC}]})
+    (add-keybindings CONTROL char_v {edit: PasteSystem})
+    (add-keybindings CONTROL char_x {edit: CutSelectionSystem})
 
     (add-keybindings CONTROL Up {edit: MoveLineUp})
     (add-keybindings CONTROL Down {edit: MoveLineDown})
