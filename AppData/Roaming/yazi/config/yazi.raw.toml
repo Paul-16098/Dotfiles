@@ -278,6 +278,10 @@ mime = "application/xml"
 run = "code"
 
 [[plugin.prepend_previewers]]
+mime = "application/xaml+xml"
+run = "code"
+
+[[plugin.prepend_previewers]]
 url = "*.csv"
 run = "code"
 
