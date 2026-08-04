@@ -980,7 +980,11 @@ export def 'ollama wrapper-if-not-run' [fn: closure ...rest: any]: any -> any {
   $in | do $fn ...$rest | let out
 
   if ($id | is-not-empty) {
-    job kill $id
+    try {
+      job kill $id
+    } catch {
+      ps name 'ollama' | kill ...$in.pid --force
+    }
   }
 
   $out
