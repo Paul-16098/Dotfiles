@@ -286,14 +286,6 @@ url = "*.csv"
 run = "code"
 
 [[plugin.prepend_previewers]]
-url = "*.rst"
-run = "rich-preview"
-
-[[plugin.prepend_previewers]]
-url = "*.ipynb"
-run = "rich-preview"
-
-[[plugin.prepend_previewers]]
 mime = "font/*"
 run = "font-sample"
 
