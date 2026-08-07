@@ -1,8 +1,9 @@
-require("chronos"):setup({
-	enable = false,
-	notify_mode = "detailed", -- "summary" | "detailed"
-	detail_chunk_size = 12,
-})
+--- this for debug
+-- require("chronos"):setup({
+-- 	enable = true,
+-- 	notify_mode = "detailed", -- "summary" | "detailed"
+-- 	detail_chunk_size = 12,
+-- })
 
 
 ---- 增強指令 ----
