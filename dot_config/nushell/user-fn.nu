@@ -124,7 +124,7 @@ export def app-update [
     airshipper update
   }
   _jobd spawn app-update-cargo-packages {
-    cargo install-update --all --git --filter !name=nu
+    cargo install-update --all --git --filter !name=nu --filter !name=nu_plugin_formats --filter !name=nu_plugin_polars --filter !name=nu_plugin_query
   }
   _job spawn --description app-update-nu-plugins {
     # jobd wait app-update-cargo-packages
