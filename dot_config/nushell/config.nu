@@ -1,6 +1,5 @@
 # nu-lint-ignore-file: dynamic_script_import
 # config
-$env.config.buffer_editor = [(which --all $env.EDITOR | get 0.path) "--wait"]
 $env.config.table.missing_value_symbol = "∅"
 $env.config.display_errors.exit_code = true
 # $env.config.use_kitty_protocol = true
@@ -51,10 +50,11 @@ $env.config.abbreviations = {
   py: python
 
   gl: 'git log'
-  glo: 'git log origin/HEAD...HEAD'
+  glo: 'git log @{u}..'
 
   gp: 'git pull'
   gs: 'git status-or-show'
+  gso: 'git show @{u}..'
   gc: 'git clone'
 }
 $env.config.menus = $env.config.menus | where name == completion_menu
