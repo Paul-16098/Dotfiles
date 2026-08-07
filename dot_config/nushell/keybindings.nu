@@ -92,7 +92,6 @@ export-env {
         until: [{send: HistoryHintWordComplete} {edit: MoveWordRight}]
       }
     )
-    (add-keybindings CONTROL char_d {send: CtrlD})
     (add-keybindings CONTROL char_z {edit: Undo})
     (add-keybindings CONTROL char_o {send: OpenEditor})
     ## SHIFT_CONTROL
