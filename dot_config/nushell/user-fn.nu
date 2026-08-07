@@ -948,7 +948,7 @@ export def "ps name" [name: string --long (-l)]: nothing -> table {
 # nu-lint-ignore: missing_in_type, missing_output_type, add_type_hints_arguments
 export def 'ollama wrapper-if-not-run' [fn: closure ...rest: any]: any -> any {
   let id: oneof<int, nothing> = if (ps port 11434 | length) == 0 {
-    job spawn --description "ollama server for aic" {
+    job spawn --description "ollama server for ollama wrapper-if-not-run" {
       ollama serve | job send 0
     }
   } else { null }
