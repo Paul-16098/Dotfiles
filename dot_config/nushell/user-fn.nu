@@ -967,9 +967,32 @@ export def 'ollama wrapper-if-not-run' [fn: closure ...rest: any]: any -> any {
 }
 
 # aic wrapper to run ollama server and then run aic command, if ollama server is already running, it will not start a new server
+# in tui mode, it need tty to run
 @complete external
-export def aic --wrapped [...rest]: nothing -> nothing {
-  ollama wrapper-if-not-run {|...rest|
-    try { ^aic ...$rest }
-  } ...$rest
+export def aic --wrapped [...rest: string]: nothing -> nothing {
+  let id: oneof<int, nothing> = if (ps port 11434 | length) == 0 {
+    job spawn --description "ollama server for aic" {
+      ollama serve | job send 0
+    }
+  } else { null }
+
+  ^aic ...$rest
+
+  if ($id | is-not-empty) {
+    try {
+      job kill $id
+    } catch {
+      ps name 'ollama' | kill ...$in.pid --force
+    }
+  }
+}
+
+# a wrapper for gh api command to output json parsed, if the output is invalid json, return string
+@complete external
+export def 'gh api' --wrapped [...rest: string]: [
+  nothing -> oneof<table, record> # valid json
+  nothing -> string # invalid json
+] {
+  let out: string = ^gh api ...$rest
+  try { $out | from json } catch { $out }
 }
