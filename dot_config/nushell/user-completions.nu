@@ -193,8 +193,8 @@ export extern sudo [
   --version (-V) # show version information | 显示版本信息
 ]
 # nu-lint-ignore: unused_helper_functions
-def "nu-complete ya pkg" []: nothing -> list<string> {
-  ya pkg list | lines | parse "\t{name} ({hash})" | get name
+def "nu-complete ya pkg" []: nothing -> record {
+  {options: {completion_algorithm: fuzzy} completions: (ya pkg list | lines | parse "\t{name} ({hash})" | get name)}
 }
 # delete yazi package | 删除 yazi 包
 export extern "ya pkg delete" [
