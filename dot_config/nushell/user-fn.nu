@@ -104,15 +104,12 @@ export def app-update [
 
   if (
     ($cofg | get --optional "app-update-nu" | default {status: on} | get status) == on
-    and (gh api repos/nushell/nushell/commits | from json | first | get sha) != (version | get commit_hash)
+    and (^gh api $"repos/nushell/nushell/compare/(version | get commit_hash)...HEAD" | from json | get files.filename | any $it ends-with '.rs')
     or ($cofg | get --optional "app-update-nu" | default {debug-run: false} | get debug-run? | default false)
   ) {
     print --no-newline (char bel)
     print "A new version of NuShell is available, updating."
-    with-env ({NU_COMMANDLINE: (commandline)}) {
-      print $"run ($env.NU_COMMANDLINE) after update NuShell."
-      start ~/.config/nushell/scripts/nu-selfupdate.ps1
-    }
+    start ~/.config/nushell/scripts/nu-selfupdate.ps1
     exit # nu-lint-ignore: exit_only_in_main
   }
 
