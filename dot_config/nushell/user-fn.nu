@@ -911,29 +911,8 @@ export def '_atuin history list' [
 ]: nothing -> table {
   const format = "{user}\t{host}\t{directory}\t{time}\t{duration}\t{exit}\t{command}"
 
-  atuin history list --format $format --reverse $reverse | lines | first $limit | parse $format | into datetime time | into int exit | update command { nu-highlight } | update duration {
-    regex '(?<num>\d+)(?<unit>\D+)' | let m
-
-    let num = $m | where capture_name == num | get 0.match
-    let unit = match ($m | where capture_name == unit | get 0.match) {
-      's' => 'sec'
-      'm' => 'min'
-
-      $_ => $_
-    }
-
-    # print $"num=($num);unit=($unit)"
-
-    $num | into duration --unit $unit
-  }
+  atuin history list --format $format --reverse $reverse | lines | first $limit | parse $format | into datetime time | into int exit | update command { nu-highlight } | str replace --regex '^(\d+)s$' '$1sec' duration | str replace --regex '^(\d+)m$' '$1min' duration | into duration duration
 }
-# export def '_atuin_search_cmd' [...rest] {
-#   let s = _atuin history | input list --fuzzy --display {|| $"($in.duration)\t($in.command)" }
-#   if ($s | is-not-empty) {
-#     print $s
-#     commandline edit ($s.command | ansi strip)
-#   }
-# }
 
 # a wrapper for netstat -ano to output a table with Proto, Local Address, Foreign Address, State and PID columns, also parse the PID to int and filter out the first 3 lines of the output
 export def "netstat -ano" []: nothing -> table {
