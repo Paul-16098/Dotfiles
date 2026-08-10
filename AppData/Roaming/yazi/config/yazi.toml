@@ -310,12 +310,8 @@ mime = "application/subrip"
 run = "mediainfo"
 
 [[plugin.prepend_previewers]]
-mime = "application/postscript"
-run = "mediainfo"
-
-[[plugin.prepend_previewers]]
-url = "*.{nu,nuon}"
-run = "piper -- open --raw $env.TP | nu-highlight"
+mime = "{text/x-nushell,application/x-nuon}"
+run = "piper -- def main [path: path] {open --raw $path | nu-highlight}"
 
 [[plugin.prepend_previewers]]
 mime = "application/java-archive"

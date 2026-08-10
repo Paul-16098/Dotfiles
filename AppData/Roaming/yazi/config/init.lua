@@ -78,6 +78,8 @@ require("mime-ext.local"):setup {
 
 	-- 擴展現有的擴充資料庫（小寫），例如：
 	with_exts = {
+		nu = "text/x-nushell",
+		nuon = "application/x-nuon"
 	},
 
 	-- 如果 MIME 類型不在檔案名稱和副檔名資料庫中，則回退到 Yazi 預設的 `mime.local` 插件，該插件使用 `file(1)`
