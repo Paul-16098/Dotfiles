@@ -85,15 +85,7 @@ require("mime-ext.local"):setup {
 	-- 如果 MIME 類型不在檔案名稱和副檔名資料庫中，則回退到 Yazi 預設的 `mime.local` 插件，該插件使用 `file(1)`
 	fallback_file1 = true,
 }
---- font-sample ---
-require('font-sample'):setup {
-	text = 'ABCDEF abcdef\n0123456789 \noO08 iIlL1 g9qCGQ\n8%& <([{}])>\n.,;: @#$-_="\n== <= >= != ffi\nâéùïøçÃĒÆœ\n및개요これ直楽糸',
-	canvas_size = '750x800',
-	font_size = 80,
-	-- https://imagemagick.org/script/color.php
-	bg = 'white',
-	fg = 'black',
-}
+
 --- sopt ---
 require('spot'):setup {
 	metadata_section = {
