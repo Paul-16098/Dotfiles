@@ -9,10 +9,18 @@ linemode = "mtime"
 [preview]
 wrap = "yes"
 
+# i am use an gui editor, so i don't need to block the terminal when opening a file
+# [[opener.edit]]
+# run = "%EDITOR% %s"
+# desc = "$EDITOR (block)"
+# block = true
+# for = "windows"
+
 [[opener.edit]]
 run = "%EDITOR% %s"
-desc = "$EDITOR"
-block = true
+desc = "$EDITOR (orphan)"
+orphan = true
+for = "windows"
 
 [[opener.open]]
 run = 'start "" %s1'
@@ -95,14 +103,6 @@ block = true
 run = "code-insiders --wait %s"
 block = true
 
-[[opener.trash]]
-run = "ya pub trash-restore --list %S"
-desc = "Restore selected files"
-
-[[opener.trash]]
-run = "ya pub trash-empty --list %S"
-desc = "Empty trash bin"
-
 [[open.prepend_rules]]
 url = "bulk-rename.txt"
 use = "bulk-rename"
@@ -112,12 +112,8 @@ url = "bulk-create.txt"
 use = "bulk-create"
 
 [[open.rules]]
-url = "trash://*"
-use = ["open", "trash"]
-
-[[open.rules]]
-url = "trash://*/"
-use = ["edit", "trash"]
+mime = "trash/**"
+use = ["open", "edit", "trash"]
 
 [[open.rules]]
 url = "**/docker-compose.yaml"
@@ -158,8 +154,8 @@ use = [
   "reveal",
 ]
 
-[[open.rules]]
 # image
+[[open.rules]]
 mime = "image/*"
 use = [
   "open",
@@ -167,16 +163,16 @@ use = [
   "reveal",
 ]
 
-[[open.rules]]
 # media
+[[open.rules]]
 mime = "{audio,video}/*"
 use = [
   "play",
   "reveal",
 ]
 
-[[open.rules]]
 # jar file is actually a zip archive, but it's more user-friendly to open it with java
+[[open.rules]]
 mime = "application/java-archive"
 use = [
   "open",
@@ -185,7 +181,6 @@ use = [
 ]
 
 [[open.rules]]
-# archive
 mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}"
 use = [
   "extract",
@@ -244,70 +239,54 @@ use = [
   "reveal",
 ]
 
+# fetchers
+# </ https://github.com/yazi-rs/plugins/tree/main/mime-ext.yazi
 [[plugin.prepend_fetchers]]
-group = "mime"
 url = "local://*"
 run = "mime-ext.local"
 prio = "high"
-
-[[plugin.prepend_fetchers]]
-url = "trash://*"
-run = "mime.local"
-prio = "high"
 group = "mime"
 
 [[plugin.prepend_fetchers]]
-group = "mime"
 url = "remote://*"
 run = "mime-ext.remote"
 prio = "high"
+group = "mime"
+# https://github.com/yazi-rs/plugins/tree/main/mime-ext.yazi />
 
+# </ https://github.com/yazi-rs/plugins/tree/main/git.yazi
 [[plugin.prepend_fetchers]]
-group = "git"
 url = "*"
 run = "git"
+group = "git"
 
 [[plugin.prepend_fetchers]]
-group = "git"
 url = "*/"
 run = "git"
+group = "git"
+# https://github.com/yazi-rs/plugins/tree/main/git.yazi />
 
 # previewers
-[[plugin.prepend_previewers]]
-mime = "application/xml"
-run = "code"
-
-[[plugin.prepend_previewers]]
-mime = "application/xaml+xml"
-run = "code"
-
-[[plugin.prepend_previewers]]
-url = "*.csv"
-run = "code"
-
-[[plugin.prepend_previewers]]
-mime = "font/*"
-run = "font-sample"
-
-[[plugin.prepend_previewers]]
-mime = "application/ms-opentype"
-run = "font-sample"
-
-[[plugin.prepend_previewers]]
-url = "*.{otf,ttf,woff,woff2}"
-run = "font-sample"
-
+# </ https://github.com/AminurAlam/yazi-plugins/tree/main/preview-git.yazi
 [[plugin.prepend_previewers]]
 url = "**/.git/"
 run = "preview-git"
+# https://github.com/AminurAlam/yazi-plugins/tree/main/preview-git.yazi />
 
+# </ https://github.com/boydaihungst/mediainfo.yazi
 [[plugin.prepend_previewers]]
 mime = "{audio,video,image}/*"
 run = "mediainfo"
 
 [[plugin.prepend_previewers]]
-mime = "application/subrip"
+mime = "application/{subrip,postscript,illustrator,dvb.ait,vnd.adobe.illustrator,eps}"
 run = "mediainfo"
+# https://github.com/boydaihungst/mediainfo.yazi />
+
+# </ user
+[[plugin.prepend_previewers]]
+mime = "application/{xml,sql}"
+run = "code"
 
 [[plugin.prepend_previewers]]
 mime = "{text/x-nushell,application/x-nuon}"
@@ -317,91 +296,41 @@ run = "piper -- def main [path: path] {open --raw $path | nu-highlight}"
 mime = "application/java-archive"
 run = "archive"
 
-[[plugin.prepend_previewers]]
-url = "*.bat"
-run = "code"
+# user />
 
 # preloaders
+# </ https://github.com/boydaihungst/mediainfo.yazi
 [[plugin.prepend_preloaders]]
 mime = "{audio,video,image}/*"
 run = "mediainfo"
 
 [[plugin.prepend_preloaders]]
-mime = "application/subrip"
+mime = "application/{subrip,postscript,illustrator,dvb.ait,vnd.adobe.illustrator,eps}"
 run = "mediainfo"
-
-[[plugin.prepend_preloaders]]
-mime = "application/postscript"
-run = "mediainfo"
-
-[[plugin.prepend_preloaders]]
-mime = "font/*"
-run = "font-sample"
-
-[[plugin.prepend_preloaders]]
-mime = "application/ms-opentype"
-run = "font-sample"
-
-[[plugin.prepend_preloaders]]
-url = "*.{otf,ttf,woff,woff2}"
-run = "font-sample"
+# https://github.com/boydaihungst/mediainfo.yazi />
 
 # spotters
-[[plugin.spotters]]
-# Multi-file
-mime = "multi/*"
-run = "multi"
-
-# trash
-[[plugin.spotters]]
-url = "trash://*"
-run = "trash"
-
-[[plugin.spotters]]
-url = "trash://*/"
-run = "trash"
-
-[[plugin.spotters]]
-# Folder
-url = "*/"
-run = "folder"
-
-# [[plugin.spotters]]
-# # Code
-# mime = "text/*"
-# run = "code"
-
-# [[plugin.spotters]]
-# mime = "{application/{mbox,javascript,wine-extension-ini},audio/mpegurl}"
-# run = "code"
-
-[[plugin.spotters]]
+# </ https://github.com/AminurAlam/yazi-plugins/tree/main/spot.yazi
+[[plugin.prepend_spotters]]
 mime = "audio/*"
 run = "spot-audio"
 
-[[plugin.spotters]]
+[[plugin.prepend_spotters]]
 mime = "image/*"
 run = "spot-image"
 
-[[plugin.spotters]]
-# Video
+[[plugin.prepend_spotters]]
 mime = "video/*"
 run = "spot-video"
 
-[[plugin.spotters]]
-# Virtual file system
-mime = "vfs/*"
-run = "vfs"
+[[plugin.prepend_spotters]]
+url = "*/"
+run = "spot"
 
-# [[plugin.spotters]]
-# # Error
-# mime = "null/*"
-# run = "file"
-
-[[plugin.spotters]]
-# Fallback
+[[plugin.prepend_spotters]]
 url = "*"
 run = "spot"
+# https://github.com/AminurAlam/yazi-plugins/tree/main/spot.yazi />
 
 [tasks]
 image_alloc = 1073741824
