@@ -285,6 +285,10 @@ run = "mediainfo"
 
 # </ user
 [[plugin.prepend_previewers]]
+url = "*.bat"
+run = "code"
+
+[[plugin.prepend_previewers]]
 mime = "application/{xml,sql}"
 run = "code"
 
