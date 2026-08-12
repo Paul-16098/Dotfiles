@@ -309,15 +309,17 @@ export def --wrapped "git pull" [
 ]: nothing -> nothing {
   def --wrapped pull_wrapped [...rest: string]: nothing -> nothing {
     if ("./.git/hooks/pre-pull" | path exists) and not $no_hooks {
-      if not ($in.details.code == "nu::shell::non_zero_exit_code") {
-        error make --unspanned "pre-pull hook failed"
+      try { nu ./.git/hooks/pre-pull o+e>| print $in } catch {
+        if not ($in.details.code == "nu::shell::non_zero_exit_code") {
+          error make --unspanned "pre-pull hook failed"
+        }
       }
     }
     try { ^git pull ...$rest } catch {
       ignore | error make --unspanned "git pull failed"
     }
     if ("./.git/hooks/post-pull" | path exists) and not $no_hooks {
-      try { nu ./.git/hooks/post-pull } catch {
+      try { nu ./.git/hooks/post-pull o+e>| print $in } catch {
         if not ($in.details.code == "nu::shell::non_zero_exit_code") {
           error make --unspanned "post-pull hook failed"
         }
