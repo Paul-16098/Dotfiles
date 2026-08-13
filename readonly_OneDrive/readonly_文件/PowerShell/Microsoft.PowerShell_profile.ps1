@@ -1,5 +1,5 @@
 function Invoke-Starship-TransientFunction {
-    (&starship module time) + (&starship module directory) + "$ "
+    starship prompt --profile transient_prompt 
 }
 Invoke-Expression (&starship init powershell)
 Enable-TransientPrompt
