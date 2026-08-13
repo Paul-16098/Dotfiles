@@ -66,7 +66,7 @@ $env.config.menus = $env.config.menus | where name == completion_menu
 $env.LS_COLORS = (vivid generate molokai)
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 
-$env.TRANSIENT_PROMPT_COMMAND = { (starship module time) + (starship module directory) + $"(ansi wd)$(ansi reset) " }
+$env.TRANSIENT_PROMPT_COMMAND = { starship prompt --profile transient_prompt }
 # $env.TRANSIENT_PROMPT_COMMAND_RIGHT = ""
 
 source "~/.local/share/atuin/init.nu"
