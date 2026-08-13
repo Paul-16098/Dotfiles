@@ -4,7 +4,7 @@ $env.config.buffer_editor = $env.EDITOR | split row ' ' | update 0 {
     which --all $in | get 0.path
   }
 $env.config.table.missing_value_symbol = "∅"
-$env.config.last_result_size = 1mb
+$env.config.max_last_result_size = 1mb
 $env.config.display_errors.exit_code = true
 # $env.config.use_kitty_protocol = true
 $env.config.history.path = null
