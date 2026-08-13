@@ -15,15 +15,7 @@ Set-PSReadLineOption -Colors @{ "Selection" = "`e[7m" }
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 carapace _carapace | Out-String | Invoke-Expression
 
-atuin init powershell --disable-up-arrow | Out-String | Invoke-Expression
-
-# 将 Ctrl+/ 绑定到 Ctrl+r 的功能（atuin search）
-Set-PSReadLineKeyHandler -Chord "Ctrl+/" -BriefDescription "Runs Atuin search" -ScriptBlock {
-    $atuinModule = Get-Module Atuin
-    if ($atuinModule) {
-        & $atuinModule { Invoke-AtuinSearch }
-    }
-}
+atuin init powershell --disable-ctrl-r | Out-String | Invoke-Expression
 
 ###
 
