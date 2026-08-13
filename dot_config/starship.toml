@@ -324,6 +324,10 @@ symbol = " "
 [zig]
 symbol = " "
 
+[profiles]
+transient_prompt = '$time$directory[\$](#727272) '
+transient_prompt_right = ""
+
 [git_metrics]
 disabled = false
 

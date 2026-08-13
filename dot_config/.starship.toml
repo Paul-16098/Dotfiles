@@ -5,6 +5,10 @@ right_format = "${env_var.yazi_level}$shlvl$cmd_duration$battery$memory_usage"
 
 add_newline = false
 
+[profiles]
+transient_prompt = "$time$directory[\\$](#727272) "
+transient_prompt_right = ""
+
 [battery]
 disabled = false
 
