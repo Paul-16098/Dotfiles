@@ -23,9 +23,15 @@ export def add-keybindings [
     event: $event
   }
 }
-export def remove-keybindings [modifier: string@$MODIFIER keycode: string ...mode: string@$MODE]: nothing -> record<name: string, modifier: string, keycode: string, mode: list<string>, event: nothing> {
+
+export def remove-keybindings [
+  modifier: string@$MODIFIER
+  keycode: string
+  mode: list<string> = $MODE
+  --name (-n): string
+]: nothing -> record<name: oneof<string, nothing>, modifier: string, keycode: string, mode: list<string>, event: nothing> {
   {
-    name: "remove-keybindings"
+    name: $name
     modifier: $modifier
     keycode: $keycode
     mode: $mode
@@ -61,6 +67,14 @@ export-env {
   $env.config.keybindings = [
     # remove default keybinding
     ...(remove-default-keybindings { true })
+    (remove-keybindings --name ide_completion_menu control space)
+    (remove-keybindings --name completion_previous shift backtab)
+    (remove-keybindings --name history_menu control char_r)
+    (remove-keybindings --name next_page_menu control char_x)
+    (remove-keybindings --name undo_or_previous_page_menu control char_z)
+    (remove-keybindings --name help_menu none f1)
+    (remove-keybindings --name search_history control char_q)
+
     # add default keybinding
     ## none
     (add-keybindings none Backspace {edit: Backspace})
@@ -82,7 +96,6 @@ export-env {
     (add-keybindings none Home {edit: MoveToLineStart})
     (add-keybindings none End {edit: MoveToLineEnd})
 
-    (add-keybindings none Tab {send: menu name: completion_menu})
     ## CONTROL
     (add-keybindings CONTROL Backspace {edit: BackspaceWord})
     (add-keybindings CONTROL Delete {edit: DeleteWord})
