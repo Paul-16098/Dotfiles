@@ -134,7 +134,7 @@ history_filter = [
   " (--help|-h)$",
   "^(y|yazi)$",
   "^http ",
-  '^\./'
+  '^\.(/|\\)',
 ]
 
 ## prevent commands run with cwd matching any of these regexes from being written
