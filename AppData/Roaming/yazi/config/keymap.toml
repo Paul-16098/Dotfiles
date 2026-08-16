@@ -182,7 +182,7 @@ desc = "重命名所選文件"
 
 [[mgr.keymap]]
 on = ";"
-run = "shell 'nu' --block"
+run = "shell --block -- %%SHELL%"
 desc = "運行 shell 命令"
 
 [[mgr.keymap]]
