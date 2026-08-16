@@ -952,10 +952,14 @@ export def "ps name" [name: string --long (-l)]: nothing -> table {
 
 # an wrapper to run ollama server and then run a callback function, if ollama server is already running, it will not start a new server, the callback function should return the output as a string
 # nu-lint-ignore: missing_in_type, missing_output_type, add_type_hints_arguments
-export def 'ollama wrapper-if-not-run' [fn: closure ...rest: any]: any -> any {
+export def 'ollama wrapper-if-not-run' [
+  fn: closure
+  ...rest: any
+  --log-to-stderr # if set, log the output of ollama server to stderr, default is false
+]: any -> any {
   let id: oneof<int, nothing> = if (ps port 11434 | length) == 0 {
     job spawn --description "ollama server for ollama wrapper-if-not-run" {
-      ollama serve | job send 0
+      ollama serve | tee { if $log_to_stderr { lines | each { print --stderr $in } } } | job send 0
     }
   } else { null }
 
