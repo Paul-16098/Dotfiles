@@ -184,6 +184,13 @@ desc = "重命名所選文件"
 on = ";"
 run = "shell --block -- %%SHELL%"
 desc = "運行 shell 命令"
+for = "windows"
+
+[[mgr.keymap]]
+on = ";"
+run = "shell --block -- $SHELL"
+desc = "運行 shell 命令"
+for = "unix"
 
 [[mgr.keymap]]
 on = "<Space>"
