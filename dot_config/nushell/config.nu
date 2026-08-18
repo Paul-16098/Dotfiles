@@ -80,6 +80,7 @@ overlay use ('.' | path join user-fn.nu)
 # hooks
 overlay use ('.' | path join hooks.nu)
 overlay use ('.' | path join hook_display_output.nu)
+overlay use ('.' | path join command_not_found_hook.nu)
 
 # keybindings
 overlay use ('.' | path join keybindings.nu)

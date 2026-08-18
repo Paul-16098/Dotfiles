@@ -98,6 +98,7 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   |       justfile
 # => |   |
 # => |   +---nushell
+# => |   |   |   command_not_found_hook.nu
 # => |   |   |   config.nu
 # => |   |   |   env.nu
 # => |   |   |   hooks.nu
