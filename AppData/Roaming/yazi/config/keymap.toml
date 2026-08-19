@@ -137,7 +137,7 @@ desc = "粘貼已複製的文件(如果目標位置已存在則覆蓋)"
 
 [[mgr.keymap]]
 on = "x"
-run = "unyank"
+run = ["unyank", "escape --select"]
 desc = "取消已複製狀態"
 
 [[mgr.keymap]]
