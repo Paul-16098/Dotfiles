@@ -822,17 +822,27 @@ export def "clip copy-image" [
 export def "meme" [
   type: string@[fzf yazi nushell] = yazi # what tool to use to pick meme
 ]: nothing -> nothing {
-  cd ~\OneDrive\文件\meme
+  let meme_base_path = '~\OneDrive\文件\meme' | path expand
+
+  cd $meme_base_path
   mut meme_path: list<string> = []
   match $type {
     yazi => {
       let chooser_file = mktemp --tmpdir "yazi-chooser_file.XXXXXX"
-      yazi --chooser-file $chooser_file
+      let yazi_id = random int 1_000_000_000..9_999_999_999
+
+      y --chooser-file $chooser_file --client-id ($yazi_id) --watch-events | where kind == 'cd' | each {
+        if ($in.body.url | path expand) not-starts-with $meme_base_path {
+          print --stderr $"Invalid meme path: (ansi green)($in.body.url | path expand)(ansi reset), must be under (ansi green)($meme_base_path)(ansi reset)"
+          meme yazi
+        }
+      }
+
       $meme_path = open $chooser_file | lines
       rm --force --permanent $chooser_file
     }
     fzf => {
-      $meme_path = ^fzf --multi --ansi --preview '$env.TERM = "xterm-256color";viu --sixel -w $env.FZF_PREVIEW_COLUMNS -h $env.FZF_PREVIEW_LINES {}' | lines
+      $meme_path = ^fzf --multi --ansi --preview 'viu --sixel -w $env.FZF_PREVIEW_COLUMNS -h $env.FZF_PREVIEW_LINES {}' | lines
     }
 
     nushell => {
