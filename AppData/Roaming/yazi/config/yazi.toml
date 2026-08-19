@@ -1,5 +1,10 @@
 #:schema https://yazi-rs.github.io/schemas/yazi.json
 
+[tasks]
+image_alloc = 0
+image_bound = [0, 0]
+suppress_preload = true
+
 [mgr]
 sort_by = "natural"
 show_hidden = true
@@ -8,6 +13,8 @@ linemode = "mtime"
 
 [preview]
 wrap = "yes"
+image_filter = "lanczos3"
+image_delay = 0
 
 # i am use an gui editor, so i don't need to block the terminal when opening a file
 # [[opener.edit]]
@@ -335,6 +342,3 @@ run = "spot"
 url = "*"
 run = "spot"
 # https://github.com/AminurAlam/yazi-plugins/tree/main/spot.yazi />
-
-[tasks]
-image_alloc = 1073741824
