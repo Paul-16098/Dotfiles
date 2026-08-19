@@ -429,19 +429,20 @@ user-fn whois ...()    # `nothing -> table`
 
 ### `user-fn y`
 
-https://yazi-rs.github.io/docs/quick-start#shell-wrapper
+yazi wrapper to watch for local and remote events
 
 ```nushell no-run
-user-fn y ...(args)    # `nothing -> nothing`
+user-fn y ...(args)    # `nothing -> oneof<nothing`
 ```
 
 **Parameters:**
 
-- `...args: string`
+- `...args: external-argument`
 
 **Flags:**
 
-- `--skip-check-is-yazi` — if set, skip the check for YAZI_LEVEL environment variable, useful for advanced users who want to call yazi from another wrapper function, default is false
+- `--skip-check-is-yazi` — if set, skip the check for YAZI_LEVEL environment variable, useful for advanced users who want to call yazi from another wrapper function
+- `--watch-events` — if set, watch for local and remote events
 <!-- numd-gen-end -->
 
 ## keybindings

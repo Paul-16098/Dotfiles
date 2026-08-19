@@ -677,11 +677,12 @@ export def "steamcmd" [
   /steamcmd/steamcmd.exe ...$args (if not $REPL { '+exit' } else { '' })
 }
 
-# https://yazi-rs.github.io/docs/quick-start#shell-wrapper
+# yazi wrapper to watch for local and remote events
 export def --wrapped --env y [
-  --skip-check-is-yazi # if set, skip the check for YAZI_LEVEL environment variable, useful for advanced users who want to call yazi from another wrapper function, default is false
-  ...args: string
-]: nothing -> nothing {
+  --skip-check-is-yazi # if set, skip the check for YAZI_LEVEL environment variable, useful for advanced users who want to call yazi from another wrapper function
+  --watch-events # if set, watch for local and remote events
+  ...args
+]: nothing -> oneof<nothing, table<kind: string, receiver: string, sender: string, body: record>> {
   if ("YAZI_LEVEL" in $env and not $skip_check_is_yazi) {
     error make {
       msg: "You are already running yazi."
@@ -697,14 +698,16 @@ export def --wrapped --env y [
       ]
     }
   }
-  let tmp = (mktemp --tmpdir "yazi-cwd.XXXXXX")
-  yazi ...$args --cwd-file $tmp
-  let cwd = (open $tmp)
-  if $cwd != $env.PWD and ($cwd | path exists) {
-    cd $cwd
+  if $watch_events {
+    yazi ...$args --local-events 'cd,hover,rename,bulk,@yank,move,trash,delete,theme,hi,hey,bye' --remote-events 'cd,hover,rename,bulk,@yank,move,trash,delete,theme,hi,hey,bye'
+    | lines | par-each --keep-order {
+      split column --number 4 ',' kind receiver sender body | update body? { from json }
+    } | flatten
+  } else {
+    yazi ...$args
   }
-  rm --force --permanent $tmp
 }
+
 # https://www.chezmoi.io/user-guide/frequently-asked-questions/design/#why-does-chezmoi-cd-spawn-a-shell-instead-of-just-changing-directory
 export def --env "chezmoi cd" [] {
   cd (chezmoi source-path | path expand)
