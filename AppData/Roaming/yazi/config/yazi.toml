@@ -64,10 +64,6 @@ desc = "Extract with Bandizip"
 for = "windows"
 
 [[opener.extract]]
-run = "ya pub extract --list %s"
-desc = "Extract here"
-
-[[opener.extract]]
 run = "ya pub augmented-extract --list %s"
 desc = "Extract here(augmented)"
 
