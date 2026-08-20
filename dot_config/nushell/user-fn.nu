@@ -113,11 +113,8 @@ export def app-update [
     exit # nu-lint-ignore: exit_only_in_main
   }
 
-  _jobd spawn app-update-rustup {
-    rustup self update
-  }
-  _jobd spawn app-update-rust-toolchains {
-    rustup update
+  _jobd spawn app-update-rust {
+    rustup check
   }
   _jobd spawn app-update-airshipper {
     airshipper upgrade
