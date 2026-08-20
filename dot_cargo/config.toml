@@ -1,22 +1,9 @@
 [target.x86_64-pc-windows-msvc]
-	# 使用 lld-link 取代 MSVC link.exe，避開 PDB LNK1318 問題
-	linker = "rust-lld.exe"
-
-[source.crates-io]
-	# 避開 Received timeout error from reqwest. Delay future request by 200ms
-	# replace-with = 'tsinghua'
-
-[source.tsinghua]
-	registry = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"
-[registries.tsinghua]
-	index = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"
-
-[source.cqu]
-	registry = "sparse+https://mirrors.cqu.edu.cn/crates.io-index/"
-[registries.cqu]
-	index = "sparse+https://mirrors.cqu.edu.cn/crates.io-index/"
+# 使用 lld-link 取代 MSVC link.exe，避開 PDB LNK1318 問題
+linker = "rust-lld.exe"
 
 [build]
-	rustc-wrapper = "sccache"
+rustc-wrapper = "sccache"
+
 [net]
-	git-fetch-with-cli = true
+git-fetch-with-cli = true
