@@ -74,6 +74,8 @@ $env.TRANSIENT_PROMPT_COMMAND = { starship prompt --profile transient_prompt }
 
 source "~/.local/share/atuin/init.nu"
 
+use std/help
+
 # user functions
 overlay use ('.' | path join user-fn.nu)
 
