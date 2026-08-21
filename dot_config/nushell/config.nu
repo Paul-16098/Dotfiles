@@ -60,7 +60,7 @@ $env.config.abbreviations = {
   glo: 'git log @{u}..'
 
   gp: 'git pull'
-  gs: 'git status-or-show'
+  gs: 'git status-or-diff'
   gso: 'git show @{u}..'
   gc: 'git clone'
 }

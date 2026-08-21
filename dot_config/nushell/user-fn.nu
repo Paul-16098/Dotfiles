@@ -504,14 +504,14 @@ export def --wrapped "git show" [...rest: string]: any -> string {
   }
 }
 
-def "complete git status-or-show" [spans: list<string>]: nothing -> table<value: string, display: string, description: string, style: record<fg: string, attr: string>> { do $env.config.completions.external.completer [git show ...($spans | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
+def "complete git status-or-diff" [spans: list<string>]: nothing -> table<value: string, display: string, description: string, style: record<fg: string, attr: string>> { do $env.config.completions.external.completer [git diff ...($spans | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
 
 # a wrapper for git status and git show, if no arguments, run git status, otherwise run git show with the provided arguments, also handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
-@complete "complete git status-or-show"
+@complete "complete git status-or-diff"
 @category git
-export def --wrapped "git status-or-show" [...rest: string]: any -> string {
+export def --wrapped "git status-or-diff" [...rest: string]: any -> string {
   if ($rest | length) == 0 { git status } else {
-    git show ...$rest
+    git diff ...$rest
   }
 }
 

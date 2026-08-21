@@ -240,12 +240,12 @@ user-fn git show ...()    # `any -> string`
 
 - `...: string`
 
-### `user-fn git status-or-show`
+### `user-fn git status-or-diff`
 
 a wrapper for git status and git show, if no arguments, run git status, otherwise run git show with the provided arguments, also handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
 
 ```nushell no-run
-user-fn git status-or-show ...()    # `any -> string`
+user-fn git status-or-diff ...()    # `any -> string`
 ```
 
 **Parameters:**
