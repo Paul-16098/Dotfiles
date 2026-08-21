@@ -82,6 +82,10 @@ require("mime-ext.local"):setup {
 		nuon = "application/x-nuon"
 	},
 
+	-- Empty the default filename and extension databases,
+	-- use only the custom ones configured with `with_files` and `with_exts`
+	custom_only = true,
+
 	-- 如果 MIME 類型不在檔案名稱和副檔名資料庫中，則回退到 Yazi 預設的 `mime.local` 插件，該插件使用 `file(1)`
 	fallback_file1 = true,
 }
