@@ -7,3 +7,6 @@ rustc-wrapper = "sccache"
 
 [net]
 git-fetch-with-cli = true
+
+[unstable]
+git = true
