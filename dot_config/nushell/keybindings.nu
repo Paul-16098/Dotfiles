@@ -64,19 +64,20 @@ export def remove-default-keybindings [wh_condition: closure]: nothing -> table<
 }
 
 export-env {
+  # remove default keybinding
+  $env.config.keybindings = []
+  # add custom keybinding
   $env.config.keybindings = [
-    # remove default keybinding
-    ...(remove-default-keybindings { true })
-    (remove-keybindings --name ide_completion_menu control space)
-    (remove-keybindings --name completion_previous shift backtab)
-    (remove-keybindings --name history_menu control char_r)
-    (remove-keybindings --name next_page_menu control char_x)
-    (remove-keybindings --name undo_or_previous_page_menu control char_z)
-    (remove-keybindings --name help_menu none f1)
-    (remove-keybindings --name search_history control char_q)
-
-    # add default keybinding
     ## none
+    (
+      add-keybindings none tab {
+        until: [
+          {send: menu name: completion_menu}
+          {send: menunext}
+          {edit: 'complete'}
+        ]
+      }
+    )
     (add-keybindings none Backspace {edit: Backspace})
     (add-keybindings none Delete {edit: Delete})
     (

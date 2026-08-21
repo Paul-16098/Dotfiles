@@ -135,7 +135,6 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => +---dot_ssh
 # => |       config.tmpl
 # => |       empty_dot_nomedia
-# => |       known_hosts
 # => |
 # => \---readonly_OneDrive
 # =>     \---readonly_���

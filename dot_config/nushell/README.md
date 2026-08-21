@@ -452,283 +452,39 @@ user-fn y ...(args)    # `nothing -> oneof<nothing`
 | --- | --- | --- | --- | --- |
 | clear-screen | control | char_l | {send: ClearScreen} | [emacs, vi_normal, vi_insert] |
 | clear-scrollback | control_shift | char_l | {send: ClearScrollBack} | [emacs, vi_normal, vi_insert] |
-| completion_menu | none | tab | {until: [{send: menu, name: completion_menu}, {send: menunext}, {edit: complete}]} | [emacs, vi_normal, vi_insert, helix_normal, helix_select, helix_insert] |
-| completion_previous | shift | backtab |  | [emacs, vi_normal, vi_insert] |
 | exit-nu | control | char_d | {send: executehostcommand, cmd:  exit 0} | [emacs, vi_normal, vi_insert] |
-| help_menu | none | f1 |  | [emacs, vi_normal, vi_insert] |
-| history_menu | control | char_r |  | [emacs, vi_normal, vi_insert] |
-| ide_completion_menu | control | space |  | [emacs, vi_normal, vi_insert] |
-| next_page_menu | control | char_x |  | [emacs, vi_normal, vi_insert] |
 | reload-config | none | f5 | {send: executehostcommand, cmd: } | [emacs, vi_normal, vi_insert] |
 | search-atuin-history | control | char_/ | {send: executehostcommand, cmd: } | [emacs, vi_normal, vi_insert] |
-| search_history | control | char_q |  | [emacs, vi_normal, vi_insert] |
-| undo_or_previous_page_menu | control | char_z |  | [emacs, vi_normal, vi_insert] |
 | yazi-menu | control | char_\\ | {send: executehostcommand, cmd:  y} | [emacs, vi_normal, vi_insert] |
-|  | ALT | Backspace |  | emacs |
-|  | ALT | Delete |  | emacs |
-|  | ALT | Enter |  | emacs |
-|  | ALT | Enter |  | helix_insert |
-|  | ALT | Enter |  | vi_insert |
-|  | ALT | Left |  | emacs |
-|  | ALT | Right |  | emacs |
-|  | ALT | char_< |  | emacs |
-|  | ALT | char_< |  | helix_insert |
-|  | ALT | char_< |  | helix_normal |
-|  | ALT | char_< |  | vi_insert |
-|  | ALT | char_< |  | vi_normal |
-|  | ALT | char_> |  | emacs |
-|  | ALT | char_> |  | helix_insert |
-|  | ALT | char_> |  | helix_normal |
-|  | ALT | char_> |  | vi_insert |
-|  | ALT | char_> |  | vi_normal |
-|  | ALT | char_` |  | helix_normal |
-|  | ALT | char_b |  | emacs |
-|  | ALT | char_c |  | emacs |
-|  | ALT | char_d |  | emacs |
-|  | ALT | char_d |  | helix_normal |
-|  | ALT | char_f |  | emacs |
-|  | ALT | char_l |  | emacs |
-|  | ALT | char_m |  | emacs |
-|  | ALT | char_u |  | emacs |
 |  | CONTROL | Backspace | {edit: BackspaceWord} | [emacs, vi_normal, vi_insert] |
-|  | CONTROL | Backspace |  | emacs |
-|  | CONTROL | Backspace |  | helix_insert |
-|  | CONTROL | Backspace |  | vi_insert |
 |  | CONTROL | Delete | {edit: DeleteWord} | [emacs, vi_normal, vi_insert] |
-|  | CONTROL | Delete |  | emacs |
-|  | CONTROL | Delete |  | helix_insert |
-|  | CONTROL | Delete |  | vi_insert |
 |  | CONTROL | Down | {edit: MoveLineDown} | [emacs, vi_normal, vi_insert] |
-|  | CONTROL | End |  | emacs |
-|  | CONTROL | End |  | helix_insert |
-|  | CONTROL | End |  | helix_normal |
-|  | CONTROL | End |  | vi_insert |
-|  | CONTROL | End |  | vi_normal |
-|  | CONTROL | Home |  | emacs |
-|  | CONTROL | Home |  | helix_insert |
-|  | CONTROL | Home |  | helix_normal |
-|  | CONTROL | Home |  | vi_insert |
-|  | CONTROL | Home |  | vi_normal |
 |  | CONTROL | Left | {edit: MoveWordLeft} | [emacs, vi_normal, vi_insert] |
-|  | CONTROL | Left |  | emacs |
-|  | CONTROL | Left |  | helix_insert |
-|  | CONTROL | Left |  | helix_normal |
-|  | CONTROL | Left |  | vi_insert |
-|  | CONTROL | Left |  | vi_normal |
 |  | CONTROL | Right | {until: [{send: HistoryHintWordComplete}, {edit: MoveWordRight}]} | [emacs, vi_normal, vi_insert] |
-|  | CONTROL | Right |  | emacs |
-|  | CONTROL | Right |  | helix_insert |
-|  | CONTROL | Right |  | helix_normal |
-|  | CONTROL | Right |  | vi_insert |
-|  | CONTROL | Right |  | vi_normal |
 |  | CONTROL | Up | {edit: MoveLineUp} | [emacs, vi_normal, vi_insert] |
 |  | CONTROL | char_a | {edit: SelectAll} | [emacs, vi_normal, vi_insert] |
-|  | CONTROL | char_a |  | emacs |
-|  | CONTROL | char_a |  | helix_insert |
-|  | CONTROL | char_a |  | helix_normal |
-|  | CONTROL | char_a |  | vi_insert |
-|  | CONTROL | char_a |  | vi_normal |
-|  | CONTROL | char_b |  | emacs |
 |  | CONTROL | char_c | {until: [{edit: CopySelectionSystem}, {send: CtrlC}]} | [emacs, vi_normal, vi_insert] |
-|  | CONTROL | char_c |  | emacs |
-|  | CONTROL | char_c |  | helix_insert |
-|  | CONTROL | char_c |  | helix_normal |
-|  | CONTROL | char_c |  | vi_insert |
-|  | CONTROL | char_c |  | vi_normal |
-|  | CONTROL | char_d |  | emacs |
-|  | CONTROL | char_d |  | helix_insert |
-|  | CONTROL | char_d |  | helix_normal |
-|  | CONTROL | char_d |  | vi_insert |
-|  | CONTROL | char_d |  | vi_normal |
-|  | CONTROL | char_e |  | emacs |
-|  | CONTROL | char_e |  | helix_insert |
-|  | CONTROL | char_e |  | helix_normal |
-|  | CONTROL | char_e |  | vi_insert |
-|  | CONTROL | char_e |  | vi_normal |
-|  | CONTROL | char_f |  | emacs |
-|  | CONTROL | char_g |  | emacs |
-|  | CONTROL | char_h |  | emacs |
-|  | CONTROL | char_h |  | helix_insert |
-|  | CONTROL | char_h |  | vi_insert |
-|  | CONTROL | char_j |  | emacs |
-|  | CONTROL | char_j |  | helix_insert |
-|  | CONTROL | char_j |  | vi_insert |
-|  | CONTROL | char_k |  | emacs |
-|  | CONTROL | char_l |  | emacs |
-|  | CONTROL | char_l |  | helix_insert |
-|  | CONTROL | char_l |  | helix_normal |
-|  | CONTROL | char_l |  | vi_insert |
-|  | CONTROL | char_l |  | vi_normal |
-|  | CONTROL | char_n |  | emacs |
-|  | CONTROL | char_n |  | helix_insert |
-|  | CONTROL | char_n |  | helix_normal |
-|  | CONTROL | char_n |  | vi_insert |
-|  | CONTROL | char_n |  | vi_normal |
 |  | CONTROL | char_o | {send: OpenEditor} | [emacs, vi_normal, vi_insert] |
-|  | CONTROL | char_o |  | emacs |
-|  | CONTROL | char_o |  | helix_insert |
-|  | CONTROL | char_o |  | helix_normal |
-|  | CONTROL | char_o |  | vi_insert |
-|  | CONTROL | char_o |  | vi_normal |
-|  | CONTROL | char_p |  | emacs |
-|  | CONTROL | char_p |  | helix_insert |
-|  | CONTROL | char_p |  | helix_normal |
-|  | CONTROL | char_p |  | vi_insert |
-|  | CONTROL | char_p |  | vi_normal |
-|  | CONTROL | char_r |  | emacs |
-|  | CONTROL | char_r |  | helix_insert |
-|  | CONTROL | char_r |  | helix_normal |
-|  | CONTROL | char_r |  | vi_insert |
-|  | CONTROL | char_r |  | vi_normal |
-|  | CONTROL | char_t |  | emacs |
-|  | CONTROL | char_u |  | emacs |
 |  | CONTROL | char_v | {edit: PasteSystem} | [emacs, vi_normal, vi_insert] |
-|  | CONTROL | char_w |  | emacs |
-|  | CONTROL | char_w |  | helix_insert |
-|  | CONTROL | char_w |  | vi_insert |
 |  | CONTROL | char_x | {edit: CutSelectionSystem} | [emacs, vi_normal, vi_insert] |
-|  | CONTROL | char_y |  | emacs |
 |  | CONTROL | char_z | {edit: Undo} | [emacs, vi_normal, vi_insert] |
-|  | CONTROL | char_z |  | emacs |
 |  | CONTROL_SHIFT | Left | {edit: MoveWordLeft, select: true} | [emacs, vi_normal, vi_insert] |
 |  | CONTROL_SHIFT | Right | {edit: MoveWordRight, select: true} | [emacs, vi_normal, vi_insert] |
 |  | SHIFT | Down | {edit: MoveLineDown, select: true} | [emacs, vi_normal, vi_insert] |
-|  | SHIFT | Down |  | emacs |
-|  | SHIFT | Down |  | helix_insert |
-|  | SHIFT | Down |  | helix_normal |
-|  | SHIFT | Down |  | vi_insert |
-|  | SHIFT | Down |  | vi_normal |
-|  | SHIFT | End |  | emacs |
-|  | SHIFT | End |  | helix_insert |
-|  | SHIFT | End |  | helix_normal |
-|  | SHIFT | End |  | vi_insert |
-|  | SHIFT | End |  | vi_normal |
 |  | SHIFT | Enter | {edit: InsertNewline} | [emacs, vi_normal, vi_insert] |
-|  | SHIFT | Enter |  | emacs |
-|  | SHIFT | Enter |  | helix_insert |
-|  | SHIFT | Enter |  | vi_insert |
-|  | SHIFT | Home |  | emacs |
-|  | SHIFT | Home |  | helix_insert |
-|  | SHIFT | Home |  | helix_normal |
-|  | SHIFT | Home |  | vi_insert |
-|  | SHIFT | Home |  | vi_normal |
 |  | SHIFT | Left | {edit: MoveLeft, select: true} | [emacs, vi_normal, vi_insert] |
-|  | SHIFT | Left |  | emacs |
-|  | SHIFT | Left |  | helix_insert |
-|  | SHIFT | Left |  | helix_normal |
-|  | SHIFT | Left |  | vi_insert |
-|  | SHIFT | Left |  | vi_normal |
 |  | SHIFT | Right | {edit: MoveRight, select: true} | [emacs, vi_normal, vi_insert] |
-|  | SHIFT | Right |  | emacs |
-|  | SHIFT | Right |  | helix_insert |
-|  | SHIFT | Right |  | helix_normal |
-|  | SHIFT | Right |  | vi_insert |
-|  | SHIFT | Right |  | vi_normal |
 |  | SHIFT | Up | {edit: MoveLineUp, select: true} | [emacs, vi_normal, vi_insert] |
-|  | SHIFT | Up |  | emacs |
-|  | SHIFT | Up |  | helix_insert |
-|  | SHIFT | Up |  | helix_normal |
-|  | SHIFT | Up |  | vi_insert |
-|  | SHIFT | Up |  | vi_normal |
-|  | SHIFT_ALT | char_, |  | emacs |
-|  | SHIFT_ALT | char_, |  | helix_insert |
-|  | SHIFT_ALT | char_, |  | helix_normal |
-|  | SHIFT_ALT | char_, |  | vi_insert |
-|  | SHIFT_ALT | char_, |  | vi_normal |
-|  | SHIFT_ALT | char_. |  | emacs |
-|  | SHIFT_ALT | char_. |  | helix_insert |
-|  | SHIFT_ALT | char_. |  | helix_normal |
-|  | SHIFT_ALT | char_. |  | vi_insert |
-|  | SHIFT_ALT | char_. |  | vi_normal |
-|  | SHIFT_CONTROL | End |  | emacs |
-|  | SHIFT_CONTROL | End |  | helix_insert |
-|  | SHIFT_CONTROL | End |  | helix_normal |
-|  | SHIFT_CONTROL | End |  | vi_insert |
-|  | SHIFT_CONTROL | End |  | vi_normal |
-|  | SHIFT_CONTROL | Home |  | emacs |
-|  | SHIFT_CONTROL | Home |  | helix_insert |
-|  | SHIFT_CONTROL | Home |  | helix_normal |
-|  | SHIFT_CONTROL | Home |  | vi_insert |
-|  | SHIFT_CONTROL | Home |  | vi_normal |
-|  | SHIFT_CONTROL | Left |  | emacs |
-|  | SHIFT_CONTROL | Left |  | helix_insert |
-|  | SHIFT_CONTROL | Left |  | helix_normal |
-|  | SHIFT_CONTROL | Left |  | vi_insert |
-|  | SHIFT_CONTROL | Left |  | vi_normal |
-|  | SHIFT_CONTROL | Right |  | emacs |
-|  | SHIFT_CONTROL | Right |  | helix_insert |
-|  | SHIFT_CONTROL | Right |  | helix_normal |
-|  | SHIFT_CONTROL | Right |  | vi_insert |
-|  | SHIFT_CONTROL | Right |  | vi_normal |
-|  | SHIFT_CONTROL | char_a |  | emacs |
-|  | SHIFT_CONTROL | char_a |  | helix_insert |
-|  | SHIFT_CONTROL | char_a |  | helix_normal |
-|  | SHIFT_CONTROL | char_a |  | vi_insert |
-|  | SHIFT_CONTROL | char_a |  | vi_normal |
-|  | SHIFT_CONTROL | char_c |  | emacs |
-|  | SHIFT_CONTROL | char_c |  | helix_insert |
-|  | SHIFT_CONTROL | char_c |  | vi_insert |
-|  | SHIFT_CONTROL | char_v |  | emacs |
-|  | SHIFT_CONTROL | char_v |  | helix_insert |
-|  | SHIFT_CONTROL | char_v |  | vi_insert |
-|  | SHIFT_CONTROL | char_x |  | emacs |
-|  | SHIFT_CONTROL | char_x |  | helix_insert |
-|  | SHIFT_CONTROL | char_x |  | vi_insert |
 |  | control_shift | char_z | {edit: Redo} | [emacs, vi_normal, vi_insert] |
 |  | none | Backspace | {edit: Backspace} | [emacs, vi_normal, vi_insert] |
-|  | none | Backspace |  | emacs |
-|  | none | Backspace |  | helix_insert |
-|  | none | Backspace |  | helix_normal |
-|  | none | Backspace |  | vi_insert |
-|  | none | Backspace |  | vi_normal |
 |  | none | Delete | {edit: Delete} | [emacs, vi_normal, vi_insert] |
-|  | none | Delete |  | emacs |
-|  | none | Delete |  | helix_insert |
-|  | none | Delete |  | helix_normal |
-|  | none | Delete |  | vi_insert |
-|  | none | Delete |  | vi_normal |
 |  | none | Down | {until: [{send: MenuDown}, {send: executehostcommand, cmd:  commandline edit --replace ''}]} | [emacs, vi_normal, vi_insert] |
-|  | none | Down |  | emacs |
-|  | none | Down |  | helix_insert |
-|  | none | Down |  | helix_normal |
-|  | none | Down |  | vi_insert |
-|  | none | Down |  | vi_normal |
 |  | none | End | {edit: MoveToLineEnd} | [emacs, vi_normal, vi_insert] |
-|  | none | End |  | emacs |
-|  | none | End |  | helix_insert |
-|  | none | End |  | helix_normal |
-|  | none | End |  | vi_insert |
-|  | none | End |  | vi_normal |
 |  | none | Enter | {send: Enter} | [emacs, vi_normal, vi_insert] |
-|  | none | Enter |  | emacs |
 |  | none | Esc | {send: Esc} | [emacs, vi_normal, vi_insert] |
-|  | none | Esc |  | emacs |
-|  | none | Esc |  | helix_insert |
-|  | none | Esc |  | helix_normal |
-|  | none | Esc |  | vi_insert |
-|  | none | Esc |  | vi_normal |
 |  | none | Home | {edit: MoveToLineStart} | [emacs, vi_normal, vi_insert] |
-|  | none | Home |  | emacs |
-|  | none | Home |  | helix_insert |
-|  | none | Home |  | helix_normal |
-|  | none | Home |  | vi_insert |
-|  | none | Home |  | vi_normal |
 |  | none | Left | {until: [{send: MenuLeft}, {send: Left}]} | [emacs, vi_normal, vi_insert] |
-|  | none | Left |  | emacs |
-|  | none | Left |  | helix_insert |
-|  | none | Left |  | helix_normal |
-|  | none | Left |  | vi_insert |
-|  | none | Left |  | vi_normal |
 |  | none | Right | {until: [{send: HistoryHintComplete}, {send: MenuRight}, {send: Right}]} | [emacs, vi_normal, vi_insert] |
-|  | none | Right |  | emacs |
-|  | none | Right |  | helix_insert |
-|  | none | Right |  | helix_normal |
-|  | none | Right |  | vi_insert |
-|  | none | Right |  | vi_normal |
 |  | none | Up | {until: [{send: MenuUp}, {send: executehostcommand, cmd: }]} | [emacs, vi_normal, vi_insert] |
-|  | none | Up |  | emacs |
-|  | none | Up |  | helix_insert |
-|  | none | Up |  | helix_normal |
-|  | none | Up |  | vi_insert |
-|  | none | Up |  | vi_normal |
+|  | none | tab | {until: [{send: menu, name: completion_menu}, {send: menunext}, {edit: complete}]} | [emacs, vi_normal, vi_insert] |
 <!-- numd-gen-end -->
