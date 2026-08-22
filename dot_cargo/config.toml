@@ -3,7 +3,9 @@
 linker = "rust-lld.exe"
 
 [build]
-rustc-wrapper = "sccache"
+# 在使用 nightly 版本時關閉
+# sccache: caused by: 檔名或副檔名太長。 (os error 206)
+# rustc-wrapper = "sccache"
 
 [net]
 git-fetch-with-cli = true
