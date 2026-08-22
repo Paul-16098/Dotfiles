@@ -59,7 +59,7 @@ for = "windows"
 block = true
 
 [[opener.extract]]
-run = "Bandizip %s"
+run = "Bandizip bx -target:auto - %s"
 desc = "Extract with Bandizip"
 for = "windows"
 
