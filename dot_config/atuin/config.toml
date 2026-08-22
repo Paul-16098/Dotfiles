@@ -132,6 +132,7 @@ history_filter = [
   "^#",
   "^overlay use ./.venv/Scripts/activate.nu$",
   " (--help|-h)$",
+  "^help ",
   "^(y|yazi)$",
   "^http ",
   '^\.(/|\\)',
