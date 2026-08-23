@@ -106,11 +106,11 @@ block = true
 run = "code-insiders --wait %s"
 block = true
 
-[[open.prepend_rules]]
+[[open.rules]]
 url = "bulk-rename.txt"
 use = "bulk-rename"
 
-[[open.prepend_rules]]
+[[open.rules]]
 url = "bulk-create.txt"
 use = "bulk-create"
 
@@ -235,7 +235,7 @@ use = [
 ]
 
 [[open.rules]]
-url = "*/"
+mime = "folder/*"
 use = [
   "edit",
   "add-to-path",
@@ -331,7 +331,7 @@ mime = "video/*"
 run = "spot-video"
 
 [[plugin.prepend_spotters]]
-url = "*/"
+mime = "folder/*"
 run = "spot"
 
 [[plugin.prepend_spotters]]
