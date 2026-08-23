@@ -16,6 +16,7 @@ catch_builtin_error_try = "hint"
 unhandled_external_error = "off"
 check_typed_flag_before_use = "hint"
 list_param_to_variadic = "off"
+redundant_nu_subprocess = "hint"
 
 # i use dev version of nushell, so i want to disable parse error for now
 nu_parse_error = "off"
