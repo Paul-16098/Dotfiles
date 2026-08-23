@@ -139,5 +139,12 @@ export-env {
     (add-keybindings --name "clear-screen" control char_l {send: ClearScreen})
     (add-keybindings --name "clear-scrollback" control_shift char_l {send: ClearScrollBack})
     (add-keybindings --name "yazi-menu" control "char_\\" {send: executehostcommand cmd: " y"})
+    (
+      add-keybindings --name help control char_h [
+        {edit: MoveToStart}
+        {edit: InsertString value: "help "}
+        {send: Submit}
+      ]
+    )
   ]
 }
