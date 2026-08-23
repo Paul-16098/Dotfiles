@@ -453,7 +453,7 @@ user-fn y ...(args)    # `nothing -> oneof<nothing`
 | clear-screen | control | char_l | {send: ClearScreen} | [emacs, vi_normal, vi_insert] |
 | clear-scrollback | control_shift | char_l | {send: ClearScrollBack} | [emacs, vi_normal, vi_insert] |
 | exit-nu | control | char_d | {send: executehostcommand, cmd:  exit 0} | [emacs, vi_normal, vi_insert] |
-| help | control | char_h | {send: executehostcommand, cmd:  print '';help $'(commandline)'} | [emacs, vi_normal, vi_insert] |
+| help | control | char_h | {send: executehostcommand, cmd:  print '';help $'(commandline\|str trim)'} | [emacs, vi_normal, vi_insert] |
 | reload-config | none | f5 | {send: executehostcommand, cmd: } | [emacs, vi_normal, vi_insert] |
 | search-atuin-history | control | char_/ | {send: executehostcommand, cmd: } | [emacs, vi_normal, vi_insert] |
 | yazi-menu | control | char_\\ | {send: executehostcommand, cmd:  y} | [emacs, vi_normal, vi_insert] |
