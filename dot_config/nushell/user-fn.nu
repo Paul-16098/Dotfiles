@@ -551,9 +551,9 @@ export def set-debug-env [
   $fin_env
 }
 
-def "nu-complete exe" []: nothing -> record {
-  use complete-tools.nu complete-file
-  complete-file exe
+def "nu-complete-ext exe" []: nothing -> record {
+  use complete-tools.nu complete-ext
+  complete-ext exe
 }
 
 # check if input is a valid exe file
@@ -582,7 +582,7 @@ def is-exe [exe_file: path]: nothing -> nothing {
 
 # get dll dependencies of an exe file
 export def get-dll [
-  exe_file: path@"nu-complete exe" # the exe file to analyze
+  exe_file: path@"nu-complete-ext exe" # the exe file to analyze
 ]: nothing -> table<command: string, path?: path> {
   is-exe $exe_file
   let dll_dep = file $exe_file | get details.dependencies

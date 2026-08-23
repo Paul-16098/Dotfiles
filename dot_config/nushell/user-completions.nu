@@ -146,14 +146,14 @@ def "nu-complete bz-switch" []: nothing -> list<record> {
 }
 
 # nu-lint-ignore: unused_helper_functions
-def "nu-complete zip" []: nothing -> record {
-  use complete-tools.nu complete-file
-  complete-file "{zip,7z,apk}"
+def "nu-complete-ext zip" []: nothing -> record {
+  use complete-tools.nu complete-ext
+  complete-ext "{zip,7z,apk}"
 }
 
 export extern bz [
   command: string@"nu-complete bz-command" # bz 命令
-  path: path@"nu-complete zip" # 文件或目录路径
+  path: path@"nu-complete-ext zip" # 文件或目录路径
   ...args: string@"nu-complete bz-switch"
 ]
 
@@ -177,8 +177,8 @@ def "nu-complete sudo-command" []: nothing -> list<record> {
 
 # nu-lint-ignore: unused_helper_functions
 def "nu-complete exec" []: nothing -> record {
-  use complete-tools.nu complete-file
-  complete-file "{exe,bat,cmd,ps1}"
+  use complete-tools.nu complete-ext
+  complete-ext "{exe,bat,cmd,ps1}"
 }
 
 export extern sudo [
@@ -266,10 +266,10 @@ export extern "gsudo status" [
 export extern "gsudo !" [] # re-run last command as admin (shell-specific behavior) | 以管理员重跑上一个命令
 
 # nu-lint-ignore: unused_helper_functions
-def "nu-complete exe" []: nothing -> record {
-  use complete-tools.nu complete-file
-  complete-file "exe"
+def "nu-complete-ext exe" []: nothing -> record {
+  use complete-tools.nu complete-ext
+  complete-ext "exe"
 }
 
 # x64dbg completions | x64dbg 补全
-export extern "x96dbg" [file: path@"nu-complete exe"]
+export extern "x96dbg" [file: path@"nu-complete-ext exe"]

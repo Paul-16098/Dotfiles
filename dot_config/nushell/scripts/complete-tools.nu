@@ -40,9 +40,9 @@ export def complete-path [
 
 # wraps complete-path for file extensions
 # you can use ext="{exe,bat,cmd,ps1}" to match multiple extensions
-@example "complete file .txt" { complete-file txt }
-@example "complete 2file .txt .json" { complete-file "{txt,json}" }
-export def complete-file [ext: string]: nothing -> record {
+@example "complete file .txt" { complete-ext txt }
+@example "complete 2file .txt .json" { complete-ext "{txt,json}" }
+export def complete-ext [ext: string]: nothing -> record {
     log debug $"Generating file completions for extensions: ($ext)"
 
     complete-path $"**/*.($ext)"
