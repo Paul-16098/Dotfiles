@@ -23,10 +23,13 @@ export-env {
           }
           code: {|old new|
             $env.toolkit_load_hooks_is_notified = true
-            const CODE = " overlay use toolkit.nu"
-            print $"(ansi green)toolkit.nu(ansi reset) is exists in this directory, but not loaded.\nrun next line to activate it:"
-            print ($CODE | nu-highlight)
-            commandline edit $CODE
+            const CODE = " 
+            what-def toolkit.nu|print ($in|table --expand)
+            print 'use it?'
+            if not (input ask-yn true) {error make --unspanned 'User declined'}
+            overlay use toolkit.nu
+            "
+            commandline edit $CODE --accept
           }
         }
         # hide
@@ -56,10 +59,12 @@ export-env {
           }
           code: {|old new|
             $env.venv_load_hooks_is_notified = true
-            const CODE = " overlay use ./.venv/Scripts/activate.nu"
-            print $"venv is exists in this directory, but not activated.\nrun next line to activate it:"
-            print ($CODE | nu-highlight)
-            commandline edit $CODE
+            const CODE = " 
+            what-def ./.venv/Scripts/activate.nu|print ($in|table --expand)
+            print 'use it?'
+            if not (input ask-yn true) {error make --unspanned 'User declined'}
+            overlay use ./.venv/Scripts/activate.nu"
+            commandline edit $CODE --accept
           }
         }
         # hide
