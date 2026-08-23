@@ -965,7 +965,7 @@ export def "ps name" [name: string --long (-l)]: nothing -> table {
 export def 'ollama wrapper-if-not-run' [
   fn: closure
   ...rest: any
-  --log-to-stderr # if set, log the output of ollama server to stderr, default is false
+  --log-to-stderr # if set, log the output of ollama server to stderr
 ]: any -> any {
   let id: oneof<int, nothing> = if (ps port 11434 | length) == 0 {
     job spawn --description "ollama server for ollama wrapper-if-not-run" {
@@ -1015,4 +1015,68 @@ export def 'gh api' --wrapped [...rest: string]: [
 ] {
   let out: string = ^gh api ...$rest
   try { $out | from json } catch { $out }
+}
+
+def "nu-complete-ext nu" []: nothing -> record {
+  use complete-tools.nu complete-ext
+  complete-ext nu
+}
+
+# get the definition of a function in a nushell file, return a record with the function name and the definition, if the function is not found, return an error
+export def 'what-def' [file: path@"nu-complete-ext nu"]: nothing -> record {
+  $"use ($file)
+  scope modules|get 1
+  |update commands {
+    let $INs
+    mut o: table = []
+
+    for $IN in $INs {
+      let commands_info = scope commands|where decl_id == $IN.decl_id|first
+
+      $o = $o ++ [
+        [name description];
+        [$IN.name $commands_info.description]
+      ]
+    }
+
+    $o
+  }
+  |update aliases {
+    let $INs
+    mut o: table = []
+
+    for $IN in $INs {
+      let aliases_info = scope aliases|where decl_id == $IN.decl_id|first
+
+      $o = $o ++ [
+        [name expansion description];
+        [$IN.name $aliases_info.expansion $aliases_info.description]
+      ]
+    }
+
+    $o
+  }
+  |reject --optional module_id
+  |to nuon"
+  | nu -n -c $in
+  | from nuon
+}
+
+# ask user for yes or no input, if default_choice is set, use it as the default choice, if user input is invalid, return null
+# the prompt will impl by call and not in this function
+# the return value is one of true, false or null, if null, the caller should handle the invalid input and ask again
+export def 'input ask-yn' [default_choice?: bool]: nothing -> oneof<bool, nothing> {
+  input --numchar 1 --suppress-output --default=(
+    if ($default_choice | is-not-empty) {
+      if $default_choice { 'y' } else { 'n' }
+    } else { '' }
+  ) | str lowercase
+  | if $in == 'y' {
+    return true
+  } else if $in == 'n' {
+    return false
+  } else {
+    print --stderr "Please enter 'y' or 'n'."
+    return null
+  }
 }

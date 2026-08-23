@@ -292,6 +292,20 @@ highlight with regex
 # => abc
 ```
 
+### `user-fn input ask-yn`
+
+ask user for yes or no input, if default_choice is set, use it as the default choice, if user input is invalid, return null
+the prompt will impl by call and not in this function
+the return value is one of true, false or null, if null, the caller should handle the invalid input and ask again
+
+```nushell no-run
+user-fn input ask-yn (default_choice)    # `nothing -> oneof<bool, nothing>`
+```
+
+**Parameters:**
+
+- `(default_choice): bool`
+
 ### `user-fn meme`
 
 get meme and copy to clipboard
@@ -328,7 +342,7 @@ user-fn ollama wrapper-if-not-run <fn> ...()
 
 **Flags:**
 
-- `--log-to-stderr` — if set, log the output of ollama server to stderr, default is false
+- `--log-to-stderr` — if set, log the output of ollama server to stderr
 
 ### `user-fn pause`
 
@@ -409,6 +423,18 @@ user-fn steamcmd ...(args)    # `nothing -> nothing`
 **Flags:**
 
 - `--REPL` — if set, run steamcmd in interactive mode, otherwise run with provided arguments, default is false
+
+### `user-fn what-def`
+
+get the definition of a function in a nushell file, return a record with the function name and the definition, if the function is not found, return an error
+
+```nushell no-run
+user-fn what-def <file>    # `nothing -> record`
+```
+
+**Parameters:**
+
+- `file: path`
 
 ### `user-fn whois`
 
