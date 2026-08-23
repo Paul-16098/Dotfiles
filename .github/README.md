@@ -107,12 +107,12 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   |   |   README.md
 # => |   |   |   user-aliases.nu
 # => |   |   |   user-completions.nu
-# => |   |   |   user-fn.nu
 # => |   |   |
 # => |   |   +---autoload
 # => |   |   \---scripts
 # => |   |           complete-tools.nu
 # => |   |           nu-selfupdate.ps1
+# => |   |           user-fn.nu
 # => |   |
 # => |   +---pnpm
 # => |   +---uv

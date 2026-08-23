@@ -78,7 +78,7 @@ use std/help
 $env.NU_HELPER = '--help'
 
 # user functions
-overlay use ('.' | path join user-fn.nu)
+overlay use ('./scripts' | path join user-fn.nu)
 
 # hooks
 overlay use ('.' | path join hooks.nu)
