@@ -171,8 +171,16 @@ def git-log-subject-highlight [remote_url: string]: string -> string {
     $"[PR (ansi green_bold)($"($remote_url)/pull/($id)" | ansi link --text $'#($id)')(ansi reset) from (ansi green_bold)($from)(ansi reset)]"
   }
   # Merge branch 'branch' of ...
-  | str replace --regex "(?i)Merge branch '(?<branch>.+)' of (?<from>.+)" {|branch from|
-    $"[Merge branch '(ansi green_bold)($"($remote_url)/tree/($branch)" | ansi link --text $branch)(ansi reset)' of (ansi green_bold)($from | str replace --regex "^ssh\\.gitgud\\.io:" 'https://gitgud.io/' | ansi link --text $from)(ansi reset)]"
+  # Merge branch 'branch' of ... into 'dev'
+  | str replace --regex "(?i)Merge branch '(?<branch>.+)' of (?<from>[^ ]+)(?: into (?<into_branch>.+))?" {|branch from into_branch|
+    let branch_link = $"($remote_url)/tree/($branch)" | ansi link --text $branch
+    let from_link = $from | str replace --regex "^ssh\\.gitgud\\.io:" 'https://gitgud.io/' | ansi link --text $from
+
+    if ($into_branch | is-not-empty) {
+      $"[Merge branch '(ansi green_bold)($branch_link)(ansi reset)' of (ansi green_bold)($from_link)(ansi reset) into (ansi green_bold)($"($remote_url)/tree/($into_branch)" | ansi link --text $into_branch)(ansi reset)]"
+    } else {
+      $"[Merge branch '(ansi green_bold)($branch_link)(ansi reset)' of (ansi green_bold)($from_link)(ansi reset)]"
+    }
   }
   # Merge branch 'branch' into 'from'
   # Merge branch 'branch' into from
