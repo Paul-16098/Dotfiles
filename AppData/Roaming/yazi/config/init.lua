@@ -23,7 +23,7 @@ require("yatline"):setup({
 	header_line = {
 		left = {
 			section_a = {
-				{ type = "line", name = "tabs" },
+				{ type = "line", custom = false, name = "tabs" },
 			},
 			section_b = {
 			},
@@ -31,13 +31,14 @@ require("yatline"):setup({
 		},
 		right = {
 			section_a = {
-				{ type = "coloreds", custom = false,            name = "count",      params = { true, false } },
-				{ type = "coloreds", custom = false,            name = "task_states" },
-				{ type = "string",   name = "cursor_position" },
-				{ type = "string",   name = "cursor_percentage" },
+				{ type = "coloreds", custom = false, name = "count",            params = { true, false } },
+				{ type = "coloreds", custom = false, name = "task_states" },
+				{ type = "string",   custom = false, name = "cursor_position" },
+				{ type = "string",   custom = false, name = "cursor_percentage" },
 			},
 			section_b = {
-				{ type = "string", name = "filter_query" },
+				{ type = "string", custom = false, name = "search_query" },
+				{ type = "string", custom = false, name = "filter_query" },
 			},
 			section_c = {},
 		},
@@ -46,14 +47,14 @@ require("yatline"):setup({
 	status_line = {
 		left = {
 			section_a = {
-				{ type = "string", name = "tab_mode" },
+				{ type = "string", custom = false, name = "tab_mode" },
 			},
 			section_b = {
-				{ type = "string", name = "hovered_size" },
+				{ type = "string", custom = false, name = "hovered_size" },
 			},
 			section_c = {
-				{ type = "string",   name = "hovered_path" },
-				{ type = "coloreds", custom = false,       name = "symlink" },
+				{ type = "string",   custom = false, name = "hovered_path" },
+				{ type = "coloreds", custom = false, name = "symlink" },
 			},
 		},
 		right = {
@@ -62,8 +63,8 @@ require("yatline"):setup({
 			section_b = {
 			},
 			section_c = {
-				{ type = "string",   name = "hovered_mime" },
-				{ type = "coloreds", name = "permissions" },
+				{ type = "string",   custom = false, name = "hovered_mime" },
+				{ type = "coloreds", custom = false, name = "permissions" },
 			},
 		},
 	},

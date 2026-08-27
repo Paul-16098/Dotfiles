@@ -126,11 +126,6 @@ run = "paste"
 desc = "粘貼已複製的文件"
 
 [[mgr.keymap]]
-on = ["F", "j"]
-run = "plugin jump-to-char"
-desc = "跳轉到字符"
-
-[[mgr.keymap]]
 on = "V"
 run = "paste --force"
 desc = "粘貼已複製的文件(如果目標位置已存在則覆蓋)"
@@ -236,6 +231,21 @@ run = "plugin whoosh save_cwd"
 on = "f"
 run = "filter --smart"
 desc = "過濾文件"
+
+[[mgr.keymap]]
+on = ["F", "j"]
+run = "plugin jump-to-char"
+desc = "跳轉到字符"
+
+[[mgr.keymap]]
+on = ["F", "r"]
+run = "search --via=rga"
+desc = "使用 rga 過濾文件"
+
+[[mgr.keymap]]
+on = ["F", "f"]
+run = "search --via=fd"
+desc = "使用 fd 過濾文件"
 
 [[mgr.keymap]]
 on = "<t>"
