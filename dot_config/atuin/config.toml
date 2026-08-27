@@ -134,7 +134,6 @@ history_filter = [
   " (--help|-h)$",
   "^help ",
   "^(y|yazi)$",
-  "^http ",
   '^\.(/|\\)',
 ]
 
