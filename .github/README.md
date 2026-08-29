@@ -112,7 +112,9 @@ tree /A /F | decode utf8 | lines | skip 2 | str join (char newline) | str replac
 # => |   |   \---scripts
 # => |   |           complete-tools.nu
 # => |   |           nu-selfupdate.ps1
+# => |   |           Test.md
 # => |   |           user-fn.nu
+# => |   |           user-fn_test.nu
 # => |   |
 # => |   +---pnpm
 # => |   +---uv

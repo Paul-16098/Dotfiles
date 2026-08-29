@@ -68,6 +68,19 @@ user-fn app-update (cofg)
 
 - `--bel-at-end` — if set, ring the bell after all updates are completed
 
+### `user-fn ast get-last-command`
+
+get the last command from the input string
+WARN: the sigil like `^` and `%` will be removed from the command
+
+```nushell no-run
+user-fn ast get-last-command (input)    # `nothing -> string`, `string -> string`
+```
+
+**Parameters:**
+
+- `(input): string`
+
 ### `user-fn chezmoi cd`
 
 https://www.chezmoi.io/user-guide/frequently-asked-questions/design/#why-does-chezmoi-cd-spawn-a-shell-instead-of-just-changing-directory

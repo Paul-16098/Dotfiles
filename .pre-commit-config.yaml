@@ -31,8 +31,8 @@ repos:
         args:
           - update-numd-doc
 
-      - id: nu-check
-        name: nu-check
+      - id: nu-test
+        name: nu-test
         verbose: true
         language: system
         files: \.nu$

@@ -1088,3 +1088,27 @@ export def 'input ask-yn' [default_choice?: bool]: nothing -> oneof<bool, nothin
     return null
   }
 }
+
+# get the last command from the input string
+# WARN: the sigil like `^` and `%` will be removed from the command
+export def "ast get-last-command" [input?: string]: [nothing -> string string -> string] {
+  let command: string = if ($input | is-not-empty) {
+    $input
+  } else { $in }
+    | str trim
+
+  if ('shape_pipe' in (ast $command --flatten | get shape)) {
+    # get span that the commands after the first pipe
+    let span = ast $command --flatten | skip until {|x| $x.shape == shape_pipe } | reject 0 | get span
+    let span_start = $span.start | first
+    let span_end = $span.end | last
+
+    # command that no first pipe
+    let command = $command | str substring $span_start..$span_end
+
+    # pipe can be more than one, so we need to run this function until there is no pipe in the command, so we can use recursion to get the last command
+    $command | ast get-last-command
+  } else {
+    $command
+  }
+}
