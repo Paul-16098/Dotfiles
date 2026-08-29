@@ -92,29 +92,13 @@ overlay use ('.' | path join user-completions.nu)
 overlay use ('.' | path join user-aliases.nu)
 
 # nupm
-use nupm/modules/nupm
+use ../nupm/modules/nupm
 $env.NU_LIB_DIRS = $env.NU_LIB_DIRS ++ [($env.NUPM_HOME | path join modules)]
-
-# overlay new no-external
-# # 避免意外呼叫外部指令
-# def --wrapped run-external [--__call__: oneof<> ...args]: any -> any {
-#   error make {
-#     msg: "External commands are not allowed in this scope."
-#     labels: [
-#       {
-#         text: "External command"
-#         span: (metadata $__call__).span
-#       }
-#     ]
-#     code: "nu::shell::external_command"
-#     help: "Use External commands out of this scope or check your command."
-#   }
-# }
-# overlay hide no-external
 
 overlay new REPL
 
 alias 'ast md' = from md
+@deprecated "use 'ast md' instead"
 def 'from md' []: string -> nothing { do {} (print --stderr 'Please use "ast md" instead.') }
 
 $env | reject --optional --ignore-case config FILE_PWD CURRENT_FILE PWD | transpose key val | str uppercase key | transpose --as-record --header-row | load-env
