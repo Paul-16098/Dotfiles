@@ -1,0 +1,5 @@
+[cache]
+languages = ["zh", "zh_tw"]
+
+[output]
+option_style = "both"
