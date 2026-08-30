@@ -81,6 +81,25 @@ user-fn ast get-last-command (input)    # `nothing -> string`, `string -> string
 
 - `(input): string`
 
+### `user-fn ast remove-flag`
+
+get the command from the input string that is not a flag
+WARN: the sigil like `^` and `%` will be removed from the command
+WARN: Only works for the one command, no pipe and subcommand
+
+```nushell no-run
+user-fn ast remove-flag (input)    # `nothing -> string`, `string -> string`
+```
+
+**Parameters:**
+
+- `(input): string`
+
+**Flags:**
+
+- `--only-internal` — if set, only remove the internal flags, default is false
+- `--only-external` — if set, only remove the external flags, default is false
+
 ### `user-fn chezmoi cd`
 
 https://www.chezmoi.io/user-guide/frequently-asked-questions/design/#why-does-chezmoi-cd-spawn-a-shell-instead-of-just-changing-directory
@@ -492,7 +511,7 @@ user-fn y ...(args)    # `nothing -> oneof<nothing`
 | clear-screen | control | char_l | {send: ClearScreen} | [emacs, vi_normal, vi_insert] |
 | clear-scrollback | control_shift | char_l | {send: ClearScrollBack} | [emacs, vi_normal, vi_insert] |
 | exit-nu | control | char_d | {send: executehostcommand, cmd:  exit 0} | [emacs, vi_normal, vi_insert] |
-| help | control | char_h | {send: executehostcommand, cmd:  print '';help $'(commandline\|str trim)'} | [emacs, vi_normal, vi_insert] |
+| help | control | char_h | {send: executehostcommand, cmd:  print '';try {help $'(commandline\|ast get-last-command\|ast remove-flag)'}} | [emacs, vi_normal, vi_insert] |
 | reload-config | none | f5 | {send: executehostcommand, cmd: } | [emacs, vi_normal, vi_insert] |
 | search-atuin-history | control | char_/ | {send: executehostcommand, cmd: } | [emacs, vi_normal, vi_insert] |
 | yazi-menu | control | char_\\ | {send: executehostcommand, cmd:  y} | [emacs, vi_normal, vi_insert] |

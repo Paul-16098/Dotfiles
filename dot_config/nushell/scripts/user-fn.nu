@@ -1095,7 +1095,6 @@ export def "ast get-last-command" [input?: string]: [nothing -> string string ->
   let command: string = if ($input | is-not-empty) {
     $input
   } else { $in }
-    | str trim
 
   if ('shape_pipe' in (ast $command --flatten | get shape)) {
     # get span that the commands after the first pipe
@@ -1111,4 +1110,37 @@ export def "ast get-last-command" [input?: string]: [nothing -> string string ->
   } else {
     $command
   }
+}
+
+# get the command from the input string that is not a flag
+# WARN: the sigil like `^` and `%` will be removed from the command
+# WARN: Only works for the one command, no pipe and subcommand
+export def "ast remove-flag" [
+  input?: string
+  --only-internal # if set, only remove the internal flags, default is false
+  --only-external # if set, only remove the external flags, default is false
+]: [nothing -> string string -> string] {
+  let command: string = if ($input | is-not-empty) {
+    $input
+  } else { $in }
+
+  if ($only_internal and $only_external) {
+    error make --unspanned "Cannot use --only-internal and --only-external at the same time"
+  }
+
+  let allow = if $only_internal {
+    [shape_internalcall]
+  } else if $only_external {
+    [shape_external]
+  } else {
+    [shape_internalcall shape_external]
+  }
+
+  let ast = ast $command --flatten
+  let span = $ast | take while {|x| $x.shape in $allow } | get span
+
+  let span_start = $span.start | first
+  let span_end = $span.end | last
+
+  $command | str substring $span_start..$span_end | str trim --right
 }

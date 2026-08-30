@@ -139,6 +139,6 @@ export-env {
     (add-keybindings --name "clear-screen" control char_l {send: ClearScreen})
     (add-keybindings --name "clear-scrollback" control_shift char_l {send: ClearScrollBack})
     (add-keybindings --name "yazi-menu" control "char_\\" {send: executehostcommand cmd: " y"})
-    (add-keybindings --name help control char_h {send: executehostcommand cmd: " print '';help $'(commandline|str trim)'"})
+    (add-keybindings --name help control char_h {send: executehostcommand cmd: " print '';try {help $'(commandline|ast get-last-command|ast remove-flag)'}"})
   ]
 }
