@@ -124,6 +124,21 @@ export-env {
             }
           }
         }
+
+        # pyproject.toml
+        {
+          condition: {|old new|
+            $new | path join pyproject.toml | path exists
+          }
+          code: {|old new|
+            print (open ./pyproject.toml | table --expand)
+            try { uv sync --check } catch {
+              print 'Yes/No?' --no-newline
+              if not (input ask-yn true) { error make --unspanned 'User declined' }
+              uv sync
+            }
+          }
+        }
       ]
 
       if $o == null {
