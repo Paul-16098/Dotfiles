@@ -11,7 +11,8 @@
 		"target": "ESNext",
 		"module": "commonjs",
 		"outDir": "dist",
-		"strict": true
+		"strict": true,
+		"types": ["typed-query-selector"]
 	},
 	"exclude": ["node_modules", "**/node_modules/*"]
 }
