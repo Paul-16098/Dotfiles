@@ -1144,3 +1144,22 @@ export def "ast remove-flag" [
 
   $command | str substring $span_start..$span_end | str trim --right
 }
+
+# get the preview of all vivid themes, return a table with name and preview columns, the preview column is a grid of the theme colors
+export def 'vivid preview-all' []: nothing -> table<name: string, preview: string, preview-data: table<name: string, color: string>> {
+  vivid themes | lines | par-each --keep-order {|t|
+    let preview_data = vivid generate $t | split row : | split column '=' name color
+    {
+      name: $t
+      preview: (
+        $preview_data | update name {|t| $"(ansi --escape ($t.color))m($t.name)(ansi reset)" } | reject color | grid --color --icons
+      )
+      # preview-data: $preview_data
+    }
+  }
+}
+
+# aws wrapper to output yaml parsed table, if the output is invalid yaml, return string
+export def aws --wrapped [...rest]: nothing -> any {
+  aws ...$rest | from yaml
+}

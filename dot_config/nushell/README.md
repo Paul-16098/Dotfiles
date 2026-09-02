@@ -100,6 +100,18 @@ user-fn ast remove-flag (input)    # `nothing -> string`, `string -> string`
 - `--only-internal` — if set, only remove the internal flags, default is false
 - `--only-external` — if set, only remove the external flags, default is false
 
+### `user-fn aws`
+
+aws wrapper to output yaml parsed table, if the output is invalid yaml, return string
+
+```nushell no-run
+user-fn aws ...()    # `nothing -> any`
+```
+
+**Parameters:**
+
+- `...: external-argument`
+
 ### `user-fn chezmoi cd`
 
 https://www.chezmoi.io/user-guide/frequently-asked-questions/design/#why-does-chezmoi-cd-spawn-a-shell-instead-of-just-changing-directory
@@ -455,6 +467,14 @@ user-fn steamcmd ...(args)    # `nothing -> nothing`
 **Flags:**
 
 - `--REPL` — if set, run steamcmd in interactive mode, otherwise run with provided arguments, default is false
+
+### `user-fn vivid preview-all`
+
+get the preview of all vivid themes, return a table with name and preview columns, the preview column is a grid of the theme colors
+
+```nushell no-run
+user-fn vivid preview-all    # `nothing -> table<name: string`
+```
 
 ### `user-fn what-def`
 
