@@ -20,17 +20,16 @@
 	name = {{ .GH_NAME }}
 	email = {{ .EMAIL }}
 	signingkey = {{ .SIGN_KEY_ID }}
-[filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+
 [push]
 	autoSetupRemote = true
+
 [commit]
 	gpgsign = true
+
 [tag]
 	gpgSign = true
+
 [gpg]
 	{{- if eq .SIGN_BY "gpg" }}
 	format = openpgp
@@ -40,6 +39,7 @@
 	{{- else }}
 	{{ warnf "Invalid signing method: %s. No signing will be used." .SIGN_BY}}
 	{{- end }}
+
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
 
@@ -56,25 +56,38 @@
 
 [credential]
 	helper = manager
+	helper = 
+	helper = C:/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+
 [credential "https://github.com"]
 	helper = 
 	helper = !'C:\\Program Files (x86)\\GitHub CLI\\gh.exe' auth git-credential
+
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !'C:\\Program Files (x86)\\GitHub CLI\\gh.exe' auth git-credential
-[url "https://{{ .GH_NAME }}@gitlab.com/"]
-	insteadOf = https://gitlab.com/
 
+[credential "https://gitgud.io"]
+	provider = generic
 
 [merge]
 	tool = vscode
+
 [diff]
 	guitool = vscode
 	algorithm = patience
 
 [difftool]
 	prompt = false
+
 [difftool "vscode"]
 	path = "code-insiders"
+
 [difftool "zed"]
 	cmd = "zed --diff $LOCAL $REMOTE"
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
