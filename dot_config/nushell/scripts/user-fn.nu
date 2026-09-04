@@ -935,7 +935,7 @@ export def '_atuin history list' [
 ]: nothing -> table {
   const format = "{user}\t{host}\t{directory}\t{time}\t{duration}\t{exit}\t{command}"
 
-  atuin history list --format $format --reverse $reverse | lines | first $limit | parse $format | into datetime time | into int exit | update command { nu-highlight } | str replace --regex '^(\d+)s$' '$1sec' duration | str replace --regex '^(\d+)m$' '$1min' duration | into duration duration
+  atuin history list --format $format --reverse $reverse | lines | first $limit | parse $format | into datetime time | into int exit | update command { nu-highlight } | str replace --regex '^(\d+)s$' '$1sec' duration | str replace --regex '^(\d+)m$' '$1min' duration | str replace --regex '^(\d+)h$' '$1hr' duration | into duration duration
 }
 
 # a wrapper for netstat -ano to output a table with Proto, Local Address, Foreign Address, State and PID columns, also parse the PID to int and filter out the first 3 lines of the output
