@@ -103,6 +103,11 @@ pwsh -Command "[Environment]::SetEnvironmentVariable('PATH', [Environment]::GetE
 '''
 for = "windows"
 
+[[opener.hash-check]]
+desc = "Check Hash"
+run = '{nu} --commands "ezcheck check --check-file %s;pause"'
+block = true
+
 [[opener.bulk-rename]]
 run = "code-insiders --wait %s"
 block = true
@@ -122,6 +127,14 @@ use = "bulk-create"
 [[open.rules]]
 mime = "trash/**"
 use = ["open", "edit", "trash"]
+
+[[open.rules]]
+url = "**/sha256sum.txt"
+use = [
+  "hash-check",
+  "edit",
+  "reveal",
+]
 
 [[open.rules]]
 url = "**/docker-compose.yaml"
