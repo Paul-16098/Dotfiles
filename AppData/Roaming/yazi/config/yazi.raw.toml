@@ -82,6 +82,11 @@ run = 'start {nu} --commands "uv run %s;pause"'
 desc = "Run with Python"
 orphan = true
 
+[[opener.bat]]
+run = 'cmd /c "%s"'
+desc = "Run with cmd"
+for = "windows"
+
 [[opener.lazydocker]]
 run = "lazydocker -f %s"
 desc = "Open with LazyDocker"
@@ -132,6 +137,14 @@ use = ["open", "edit", "trash"]
 url = "**/sha256sum.txt"
 use = [
   "hash-check",
+  "edit",
+  "reveal",
+]
+
+[[open.rules]]
+url = "**/*.bat"
+use = [
+  "bat",
   "edit",
   "reveal",
 ]
