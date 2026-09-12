@@ -87,7 +87,7 @@ export-env {
     )
     (
       add-keybindings none Up {
-        until: [{send: MenuUp} {send: executehostcommand cmd: (_atuin_search_cmd '--shell-up-key-binding')}]
+        until: [{send: MenuUp} {send: executehostcommand cmd: $" alternative-buffer {|| (_atuin_search_cmd '--shell-up-key-binding')}"}]
       }
     )
     (add-keybindings none Left {until: [{send: MenuLeft} {send: Left}]})
@@ -130,7 +130,7 @@ export-env {
 
     (add-keybindings --name "reload-config" none f5 {send: executehostcommand cmd: (reload-config)})
 
-    (add-keybindings --name "search-atuin-history" control "char_/" {send: executehostcommand cmd: (_atuin_search_cmd)})
+    (add-keybindings --name "search-atuin-history" control "char_/" {send: executehostcommand cmd: $" alternative-buffer {|| (_atuin_search_cmd)}"})
 
     # why custom?
     # default ctrl+d is send CtrlD event, if commandline not null, it will del cursor word, but I want it always send "exit 0" command to host
