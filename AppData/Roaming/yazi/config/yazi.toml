@@ -143,6 +143,14 @@ use = [
 ]
 
 [[open.rules]]
+url = "**/*.sha"
+use = [
+  "hash-check",
+  "edit",
+  "reveal",
+]
+
+[[open.rules]]
 url = "**/*.bat"
 use = [
   "bat",
