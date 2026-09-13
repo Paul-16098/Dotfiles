@@ -16,18 +16,17 @@ wrap = "yes"
 image_filter = "lanczos3"
 image_delay = 0
 
-# i am use an gui editor, so i don't need to block the terminal when opening a file
-# [[opener.edit]]
-# run = "%EDITOR% %s"
-# desc = "$EDITOR (block)"
-# block = true
-# for = "windows"
-
 [[opener.edit]]
 run = "%EDITOR% %s"
-desc = "$EDITOR (orphan)"
-orphan = true
+desc = "$EDITOR (block)"
+block = true
 for = "windows"
+
+# [[opener.edit]]
+# run = "%EDITOR% %s"
+# desc = "$EDITOR (orphan)"
+# orphan = true
+# for = "windows"
 
 [[opener.open]]
 run = 'start "" %s1'
@@ -115,12 +114,14 @@ run = 'nu --config ~\\.config\\nushell\\config.nu --env-config ~\\.config\\nushe
 block = true
 
 [[opener.bulk-rename]]
-run = "code-insiders --wait %s"
+run = "%EDITOR% %s"
 block = true
+for = "windows"
 
 [[opener.bulk-create]]
-run = "code-insiders --wait %s"
+run = "%EDITOR% %s"
 block = true
+for = "windows"
 
 [[open.rules]]
 url = "bulk-rename.txt"
