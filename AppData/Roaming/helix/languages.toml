@@ -1,0 +1,4 @@
+use-grammars = { except = ["embedded-template"] }
+
+[language-server.tombi]
+args = ["lsp"]
