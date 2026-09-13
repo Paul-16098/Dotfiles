@@ -1015,7 +1015,7 @@ export def 'what-def' [file: path@"nu-complete-ext nu"]: nothing -> record {
   $"use ($file)
   scope modules|get 1
   |update commands {
-    let $INs
+    let INs
     mut o: table = []
 
     for $IN in $INs {
@@ -1030,7 +1030,7 @@ export def 'what-def' [file: path@"nu-complete-ext nu"]: nothing -> record {
     $o
   }
   |update aliases {
-    let $INs
+    let INs
     mut o: table = []
 
     for $IN in $INs {
