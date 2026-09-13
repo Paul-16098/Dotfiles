@@ -1,0 +1,294 @@
+theme = "catppuccin_mocha"
+
+[editor]
+shell = ["nu", "--stdin", "--commands"]
+bufferline = "always"
+indent-guides.render = true
+soft-wrap.enable = true
+end-of-line-diagnostics = "hint"
+color-modes = true
+rainbow-brackets = true
+
+[editor.gutters]
+layout = ["diagnostics", "code-action-hint", "line-numbers", "diff", "spacer"]
+line-numbers.min-width = 1
+
+[editor.statusline]
+left = [
+  "mode",
+  "spinner",
+  #
+  "file-name",
+  "read-only-indicator",
+  "file-modification-indicator",
+  #
+  "spacer",
+  "version-control",
+]
+center = []
+right = [
+  "diagnostics",
+  "selections",
+  "register",
+  # ------
+  "separator",
+  "position",
+  "file-indent-style",
+  "file-encoding",
+  "file-line-ending",
+  "file-type",
+]
+
+[editor.whitespace.render]
+space = "all"
+tab = "all"
+nbsp = "none"
+nnbsp = "none"
+newline = "none"
+
+[editor.whitespace.characters]
+space = "·"
+nbsp = "⍽"
+nnbsp = "␣"
+tab = "→"
+newline = "⏎"
+tabpad = "·"  # Tabs will look like "→···" (depending on tab width)
+
+[editor.lsp]
+display-inlay-hints = true
+display-progress-messages = true
+auto-document-highlight = true
+
+[editor.inline-diagnostics]
+cursor-line = "warning"
+other-lines = "warning"
+
+[editor.file-explorer]
+ignore = true
+
+[keys.insert]
+# /remove default keybindings
+C-w = "no_op"
+A-w = "no_op"
+A-backspace = "no_op"
+A-d = "no_op"
+A-del = "no_op"
+C-u = "no_op"
+C-k = "no_op"
+C-h = "no_op"
+S-backspace = "no_op"
+C-d = "no_op"
+C-j = "no_op"
+pageup = "no_op"
+pagedown = "no_op"
+home = "no_op"
+end = "no_op"
+# remove default keybindings/
+
+C-backspace = "delete_word_backward"
+C-del = "delete_word_forward"
+C-z = "undo"
+C-S-z = "redo"
+C-S-s = ":write"
+C-x = "completion"
+A-S-f = ":fmt"
+"C-/" = "toggle_comments"
+C-left = "move_prev_word_end"
+C-right = "move_next_word_start"
+
+[keys.normal]
+# /remove default keybindings
+h = "no_op"
+j = "no_op"
+k = "no_op"
+l = "no_op"
+w = "no_op"
+b = "no_op"
+e = "no_op"
+W = "no_op"
+B = "no_op"
+E = "no_op"
+t = "no_op"
+f = "no_op"
+T = "no_op"
+F = "no_op"
+"A-." = "no_op"
+C-b = "no_op"
+C-f = "no_op"
+C-u = "no_op"
+C-d = "no_op"
+C-i = "no_op"
+r = "no_op"
+R = "no_op"
+"A-`" = "no_op"
+a = "no_op"
+I = "no_op"
+A = "no_op"
+o = "no_op"
+O = "no_op"
+"." = "no_op"
+u = "no_op"
+U = "no_op"
+A-u = "no_op"
+A-U = "no_op"
+y = "no_op"
+p = "no_op"
+P = "no_op"
+d = "no_op"
+A-d = "no_op"
+c = "no_op"
+A-c = "no_op"
+C-a = "no_op"
+C-x = "no_op"
+Q = "no_op"
+q = "no_op"
+"A-|" = "no_op"
+"A-!" = "no_op"
+"$" = "no_op"
+s = "no_op"
+S = "no_op"
+A-s = "no_op"
+A-minus = "no_op"
+A-_ = "no_op"
+"&" = "no_op"
+";" = "no_op"
+"A-;" = "no_op"
+"A-:" = "no_op"
+"," = "no_op"
+"A-," = "no_op"
+C = "no_op"
+A-C = "no_op"
+"(" = "no_op"
+")" = "no_op"
+"A-(" = "no_op"
+"A-)" = "no_op"
+"%" = "no_op"
+x = "no_op"
+X = "no_op"
+A-x = "no_op"
+J = "no_op"
+A-j = "no_op"
+K = "no_op"
+A-K = "no_op"
+C-c = "no_op"
+A-o = "no_op"
+A-i = "no_op"
+A-p = "no_op"
+A-n = "no_op"
+A-a = "no_op"
+A-I = "no_op"
+A-e = "no_op"
+A-b = "no_op"
+# https://docs.helix-editor.com/master/keymap.html#search
+"A-*" = "no_op"
+# https://docs.helix-editor.com/master/keymap.html#minor-modes
+z = "no_op"
+# C-w = "no_op"
+# remove default keybindings/
+
+"C-/" = "toggle_comments"
+C-s = ":write"
+C-z = "undo"
+C-S-z = "redo"
+"!" = "shell_pipe_to"
+"=" = ":fmt"
+C-home = "goto_file_start"
+C-end = "goto_file_end"
+C-pagedown = ":buffer-next"
+C-pageup = ":buffer-previous"
+"+".c.t = [":sh cargo hack --feature-powerset nextest run"]
+A-home = "move_parent_node_start"
+A-end = "move_parent_node_end"
+C-w = "wclose"
+C-left = "move_prev_word_end"
+C-right = "move_next_word_start"
+
+[keys.select]
+# /remove default keybindings
+h = "no_op"
+j = "no_op"
+k = "no_op"
+l = "no_op"
+w = "no_op"
+b = "no_op"
+e = "no_op"
+W = "no_op"
+B = "no_op"
+E = "no_op"
+t = "no_op"
+f = "no_op"
+T = "no_op"
+F = "no_op"
+"A-." = "no_op"
+C-b = "no_op"
+C-f = "no_op"
+C-u = "no_op"
+C-d = "no_op"
+C-i = "no_op"
+r = "no_op"
+R = "no_op"
+"A-`" = "no_op"
+a = "no_op"
+I = "no_op"
+A = "no_op"
+o = "no_op"
+O = "no_op"
+"." = "no_op"
+u = "no_op"
+U = "no_op"
+A-u = "no_op"
+A-U = "no_op"
+y = "no_op"
+p = "no_op"
+P = "no_op"
+d = "no_op"
+A-d = "no_op"
+c = "no_op"
+A-c = "no_op"
+Q = "no_op"
+q = "no_op"
+"A-|" = "no_op"
+"A-!" = "no_op"
+"$" = "no_op"
+s = "no_op"
+S = "no_op"
+A-s = "no_op"
+A-minus = "no_op"
+A-_ = "no_op"
+"&" = "no_op"
+";" = "no_op"
+"A-;" = "no_op"
+"A-:" = "no_op"
+"," = "no_op"
+"A-," = "no_op"
+C = "no_op"
+A-C = "no_op"
+"(" = "no_op"
+")" = "no_op"
+"A-(" = "no_op"
+"A-)" = "no_op"
+"%" = "no_op"
+x = "no_op"
+X = "no_op"
+A-x = "no_op"
+J = "no_op"
+A-j = "no_op"
+K = "no_op"
+A-K = "no_op"
+A-o = "no_op"
+A-i = "no_op"
+A-p = "no_op"
+A-n = "no_op"
+A-a = "no_op"
+A-I = "no_op"
+A-e = "no_op"
+A-b = "no_op"
+# https://docs.helix-editor.com/master/keymap.html#search
+"A-*" = "no_op"
+# remove default keybindings/
+
+C-a = "select_all"
+backspace = "delete_selection"
+i = "change_selection"
+C-c = "yank_to_clipboard"
+C-x = ["yank_to_clipboard", "delete_selection"]
