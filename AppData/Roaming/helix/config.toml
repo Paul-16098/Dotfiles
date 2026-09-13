@@ -4,6 +4,7 @@ theme = "catppuccin_mocha"
 shell = ["nu", "--stdin", "--commands"]
 bufferline = "always"
 indent-guides.render = true
+indent-guides.skip-levels = 1
 soft-wrap.enable = true
 end-of-line-diagnostics = "hint"
 color-modes = true
@@ -60,11 +61,14 @@ display-progress-messages = true
 auto-document-highlight = true
 
 [editor.inline-diagnostics]
-cursor-line = "warning"
+cursor-line = "hint"
 other-lines = "warning"
 
 [editor.file-explorer]
 ignore = true
+
+[editor.file-picker]
+hidden = false
 
 [keys.insert]
 # /remove default keybindings
