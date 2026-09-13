@@ -1150,6 +1150,8 @@ def add_wrapped_parse_lang [] {
 def "nu-complete add-wrapped-parse lang" []: nothing -> record<json: closure, jsonl: closure, toml: closure, yaml: closure> {
   add_wrapped_parse_lang | items {|a| $a }
 }
+
+# auto generate a wrapper function for a command with a parse function, the parse function is used to parse the output of the command, and the wrapper function will call the command and then call the parse function on the output.
 export def 'add-wrapped-parse' [
   parse: string@"nu-complete add-wrapped-parse lang"
   command_name: string
