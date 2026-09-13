@@ -87,6 +87,10 @@ pageup = "no_op"
 pagedown = "no_op"
 home = "no_op"
 end = "no_op"
+left = "no_op"
+right = "no_op"
+up = "no_op"
+down = "no_op"
 # remove default keybindings/
 
 C-backspace = "delete_word_backward"
@@ -99,6 +103,7 @@ A-S-f = ":fmt"
 "C-/" = "toggle_comments"
 C-left = "move_prev_word_end"
 C-right = "move_next_word_start"
+"C-." = "code_action"
 
 [keys.normal]
 # /remove default keybindings
