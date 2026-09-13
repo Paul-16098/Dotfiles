@@ -16,7 +16,7 @@ run = "plugin toggle-pane min-current"
 desc = "toggle hide current pane"
 
 [[mgr.keymap]]
-on = ["h", "s"]
+on = ["h", "p"]
 run = "plugin toggle-pane min-preview"
 desc = "toggle hide preview pane"
 
