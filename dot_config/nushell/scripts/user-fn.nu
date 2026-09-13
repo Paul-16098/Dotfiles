@@ -1,10 +1,10 @@
 use std/log
 
-const self = path self
+const SELF = path self
 
 # Edit this config.
 export def "config user-fn" []: nothing -> nothing {
-  run-external $env.config.buffer_editor ($self)
+  run-external $env.config.buffer_editor ($SELF)
 }
 
 # whois wrapper to format output as a table
@@ -23,7 +23,7 @@ export def --wrapped whois [
       )
     )
   } else if ($raw) {
-    ^whois-cli ...$rest
+    whois-cli ...$rest
   } else {
     let process_output = (whois-cli --no-color ...$rest | complete)
     if $process_output.exit_code != 0 {
@@ -80,7 +80,7 @@ export def --wrapped whois [
 }
 
 # for each app update job, check if the update is enabled in the config before spawning the job, the config should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}}
-export def app-update [
+export def app-update [ # nu-lint-ignore: dont_mix_different_effects
   cofg = {} # the config record to check if the update job is enabled, should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}}
   --bel-at-end # if set, ring the bell after all updates are completed
 ] {
@@ -99,7 +99,7 @@ export def app-update [
 
   if (
     ($cofg | get --optional "app-update-nu" | default {status: on} | get status) == on
-    and (^gh api $"repos/nushell/nushell/compare/(version | get commit_hash)...HEAD" | from json | get files.filename | any $it ends-with '.rs')
+    and (gh api $"repos/nushell/nushell/compare/(version | get commit_hash)...HEAD" | from json | get files.filename | any $it ends-with '.rs') # nu-lint-ignore: catch_builtin_error_try
     or ($cofg | get --optional "app-update-nu" | default {debug-run: false} | get debug-run? | default false)
   ) {
     print --no-newline (char bel)
@@ -191,9 +191,11 @@ export def app-update [
 @category git
 def git-log-subject-highlight [remote_url: string]: string -> string {
   # Merge pull request #ID from ...
+  # nu-lint-ignore: chained_str_transform
   | str replace --regex '(?i)Merge pull request #(?<id>\d+) from (?<from>.+)' {|id from|
     $"[PR (ansi green_bold)($"($remote_url)/pull/($id)" | ansi link --text $'#($id)')(ansi reset) from (ansi green_bold)($from)(ansi reset)]"
   }
+  # nu-lint-ignore: chained_str_transform
   # Merge branch 'branch' of ...
   # Merge branch 'branch' of ... into 'dev'
   | str replace --regex "(?i)Merge branch '(?<branch>.+)' of (?<from>[^ ]+)(?: into (?<into_branch>.+))?" {|branch from into_branch|
@@ -706,7 +708,7 @@ export def "steamcmd" [
 export def --wrapped --env y [
   --skip-check-is-yazi # if set, skip the check for YAZI_LEVEL environment variable, useful for advanced users who want to call yazi from another wrapper function
   --watch-events # if set, watch for local and remote events
-  ...args
+  ...args # nu-lint-ignore: add_type_hints_arguments
 ]: nothing -> oneof<nothing, table<kind: string, receiver: string, sender: string, body: record>> {
   if ("YAZI_LEVEL" in $env and not $skip_check_is_yazi) {
     error make {
@@ -863,8 +865,8 @@ export def "meme" [
         }
       }
 
-      $meme_path = open $chooser_file | lines
-      rm --force --permanent $chooser_file
+      $meme_path = open $chooser_file | lines # nu-lint-ignore: catch_builtin_error_try
+      rm --force --permanent $chooser_file # nu-lint-ignore: catch_builtin_error_try
     }
     fzf => {
       $meme_path = ^fzf --multi --ansi --preview 'viu --sixel -w $env.FZF_PREVIEW_COLUMNS -h $env.FZF_PREVIEW_LINES {}' | lines
@@ -878,7 +880,7 @@ export def "meme" [
       error make {
         msg: $"Invalid meme type: (ansi green)($type)(ansi reset)"
         label: {
-          text: "here"
+          text: here
           span: (metadata $type).span
         }
         help: "please provide a valid meme type"
@@ -890,8 +892,8 @@ export def "meme" [
 }
 
 # use $color_code to highlight text in output
-@example "highlight with text" { "abc" | highlight "a" } --result "\u{1b}[1;31ma\u{1b}[0mbc"
-@example "highlight with 2 text" { "abc" | highlight "a" "c" } --result "\u{1b}[1;31ma\u{1b}[0mb\u{1b}[1;31mc\u{1b}[0m"
+@example "highlight with text" { "abc" | highlight a } --result "\u{1b}[1;31ma\u{1b}[0mbc"
+@example "highlight with 2 text" { "abc" | highlight a c } --result "\u{1b}[1;31ma\u{1b}[0mb\u{1b}[1;31mc\u{1b}[0m"
 @example "highlight with regex" { "abc" | highlight --regex "^a.*$" } --result "\u{1b}[1;31mabc\u{1b}[0m"
 export def highlight [
   --color-code (-c) = "red_bold" # use in ansi $color_code to highlight text, hex string or color name supported
@@ -925,13 +927,13 @@ export def '_atuin history list' [
   --reverse
   --limit (-n) = 100 # limit the number of history entries to show
 ]: nothing -> table {
-  const format = "{user}\t{host}\t{directory}\t{time}\t{duration}\t{exit}\t{command}"
+  const FORMAT = "{user}\t{host}\t{directory}\t{time}\t{duration}\t{exit}\t{command}"
 
-  atuin history list --format $format --reverse $reverse | lines | first $limit | parse $format | into datetime time | into int exit | update command { nu-highlight } | str replace --regex '^(\d+)s$' '$1sec' duration | str replace --regex '^(\d+)m$' '$1min' duration | str replace --regex '^(\d+)h$' '$1hr' duration | into duration duration
+  atuin history list --format $FORMAT --reverse $reverse | lines | first $limit | parse $FORMAT | into datetime time | into int exit | update command { nu-highlight } | str replace --regex '^(\d+)s$' '$1sec' duration | str replace --regex '^(\d+)m$' '$1min' duration | str replace --regex '^(\d+)h$' '$1hr' duration | into duration duration
 }
 
 # a wrapper for netstat -ano to output a table with Proto, Local Address, Foreign Address, State and PID columns, also parse the PID to int and filter out the first 3 lines of the output
-export def "netstat -ano" []: nothing -> table {
+export def netstat-ano-wrapped []: nothing -> table {
   if $nu.os-info.name == windows {
     ^netstat -ano | lines | skip 3 | str trim
     | parse --regex '^(?P<Proto>UDP|TCP)\s+(?P<Local Address>\S+)\s+(?P<Foreign Address>\S+)\s+(?P<State>LISTENING|ESTABLISHED|TIME_WAIT|)\s+(?P<PID>\d+)$'
@@ -964,7 +966,9 @@ export def "ps name" [name: string --long (-l)]: nothing -> table {
 # nu-lint-ignore: missing_in_type, missing_output_type, add_type_hints_arguments
 export def 'ollama wrapper-if-not-run' [
   fn: closure
+  # nu-lint-ignore: add_type_hints_arguments
   ...rest: any
+  # nu-lint-ignore: unused_parameter
   --log-to-stderr # if set, log the output of ollama server to stderr
 ]: any -> any {
   let id: oneof<int, nothing> = if (ps port 11434 | length) == 0 {
@@ -979,7 +983,7 @@ export def 'ollama wrapper-if-not-run' [
     try {
       job kill $id
     } catch {
-      ps name 'ollama' | kill ...$in.pid --force
+      ps name ollama | kill ...$in.pid --force
     }
   }
 
@@ -1011,7 +1015,7 @@ def "nu-complete-ext nu" []: nothing -> record {
 }
 
 # get the definition of a function in a nushell file, return a record with the function name and the definition, if the function is not found, return an error
-export def 'what-def' [file: path@"nu-complete-ext nu"]: nothing -> record {
+export def what-def [file: path@"nu-complete-ext nu"]: nothing -> record {
   $"use ($file)
   scope modules|get 1
   |update commands {
@@ -1046,8 +1050,8 @@ export def 'what-def' [file: path@"nu-complete-ext nu"]: nothing -> record {
   }
   |reject --optional module_id
   |to nuon"
-  | nu -n -c $in
-  | from nuon
+  | nu -n -c $in # nu-lint-ignore: redundant_nu_subprocess
+  | from nuon # nu-lint-ignore: catch_builtin_error_try
 }
 
 # ask user for yes or no input, if default_choice is set, use it as the default choice, if user input is invalid, return null
@@ -1059,12 +1063,12 @@ export def 'input ask-yn' [default_choice?: bool]: nothing -> oneof<bool, nothin
       if $default_choice { 'y' } else { 'n' }
     } else { '' }
   ) | str lowercase
-  | if $in == 'y' {
+  | if $in == y {
     return true
-  } else if $in == 'n' {
+  } else if $in == n {
     return false
   } else {
-    print --stderr "Please enter 'y' or 'n'."
+    print --stderr "Please enter 'y' or 'n'." # nu-lint-ignore: error_make_for_non_fatal
     return null
   }
 }
@@ -1139,20 +1143,20 @@ export def 'vivid preview-all' []: nothing -> table<name: string, preview: strin
   }
 }
 
-def add_wrapped_parse_lang [] {
+def add-wrapped-parse-lang []: nothing -> record {
   {
-    json: { from json --strict }
-    jsonl: { from json --strict --objects }
-    toml: { from toml }
-    yaml: { from yaml }
+    json: { from json --strict } # nu-lint-ignore: catch_builtin_error_try
+    jsonl: { from json --strict --objects } # nu-lint-ignore: catch_builtin_error_try
+    toml: { from toml } # nu-lint-ignore: catch_builtin_error_try
+    yaml: { from yaml } # nu-lint-ignore: catch_builtin_error_try
   }
 }
 def "nu-complete add-wrapped-parse lang" []: nothing -> record<json: closure, jsonl: closure, toml: closure, yaml: closure> {
-  add_wrapped_parse_lang | items {|a| $a }
+  add-wrapped-parse-lang | items {|a| $a }
 }
 
 # auto generate a wrapper function for a command with a parse function, the parse function is used to parse the output of the command, and the wrapper function will call the command and then call the parse function on the output.
-export def 'add-wrapped-parse' [
+export def add-wrapped-parse [
   parse: string@"nu-complete add-wrapped-parse lang"
   command_name: string
   ...command_args: string
@@ -1164,7 +1168,7 @@ export def 'add-wrapped-parse' [
     error make {
       msg: $"parse ($parse) is not exists"
       labels: [
-        {text: 'here' span: (metadata $parse).span}
+        {text: here span: (metadata $parse).span}
       ]
       help: 'Follow the auto complete.'
     }
