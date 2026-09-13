@@ -949,7 +949,7 @@ export def "ps port" [
   --long (-l)
 ]: nothing -> table {
   let pid: list<int> = if $nu.os-info.name == windows {
-    netstat -ano | where 'Local Address' ends-with $":($port)" | get PID
+    netstat-ano-wrapped  | where 'Local Address' ends-with $":($port)" | get PID
   } else {
     error make 'ps port wrapper is only implemented for windows'
   }
@@ -1184,4 +1184,12 @@ export def add-wrapped-parse [
 export def --wrapped '($command_name)' [...rest: string]: any -> any {
     ^($command_name) ($command_args_str) ...$rest | do (view source $parse_fn)($ex_str)
 }\n"
+}
+
+# use yazi to choose a file for hx
+export def hx-i []: nothing -> nothing {
+  let chooser_file = mktemp --tmpdir yazi-chooser_file.XXXXXX
+  yazi --chooser-file $chooser_file
+
+  hx ...(open $chooser_file | lines) # nu-lint-ignore: catch_builtin_error_try
 }
