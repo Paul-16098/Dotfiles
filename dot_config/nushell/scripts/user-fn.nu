@@ -80,7 +80,8 @@ export def --wrapped whois [
 }
 
 # for each app update job, check if the update is enabled in the config before spawning the job, the config should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}}
-export def app-update [ # nu-lint-ignore: dont_mix_different_effects
+export def app-update [
+  # nu-lint-ignore: dont_mix_different_effects
   cofg = {} # the config record to check if the update job is enabled, should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}}
   --bel-at-end # if set, ring the bell after all updates are completed
 ] {
@@ -949,7 +950,7 @@ export def "ps port" [
   --long (-l)
 ]: nothing -> table {
   let pid: list<int> = if $nu.os-info.name == windows {
-    netstat-ano-wrapped  | where 'Local Address' ends-with $":($port)" | get PID
+    netstat-ano-wrapped | where 'Local Address' ends-with $":($port)" | get PID
   } else {
     error make 'ps port wrapper is only implemented for windows'
   }
@@ -1162,7 +1163,7 @@ export def add-wrapped-parse [
   ...command_args: string
   --ex-piper: closure
 ]: nothing -> string {
-  let parse_fn = add_wrapped_parse_lang | get --optional $parse
+  let parse_fn = add-wrapped-parse-lang | get --optional $parse
   let command_args_str = $command_args | str join ' '
   if ($parse_fn | is-empty) {
     error make {
