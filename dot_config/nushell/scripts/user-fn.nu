@@ -173,6 +173,11 @@ export def app-update [
     chezmoi apply ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --force
   }
 
+  _jobd spawn app-update-helix {
+    hx --grammar fetch
+    hx --grammar build
+  }
+
   jobd wait
 
   print "All updates completed."
