@@ -38,7 +38,7 @@ export-env {
           # }
 
           $data => {
-            table --expand=((term size).columns >= 100) --icons=(($data.head) == "ls")
+            table --expand=((term size).columns >= 100) --icons=(($data.head) == ls)
           }
         }
       } ($meta | classify)
