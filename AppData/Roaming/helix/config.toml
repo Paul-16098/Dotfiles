@@ -200,7 +200,7 @@ C-s = ":write"
 C-z = "undo"
 C-S-z = "redo"
 "!" = "shell_pipe_to"
-"=" = ":fmt"
+A-S-f = ":fmt"
 C-home = "goto_file_start"
 C-end = "goto_file_end"
 C-pagedown = ":buffer-next"
@@ -208,9 +208,12 @@ C-pageup = ":buffer-previous"
 "+".c.t = [":sh cargo hack --feature-powerset nextest run"]
 A-home = "move_parent_node_start"
 A-end = "move_parent_node_end"
-C-w = "wclose"
+C-w = ":buffer-close"
+C-S-w = ":buffer-close!"
 C-left = "move_prev_word_end"
 C-right = "move_next_word_start"
+"C-." = "code_action"
+F2 = "rename_symbol"
 
 [keys.select]
 # /remove default keybindings
