@@ -45,6 +45,11 @@ run = '"C:\Program Files\Sandboxie-Plus\Start.exe" /box:__ask__ %s1'
 desc = "Open With Sandboxie"
 for = "windows"
 
+[[opener.inf-file]]
+run = "InfDefaultInstall %s"
+desc = "Install"
+for = "windows"
+
 [[opener.copyimage]]
 # if file name contains space, it will be treated as multiple arguments
 run = 'nu --config ~\\.config\\nushell\\config.nu --env-config ~\\.config\\nushell\\env.nu --commands "clip copy-image %s"'
@@ -150,6 +155,10 @@ use = [
   "edit",
   "reveal",
 ]
+
+[[open.rules]]
+use = ["inf-file", "edit", "reveal"]
+mime = "application/setupscript"
 
 [[open.rules]]
 url = "**/*.bat"
