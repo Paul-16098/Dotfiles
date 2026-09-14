@@ -15,33 +15,17 @@ SIGN_KEY_ID = {{ $SIGN_KEY_ID | quote }}
 
 encryption = "gpg"
 
-[diff]
-command = "code-insiders"
-args = [
-  "--wait",
-  "--diff",
-]
-
 [keepassxc]
 database = {{ promptStringOnce . "keepassxc_database" "What is the path to your KeePassXC database" | quote }}
 
-[merge]
-command = "code-insiders"
-args = [
-  "--new-window",
-  "--wait",
-  "--merge",
-  "{{ .Destination }}",
-  "{{ .Target }}",
-  '{{ printf "%s.base" .Target }}',
-  "{{ .Source }}",
-]
-
 [git]
 autoAdd = true
-autoCommit = true
+autoCommit = false
+
+[diff]
+pager = "delta"
 
 {{- if promptBoolOnce . "use_pinentry" "Do you want to use pinentry for password input" }}
 [pinentry]
-command = 'pinentry'
+command = {{ promptStringOnce . "pinentry_path" "Path of pinentry" | quote }}
 {{- end }}
