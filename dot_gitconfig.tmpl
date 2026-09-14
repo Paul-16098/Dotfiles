@@ -53,6 +53,7 @@
 	smtpServer = smtp.gmail.com
 	smtpUser = {{ .EMAIL }}
 	smtpServerPort = 587
+
 [checkout]
 	workers = 0
 
@@ -72,24 +73,24 @@
 [credential "https://gitgud.io"]
 	provider = generic
 
-[merge]
-	tool = vscode
-
-[diff]
-	guitool = vscode
-	algorithm = patience
-
-[difftool]
-	prompt = false
-
-[difftool "vscode"]
-	path = "code-insiders"
-
-[difftool "zed"]
-	cmd = "zed --diff $LOCAL $REMOTE"
-
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
+[interactive]
+	diffFilter = delta --color-only
+
+[diff]
+	colorMoved = default
+
+[delta]
+	dark = true
+	hyperlinks = true
+	line-numbers = true
+	features = zebra-dark
+	navigate = true
+	
+[merge]
+	conflictStyle = zdiff3
