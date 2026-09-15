@@ -101,8 +101,6 @@ C-S-s = ":write"
 C-x = "completion"
 A-S-f = ":fmt"
 "C-/" = "toggle_comments"
-C-left = "move_prev_word_end"
-C-right = "move_next_word_start"
 "C-." = "code_action"
 
 [keys.normal]
