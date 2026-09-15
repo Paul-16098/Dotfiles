@@ -38,6 +38,44 @@ language-servers = ["simple-completion-language-server"]
 
 [[language]]
 name = "json"
-formatter = { command = "prettier", args = ["--stdin-filepath", "%{buffer_name}"] }
-# language-servers = ["biome"]
+formatter = { command = "prettier", args = ["--parser", "json", "--stdin-filepath", "%{buffer_name}"] }
 
+[[language]]
+name = "jsonc"
+formatter = { command = "prettier", args = ["--parser", "jsonc", "--stdin-filepath", "%{buffer_name}"] }
+
+[[language]]
+name = "html"
+formatter = { command = "prettier", args = ["--parser", "html", "--stdin-filepath", "%{buffer_name}"] }
+
+[[language]]
+name = "css"
+formatter = { command = "prettier", args = ["--parser", "css", "--stdin-filepath", "%{buffer_name}"] }
+
+[[language]]
+name = "scss"
+formatter = { command = "prettier", args = ["--parser", "scss", "--stdin-filepath", "%{buffer_name}"] }
+
+[[language]]
+name = "less"
+formatter = { command = "prettier", args = ["--parser", "less", "--stdin-filepath", "%{buffer_name}"] }
+
+[[language]]
+name = "javascript"
+formatter = { command = "prettier", args = ["--parser", "typescript", "--stdin-filepath", "%{buffer_name}"] }
+
+[[language]]
+name = "typescript"
+formatter = { command = "prettier", args = ["--parser", "typescript", "--stdin-filepath", "%{buffer_name}"] }
+
+[[language]]
+name = "tsx"
+formatter = { command = "prettier", args = ["--parser", "typescript", "--stdin-filepath", "%{buffer_name}"] }
+
+[[language]]
+name = "markdown"
+formatter = { command = "prettier", args = ["--parser", "markdown", "--stdin-filepath", "%{buffer_name}"] }
+
+[[language]]
+name = "yaml"
+formatter = { command = "prettier", args = ["--parser", "yaml", "--stdin-filepath", "%{buffer_name}"] }
