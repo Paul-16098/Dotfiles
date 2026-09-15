@@ -147,20 +147,20 @@ export def app-update [
 
     $s += add-wrapped-parse json es -- --json
 
-    $s | save --force ($nu.user-autoload-dirs.0 | path join nu-parse.nu)
+    $s | save --force ($nu.user-autoload-dirs.0 | path join nu-parse.nu) # nu-lint-ignore: catch_builtin_error_try
   }
 
   _job spawn --description app-update-atuin {
     $env.ATUIN_NOBIND = "true"
-    atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand)
+    atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand) # nu-lint-ignore: catch_builtin_error_try
   }
 
   _job spawn --description app-update-starship {
-    starship init nu | save --force ($nu.user-autoload-dirs.0 | path join starship.nu)
+    starship init nu | save --force ($nu.user-autoload-dirs.0 | path join starship.nu) # nu-lint-ignore: catch_builtin_error_try
   }
 
   _job spawn --description app-update-carapace {
-    carapace _carapace nushell | save --force ($nu.user-autoload-dirs.0 | path join carapace.nu)
+    carapace _carapace nushell | save --force ($nu.user-autoload-dirs.0 | path join carapace.nu) # nu-lint-ignore: catch_builtin_error_try
   }
 
   _jobd spawn app-update-yazi {
@@ -175,8 +175,19 @@ export def app-update [
   }
 
   _jobd spawn app-update-helix {
-    hx --grammar fetch
-    hx --grammar build
+    for line in (
+      hx --grammar fetch | lines
+      | par-each --keep-order { if not ($in =~ 'Fetching grammars \(\d+/\d+\): .*') { } }
+    ) {
+      print $line
+    }
+
+    for line in (
+      hx --grammar build | lines
+      | par-each --keep-order { if not ($in =~ 'Building grammars \(\d+/\d+\): .*') { } }
+    ) {
+      print $line
+    }
   }
 
   jobd wait
