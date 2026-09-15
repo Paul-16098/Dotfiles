@@ -1,7 +1,7 @@
 theme = "catppuccin_mocha"
 
 [editor]
-shell = ["nu", "--stdin", "--commands"]
+shell = ["nu", "--stdin", "--config", '~\.config\nushell\config.nu', "--commands"]
 bufferline = "always"
 indent-guides.render = true
 indent-guides.skip-levels = 1
@@ -212,6 +212,15 @@ C-left = "move_prev_word_end"
 C-right = "move_next_word_start"
 "C-." = "code_action"
 F2 = "rename_symbol"
+space.e = [
+  ":sh rm -f ($nu.temp-dir | path join 'yazi-chooser-file')",
+  ":insert-output alternative-buffer {yazi '%{buffer_name}' --chooser-file=($nu.temp-dir | path join yazi-chooser-file)}",
+  # ':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+  ":open %sh{cat ($nu.temp-dir | path join 'yazi-chooser-file')}",
+  ":redraw",
+  ":set mouse false",
+  ":set mouse true",
+]
 
 [keys.select]
 # /remove default keybindings
