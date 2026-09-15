@@ -108,8 +108,13 @@ $env.NU_LIB_DIRS = $env.NU_LIB_DIRS ++ [($env.NUPM_HOME | path join modules)]
 
 overlay new REPL
 
-alias 'ast md' = from md
+alias 'ast md' = %from md
 @deprecated "use 'ast md' instead"
-def 'from md' []: string -> nothing { do {} (print --stderr 'Please use "ast md" instead.') }
+def 'from md' []: string -> nothing { do {} error make "Use 'ast md' instead"  }
 
-$env | reject --optional --ignore-case config FILE_PWD CURRENT_FILE PWD | transpose key val | str uppercase key | transpose --as-record --header-row | load-env
+$env
+| reject --optional --ignore-case config FILE_PWD CURRENT_FILE PWD
+| transpose key val
+| str uppercase key
+| transpose --as-record --header-row
+| load-env
