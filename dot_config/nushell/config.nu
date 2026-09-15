@@ -36,7 +36,7 @@ $env.config.hinter.closure = {|ctx|
   } else {
     let candidate = (
       try {
-        ^atuin search --cwd $ctx.cmd --limit 1 --cmd-only ($"^($ctx.line)")
+        atuin search --cwd $ctx.cmd --limit 1 --cmd-only ($"^($ctx.line)")
         | lines
         | first
       } catch {
@@ -44,7 +44,7 @@ $env.config.hinter.closure = {|ctx|
       }
     ) | default --empty (
         try {
-          ^atuin search --limit 1 --cmd-only ($"^($ctx.line)")
+          atuin search --limit 1 --cmd-only ($"^($ctx.line)")
           | lines
           | first
         } catch {
