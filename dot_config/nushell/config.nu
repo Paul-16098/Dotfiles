@@ -80,7 +80,7 @@ $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 $env.TRANSIENT_PROMPT_COMMAND = { starship prompt --profile transient_prompt }
 # $env.TRANSIENT_PROMPT_COMMAND_RIGHT = ""
 
-source "~/.local/share/atuin/init.nu"
+source "~/.local/share/atuin/init.nu" # nu-lint-ignore: source_to_use
 
 use std/help
 $env.NU_HELPER = 'tldr'
