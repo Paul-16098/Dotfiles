@@ -215,7 +215,7 @@ F2 = "rename_symbol"
 space.e = [
   ":new",
   ":sh rm -f -p  ($nu.temp-dir | path join 'yazi-chooser-file')",
-  ":insert-output alternative-buffer {yazi --chooser-file=($nu.temp-dir | path join yazi-chooser-file)}",
+  ':insert-output alternative-buffer { yazi ...(if not ("%{buffer_name}" == "[scratch]") { ["%{buffer_name}"] } else {[]}) --chooser-file=($nu.temp-dir | path join yazi-chooser-file) }',
   # ':sh printf "\x1b[?1049h\x1b[?2004h"',
   ":bc!",
   ":open %sh{cat ($nu.temp-dir | path join 'yazi-chooser-file')}",
