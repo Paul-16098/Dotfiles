@@ -1003,7 +1003,7 @@ export def aic --wrapped [...rest: string]: nothing -> nothing {
     }
   } else { null }
 
-  ^aic ...$rest
+  ^aic ...$rest # nu-lint-ignore: remove_hat_not_builtin
 
   if ($id | is-not-empty) {
     try {
@@ -1022,7 +1022,7 @@ export def lazygit --wrapped [...rest: string]: nothing -> nothing {
     }
   } else { null }
 
-  ^lazygit ...$rest
+  ^lazygit ...$rest # nu-lint-ignore: remove_hat_not_builtin
 
   if ($id | is-not-empty) {
     try {
@@ -1207,11 +1207,9 @@ export def --wrapped '($command_name)' [...rest: string]: any -> any {
     ^($command_name) ($command_args_str) ...$rest | do (view source $parse_fn)($ex_str)
 }\n"
 }
-
-# use yazi to choose a file for hx
-export def hx-i []: nothing -> nothing {
-  let chooser_file = mktemp --tmpdir yazi-chooser_file.XXXXXX
-  yazi --chooser-file $chooser_file
-
-  hx ...(open $chooser_file | lines) # nu-lint-ignore: catch_builtin_error_try
+# remove log on run hx
+@complete external
+export def hx --wrapped [...rest: string]: nothing -> nothing {
+  rm --force `C:\Users\pl816\AppData\Local\helix\helix.log`
+  ^hx ...$rest # nu-lint-ignore: remove_hat_not_builtin
 }
