@@ -175,19 +175,10 @@ export def app-update [
   }
 
   _jobd spawn app-update-helix {
-    for line in (
-      hx --grammar fetch | lines
-      | par-each --keep-order { if not ($in =~ 'Fetching grammars \(\d+/\d+\): .*') { } }
-    ) {
-      print $line
-    }
-
-    for line in (
-      hx --grammar build | lines
-      | par-each --keep-order { if not ($in =~ 'Building grammars \(\d+/\d+\): .*') { } }
-    ) {
-      print $line
-    }
+    hx --grammar fetch | lines
+    | par-each --keep-order { if not ($in =~ 'Fetching grammars \(\d+/\d+\): .*') { } } | str join "\n" | echo.exe $in
+    hx --grammar build | lines
+    | par-each --keep-order { if not ($in =~ 'Building grammars \(\d+/\d+\): .*') { } } | str join "\n" | echo.exe $in
   }
 
   jobd wait
