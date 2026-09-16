@@ -1210,6 +1210,6 @@ export def --wrapped '($command_name)' [...rest: string]: any -> any {
 # remove log on run hx
 @complete external
 export def hx --wrapped [...rest: string]: nothing -> nothing {
-  rm --force `C:\Users\pl816\AppData\Local\helix\helix.log`
+  rm --force --permanent `C:\Users\pl816\AppData\Local\helix\helix.log`
   ^hx ...$rest # nu-lint-ignore: remove_hat_not_builtin
 }
