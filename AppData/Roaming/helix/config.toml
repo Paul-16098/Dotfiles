@@ -213,13 +213,24 @@ C-right = "move_next_word_start"
 "C-." = "code_action"
 F2 = "rename_symbol"
 space.e = [
-  ":sh rm -f ($nu.temp-dir | path join 'yazi-chooser-file')",
-  ":insert-output alternative-buffer {yazi '%{buffer_name}' --chooser-file=($nu.temp-dir | path join yazi-chooser-file)}",
-  # ':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+  ":new",
+  ":sh rm -f -p  ($nu.temp-dir | path join 'yazi-chooser-file')",
+  ":insert-output alternative-buffer {yazi --chooser-file=($nu.temp-dir | path join yazi-chooser-file)}",
+  # ':sh printf "\x1b[?1049h\x1b[?2004h"',
+  ":bc!",
   ":open %sh{cat ($nu.temp-dir | path join 'yazi-chooser-file')}",
   ":redraw",
   ":set mouse false",
   ":set mouse true",
+]
+space.l = [
+  ":new",
+  ":insert-output lazygit",
+  ":bc!",
+  ":redraw",
+  ":set mouse false",
+  ":set mouse true",
+  ":rl",
 ]
 
 [keys.select]
