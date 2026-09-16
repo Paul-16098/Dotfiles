@@ -1012,6 +1012,25 @@ export def aic --wrapped [...rest: string]: nothing -> nothing {
   }
 }
 
+# lazygit wrapper to run ollama server and then run aic command, if ollama server is already running, it will not start a new server
+# in tui mode, it need tty to run
+@complete external
+export def lazygit --wrapped [...rest: string]: nothing -> nothing {
+  let id: oneof<int, nothing> = if (ps port 11434 | length) == 0 {
+    job spawn --description "ollama server for lazygit" {
+      ollama serve | job send 0
+    }
+  } else { null }
+
+  ^lazygit ...$rest
+
+  if ($id | is-not-empty) {
+    try {
+      job kill $id
+    }
+  }
+}
+
 def "nu-complete-ext nu" []: nothing -> record {
   use complete-tools.nu complete-ext
   complete-ext nu
