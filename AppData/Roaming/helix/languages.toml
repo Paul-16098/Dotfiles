@@ -2,6 +2,10 @@
 
 use-grammars = { except = ["embedded-template"] }
 
+[language-server.codebook]
+command = "codebook-lsp"
+args = ["serve"]
+
 [language-server.simple-completion-language-server]
 command = "simple-completion-language-server"
 config = {
@@ -14,9 +18,6 @@ config = {
   feature_paths = false,  # enable path completion
   feature_citations = false  # enable citation completion (only on `citation` feature enabled)
 }
-
-[language-server.tombi]
-args = ["lsp"]
 
 [[grammar]]
 name = "nu"
