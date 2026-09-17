@@ -1,6 +1,7 @@
 #:tombi toml-version = "v1.1.0"
 
 use-grammars = { except = ["embedded-template"] }
+global-language-servers = ["codebook", "simple-completion-language-server"]
 
 [language-server.codebook]
 command = "codebook-lsp"
@@ -27,6 +28,15 @@ source = { git = "https://github.com/nushell/tree-sitter-nu", rev = "main" }
 name = "nu"
 # formatter = { command = "nufmt", args = ["%{buffer_name}"] }
 formatter = { command = "topiary", args = ["format", "--language", "nu"] }
+
+[language.auto-pairs]
+"(" = ")"
+"{" = "}"
+"[" = "]"
+'"' = '"'
+"'" = "'"
+"`" = "`"
+"<" = ">"
 
 [[language]]
 name = "stub"
