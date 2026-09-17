@@ -1,3 +1,5 @@
+#:tombi toml-version = "v1.1.0"
+
 theme = "catppuccin_mocha"
 
 [editor]
@@ -10,6 +12,9 @@ end-of-line-diagnostics = "hint"
 color-modes = true
 rainbow-brackets = true
 
+[editor.breadcrumb]
+enable = true
+
 [editor.gutters]
 layout = ["diagnostics", "code-action-hint", "line-numbers", "diff", "spacer"]
 line-numbers.min-width = 1
@@ -19,9 +24,9 @@ left = [
   "mode",
   "spinner",
   #
-  "file-name",
-  "read-only-indicator",
-  "file-modification-indicator",
+  # "file-name",
+  # "read-only-indicator",
+  # "file-modification-indicator",
   #
   "spacer",
   "version-control",
