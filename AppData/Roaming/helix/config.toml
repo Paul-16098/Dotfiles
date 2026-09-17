@@ -121,7 +121,6 @@ T = "no_op"
 F = "no_op"
 "A-." = "no_op"
 C-b = "no_op"
-C-f = "no_op"
 C-u = "no_op"
 C-d = "no_op"
 C-i = "no_op"
@@ -228,6 +227,7 @@ space.l = [
   ":set mouse true",
   ":rl",
 ]
+C-f = "search"
 
 [keys.select]
 # /remove default keybindings
