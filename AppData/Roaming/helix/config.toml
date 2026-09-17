@@ -216,22 +216,27 @@ C-left = "move_prev_word_end"
 C-right = "move_next_word_start"
 "C-." = "code_action"
 F2 = "rename_symbol"
-space.e = [
-  ":sh rm -f -p  ($nu.temp-dir | path join 'yazi-chooser-file')",
-  ':pipe-to alternative-buffer { yazi ...(if not ("%{buffer_name}" == "[scratch]") { ["%{buffer_name}"] } else {[]}) --chooser-file=($nu.temp-dir | path join yazi-chooser-file) }',
-  # ':sh printf "\x1b[?1049h\x1b[?2004h"',
-  ":open %sh{cat ($nu.temp-dir | path join 'yazi-chooser-file')}",
-  ":redraw",
-  ":set mouse false",
-  ":set mouse true",
-]
-space.l = [
-  ":pipe-to lazygit",
-  ":redraw",
-  ":set mouse false",
-  ":set mouse true",
-  ":rl",
-]
+space.e = {
+  label = "Yazi",
+  command = [
+    ":sh rm -f -p  ($nu.temp-dir | path join 'yazi-chooser-file')",
+    ':insert-output yazi ...(if not ((echo `%{buffer_name}`) == "[scratch]") { [`%{buffer_name}`] } else { [] }) --chooser-file=($nu.temp-dir | path join yazi-chooser-file)',
+    ":open %sh{cat ($nu.temp-dir | path join 'yazi-chooser-file')}",
+    ":redraw",
+    ":set mouse false",
+    ":set mouse true",
+  ]
+}
+space.l = {
+  label = "lazygit",
+  command = [
+    ":insert-output lazygit",
+    ":redraw",
+    ":set mouse false",
+    ":set mouse true",
+    ":rl",
+  ]
+}
 C-f = "search"
 
 [keys.select]
