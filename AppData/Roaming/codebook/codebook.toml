@@ -1,10 +1,18 @@
 words = [
+    "Actix",
     "CLI",
+    "HSTS",
     "TLS",
+    "XDG",
     "catppuccin",
+    "clippy",
+    "codeberg",
     "lazygit",
+    "nextest",
     "numd",
     "nushell",
+    "rustls",
+    "thiserror",
     "tombi",
     "yazi",
 ]
