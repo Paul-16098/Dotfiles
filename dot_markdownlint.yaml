@@ -1,0 +1,7 @@
+MD043: false
+MD033:
+  allowed_elements:
+    - details
+    - summary
+MD010: false
+MD013: false
