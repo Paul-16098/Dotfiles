@@ -24,6 +24,10 @@ config = {
 name = "nu"
 source = { git = "https://github.com/nushell/tree-sitter-nu", rev = "main" }
 
+[[grammar]]
+name = "just"
+source = { git = "https://codeberg.org/poliorcetics/tree-sitter-just", rev = "main" }
+
 [[language]]
 name = "nu"
 # formatter = { command = "nufmt", args = ["%{buffer_name}"] }
