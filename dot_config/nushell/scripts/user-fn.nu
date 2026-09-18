@@ -938,11 +938,11 @@ export def '_atuin history list' [
 # a wrapper for netstat -ano to output a table with Proto, Local Address, Foreign Address, State and PID columns, also parse the PID to int and filter out the first 3 lines of the output
 export def netstat-ano-wrapped []: nothing -> table {
   if $nu.os-info.name == windows {
-    ^netstat -ano | lines | skip 3 | str trim
+    netstat -a -n -o | lines | skip 3 | str trim
     | parse --regex '^(?P<Proto>UDP|TCP)\s+(?P<Local Address>\S+)\s+(?P<Foreign Address>\S+)\s+(?P<State>LISTENING|ESTABLISHED|TIME_WAIT|)\s+(?P<PID>\d+)$'
     | into int PID
   } else {
-    error make 'netstat -ano wrapper is only implemented for windows'
+    error make 'netstat -a -n -o wrapper is only implemented for windows'
   }
 }
 
