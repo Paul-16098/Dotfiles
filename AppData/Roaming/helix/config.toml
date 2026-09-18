@@ -3,7 +3,7 @@
 theme = "catppuccin_mocha"
 
 [editor]
-shell = ["nu", "--stdin", "--config", '~\.config\nushell\config.nu', "--commands"]
+shell = ["nu", "--stdin", "--config", '~\.config\nushell\config.nu', "--env-config", '~\.config\nushell\env.nu', "--commands"]
 bufferline = "always"
 indent-guides.render = true
 indent-guides.skip-levels = 1
