@@ -79,114 +79,147 @@ export def --wrapped whois [
   }
 }
 
+# nu-lint-ignore: print_and_return_data
+def app-update-job-list []: nothing -> table<name: string, fn: closure> {
+  [
+    [name fn];
+    [
+      rust
+      { rustup up }
+    ]
+    [
+      airshipper
+      {
+        airshipper upgrade
+        airshipper update
+      }
+    ]
+    [
+      cargo-packages
+      {
+        cargo install-update --all --git --filter !name=nu --filter !name=nu_plugin_formats --filter !name=nu_plugin_polars --filter !name=nu_plugin_query o+e>| lines | each { print $in }
+      }
+    ]
+    [
+      nu-plugins
+      {
+        for x in (glob ~/.cargo/bin/nu_*.exe) {
+          # nu-lint-ignore: redundant_nu_subprocess
+          if (nu -c $"plugin add ($x)" | complete | get exit_code) != 0 {
+            print $"(ansi red)Failed to apply: ($x)(ansi reset)"
+          } else {
+            print $"(ansi green)done: ($x)(ansi reset)"
+          }
+        }
+      }
+    ]
+    [
+      nu-parse
+      {
+        mut s = ''
+        $s += add-wrapped-parse json 'gh api'
+
+        $s += add-wrapped-parse json 'docker compose ps' --ex-piper {
+          update RunningFor {
+            date from-human
+          }
+        } -- --no-trunc --format json
+        $s += add-wrapped-parse json 'docker compose ls' -- --format json
+        $s += add-wrapped-parse json 'docker compose stats' -- --no-trunc --no-stream --format json
+        $s += add-wrapped-parse json 'docker compose volumes' -- --format json
+        $s += add-wrapped-parse json 'docker compose version' -- --format json
+
+        $s += add-wrapped-parse json es -- --json
+
+        $s | save --force ($nu.user-autoload-dirs.0 | path join nu-parse.nu) # nu-lint-ignore: catch_builtin_error_try, unchecked_cell_path_index
+      }
+    ]
+    [
+      atuin
+      {
+        $env.ATUIN_NOBIND = "true"
+        atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand) # nu-lint-ignore: catch_builtin_error_try
+      }
+    ]
+    [
+      starship
+      {
+        starship init nu | save --force ($nu.user-autoload-dirs.0 | path join starship.nu) # nu-lint-ignore: catch_builtin_error_try, unchecked_cell_path_index
+      }
+    ]
+    [
+      carapace
+      {
+        carapace _carapace nushell | save --force ($nu.user-autoload-dirs.0 | path join carapace.nu) # nu-lint-ignore: catch_builtin_error_try, unchecked_cell_path_index
+      }
+    ]
+    [
+      yazi
+      {
+        let old = ya pkg list | lines | parse "\t{name} ({hash})"
+        ya pkg upgrade --discard o+e>| ignore
+        let new = ya pkg list | lines | parse "\t{name} ({hash})"
+        let diff = ($old | difference $new | upsert new_hash {|row| $new | where name == $row.name | first | get hash })
+        print $"update ($diff | length) pkg:"
+        print $diff
+        rm ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --permanent # nu-lint-ignore: catch_builtin_error_try
+        chezmoi apply ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --force
+      }
+    ]
+    [
+      helix
+      {
+        hx --grammar fetch | lines
+        | par-each --keep-order { if not ($in =~ 'Fetching grammars \(\d+/\d+\): .*') { } } | str join "\n" | echo.exe $in
+        hx --grammar build | lines
+        | par-each --keep-order { if not ($in =~ 'Building grammars \(\d+/\d+\): .*') { } } | str join "\n" | echo.exe $in
+      }
+    ]
+    [git { git update-git-for-windows }]
+    [
+      'git repo'
+      {
+        for p in (
+          [
+            ~/tools/
+            ~/OneDrive/文件/git/
+            ~\.config\nushell\scripts
+            ~\AppData\Roaming\helix\external-snippets
+          ] | path expand
+        ) {
+          cd $p
+          for gp in (glob **/.git) {
+            cd ($gp | path dirname | tee { print $in })
+            git pull --no-pause
+          }
+        }
+      }
+    ]
+  ]
+}
+
 # for each app update job, check if the update is enabled in the config before spawning the job, the config should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}}
-export def app-update [
-  # nu-lint-ignore: dont_mix_different_effects
-  cofg = {} # the config record to check if the update job is enabled, should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}}
-  --bel-at-end # if set, ring the bell after all updates are completed
-] {
-  use jobd.nu
-
-  # nu-lint-ignore: missing_in_type, missing_output_type, kebab_case_commands, add_type_hints_arguments, unused_parameter
-  def '_jobd spawn' [name: string fn ...rest]: any -> any {
-    if ($cofg | get -o $name | default {status: on} | get status) == on { $in | jobd spawn $name $fn }
-  }
-  # nu-lint-ignore: missing_in_type, missing_output_type, kebab_case_commands, add_type_hints_arguments, unused_parameter
-  def '_job spawn' [--description (-d): string fn] {
-    if ($description | is-not-empty) {
-      if ($cofg | get -o $description | default {status: on} | get status) == on { job spawn --description=$description $fn }
-    } else { _job spawn $fn }
-  }
-
-  if (
-    ($cofg | get --optional "app-update-nu" | default {status: on} | get status) == on
-    and (gh api $"repos/nushell/nushell/compare/(version | get commit_hash)...HEAD" | from json | get files.filename | any $it ends-with '.rs') # nu-lint-ignore: catch_builtin_error_try
-    or ($cofg | get --optional "app-update-nu" | default {debug-run: false} | get debug-run? | default false)
-  ) {
+# nu-lint-ignore: dont_mix_different_effects
+export def app-update [] {
+  # nu-lint-ignore: catch_builtin_error_try
+  if (gh api $"repos/nushell/nushell/compare/(version | get commit_hash)...HEAD" | from json | get files.filename | any $it ends-with '.rs') {
     print --no-newline (char bel)
     print "A new version of NuShell is available, updating."
     start ~/.config/nushell/scripts/nu-selfupdate.ps1
     exit # nu-lint-ignore: exit_only_in_main
   }
+  use std-rfc/pb
 
-  _jobd spawn app-update-rust {
-    rustup check
+  let job_list = app-update-job-list
+  let job_list_len = $job_list | length
+  for item in ($job_list | enumerate) {
+    pb set-idx $item.index $job_list_len
+    print --stderr $"----- ($item.item.name)"
+    do --ignore-errors $item.item.fn
   }
-  _jobd spawn app-update-airshipper {
-    airshipper upgrade
-    airshipper update
-  }
-  _jobd spawn app-update-cargo-packages {
-    cargo install-update --all --git --filter !name=nu --filter !name=nu_plugin_formats --filter !name=nu_plugin_polars --filter !name=nu_plugin_query
-  }
-  _job spawn --description app-update-nu-plugins {
-    # jobd wait app-update-cargo-packages
-    for x in (glob ~/.cargo/bin/nu_*.exe) {
-      # nu-lint-ignore: redundant_nu_subprocess
-      if (nu -c $"plugin add ($x)" | complete | get exit_code) != 0 {
-        print $"app-update-nu-plugins: (ansi red)Failed to apply: ($x)(ansi reset)"
-      } else {
-        print $"app-update-nu-plugins: (ansi green)done: ($x)(ansi reset)"
-      }
-    }
-  }
-
-  _job spawn --description app-update-nu-parse {
-    mut s = ''
-    $s += add-wrapped-parse json 'gh api'
-
-    $s += add-wrapped-parse json 'docker compose ps' --ex-piper {
-      update RunningFor {
-        date from-human
-      }
-    } -- --no-trunc --format json
-    $s += add-wrapped-parse json 'docker compose ls' -- --format json
-    $s += add-wrapped-parse json 'docker compose stats' -- --no-trunc --no-stream --format json
-    $s += add-wrapped-parse json 'docker compose volumes' -- --format json
-    $s += add-wrapped-parse json 'docker compose version' -- --format json
-
-    $s += add-wrapped-parse json es -- --json
-
-    $s | save --force ($nu.user-autoload-dirs.0 | path join nu-parse.nu) # nu-lint-ignore: catch_builtin_error_try
-  }
-
-  _job spawn --description app-update-atuin {
-    $env.ATUIN_NOBIND = "true"
-    atuin init --disable-up-arrow --disable-ctrl-r nu | save --force ("~/.local/share/atuin/init.nu" | path expand) # nu-lint-ignore: catch_builtin_error_try
-  }
-
-  _job spawn --description app-update-starship {
-    starship init nu | save --force ($nu.user-autoload-dirs.0 | path join starship.nu) # nu-lint-ignore: catch_builtin_error_try
-  }
-
-  _job spawn --description app-update-carapace {
-    carapace _carapace nushell | save --force ($nu.user-autoload-dirs.0 | path join carapace.nu) # nu-lint-ignore: catch_builtin_error_try
-  }
-
-  _jobd spawn app-update-yazi {
-    let old = ya pkg list | lines | parse "\t{name} ({hash})"
-    ya pkg upgrade --discard
-    let new = ya pkg list | lines | parse "\t{name} ({hash})"
-    let diff = ($old | difference $new | upsert new_hash {|row| $new | where name == $row.name | first | get hash })
-    print $"update ($diff | length) pkg:"
-    print $diff
-    rm ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --permanent
-    chezmoi apply ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --force
-  }
-
-  _jobd spawn app-update-helix {
-    hx --grammar fetch | lines
-    | par-each --keep-order { if not ($in =~ 'Fetching grammars \(\d+/\d+\): .*') { } } | str join "\n" | echo.exe $in
-    hx --grammar build | lines
-    | par-each --keep-order { if not ($in =~ 'Building grammars \(\d+/\d+\): .*') { } } | str join "\n" | echo.exe $in
-  }
-
-  jobd wait
+  pb clear
 
   print "All updates completed."
-  if $bel_at_end {
-    print --no-newline (char bel)
-  }
   null
 }
 
