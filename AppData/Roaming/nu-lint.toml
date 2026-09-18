@@ -3,20 +3,20 @@ pipeline_placement = "start"
 max_pipeline_length = 80
 skip_external_parse_errors = true
 explicit_optional_access = false
+max_function_body_statements = 40
+max_inlinable_pipeline_elements = 2
 
 [groups]
 
 [rules]
-# id = "off|hint|warning|error"
 unchecked_cell_path_index = "hint"
-max_positional_params = "off"
-pipe_spacing = "off"
 unchecked_get_index = "off"
+pipe_spacing = "off"
 catch_builtin_error_try = "hint"
-unhandled_external_error = "off"
-check_typed_flag_before_use = "hint"
-list_param_to_variadic = "off"
-redundant_nu_subprocess = "hint"
-
-# i use dev version of nushell, so i want to disable parse error for now
 nu_parse_error = "off"
+list_param_to_variadic = "off"
+unhandled_external_error = "off"
+max_positional_params = "off"
+check_typed_flag_before_use = "hint"
+redundant_nu_subprocess = "hint"
+error_make_for_non_fatal = "off"
