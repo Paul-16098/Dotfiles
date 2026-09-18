@@ -1,8 +1,9 @@
 [target.x86_64-pc-windows-msvc]
 # 使用 lld-link 取代 MSVC link.exe，避開 PDB LNK1318 問題
-linker = "rust-lld.exe"
+# linker = "rust-lld.exe"
 
 [build]
+rustc-wrapper = "kache"
 # 在使用 nightly 版本時關閉
 # sccache: caused by: 檔名或副檔名太長。 (os error 206)
 # https://github.com/mozilla/sccache/pull/2789
@@ -13,3 +14,6 @@ git-fetch-with-cli = true
 
 [unstable]
 git = true
+
+[env]
+CC_KNOWN_WRAPPER_CUSTOM = "kache"
