@@ -239,6 +239,9 @@ space.l = {
 }
 C-f = "search"
 
+A-up = ["extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before", ":clear-register '\"'"]
+A-down = ["extend_to_line_bounds", "delete_selection", "move_line_down", "paste_before", ":clear-register '\"'"]
+
 [keys.select]
 # /remove default keybindings
 h = "no_op"
@@ -330,3 +333,6 @@ C-c = "yank_to_clipboard"
 C-x = ["yank_to_clipboard", "delete_selection"]
 C-left = "move_prev_word_end"
 C-right = "move_next_word_start"
+
+A-up = ["extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before", ":clear-register '\"'"]
+A-down = ["extend_to_line_bounds", "delete_selection", "move_line_down", "paste_before", ":clear-register '\"'"]
