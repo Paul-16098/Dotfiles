@@ -1240,6 +1240,6 @@ export def google-translate [
   if ($full) {
     $resp
   } else {
-    $resp.sentences.0.trans
+    ($resp.sentences.trans | str join "") + "\n"
   }
 }
