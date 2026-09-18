@@ -1213,3 +1213,33 @@ export def hx --wrapped [...rest: string]: nothing -> nothing {
   rm --force --permanent `C:\Users\pl816\AppData\Local\helix\helix.log`
   ^hx ...$rest # nu-lint-ignore: remove_hat_not_builtin
 }
+
+# use google undocumented, public-facing endpoint to translate
+export def google-translate [
+  tl: string # Target language code.
+  sl: string = "auto" # Source language code (use auto for auto-detection).
+  --full # return full api resp
+]: [
+  string -> string
+  string -> any
+] {
+  let q = $in
+
+  let resp = http $"https://translate.googleapis.com/translate_a/single?(
+    {
+      client: gtx
+      dt: t
+      dj: "1"
+      source: input
+      sl: $sl
+      tl: $tl
+      q: $q
+    } | url build-query
+  )"
+
+  if ($full) {
+    $resp
+  } else {
+    $resp.sentences.0.trans
+  }
+}

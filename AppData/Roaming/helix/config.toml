@@ -212,8 +212,10 @@ A-home = "move_parent_node_start"
 A-end = "move_parent_node_end"
 C-w = ":buffer-close"
 C-S-w = ":buffer-close!"
+
 C-left = "move_prev_word_end"
 C-right = "move_next_word_start"
+
 "C-." = "code_action"
 F2 = "rename_symbol"
 space.e = {
@@ -331,8 +333,10 @@ backspace = "delete_selection"
 i = "change_selection"
 C-c = "yank_to_clipboard"
 C-x = ["yank_to_clipboard", "delete_selection"]
-C-left = "move_prev_word_end"
-C-right = "move_next_word_start"
+C-left = "extend_prev_word_end"
+C-right = "extend_next_word_start"
 
 A-up = ["extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before", ":clear-register '\"'"]
 A-down = ["extend_to_line_bounds", "delete_selection", "move_line_down", "paste_before", ":clear-register '\"'"]
+
+C-S-t = [":| google-translate 'zh_cn'", "normal_mode"]

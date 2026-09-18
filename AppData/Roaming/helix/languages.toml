@@ -20,13 +20,9 @@ config = {
   feature_citations = false  # enable citation completion (only on `citation` feature enabled)
 }
 
-[[grammar]]
-name = "nu"
-source = { git = "https://github.com/nushell/tree-sitter-nu", rev = "main" }
-
-[[grammar]]
-name = "just"
-source = { git = "https://codeberg.org/poliorcetics/tree-sitter-just", rev = "main" }
+[[language]]
+name = "git-commit"
+file-types = [{ glob = "COMMIT_EDITMSG" }, { glob = "MERGE_MSG" }, { glob = "TAG_EDITMSG" }, { glob = '~\AppData\Local\Temp\.tmpm*' }]
 
 [[language]]
 name = "nu"
@@ -94,3 +90,11 @@ formatter = { command = "prettier", args = ["--parser", "markdown", "--stdin-fil
 [[language]]
 name = "yaml"
 formatter = { command = "prettier", args = ["--parser", "yaml", "--stdin-filepath", "%{buffer_name}"] }
+
+[[grammar]]
+name = "nu"
+source = { git = "https://github.com/nushell/tree-sitter-nu", rev = "main" }
+
+[[grammar]]
+name = "just"
+source = { git = "https://codeberg.org/poliorcetics/tree-sitter-just", rev = "main" }
