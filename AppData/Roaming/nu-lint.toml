@@ -9,14 +9,15 @@ max_inlinable_pipeline_elements = 2
 [groups]
 
 [rules]
-unchecked_cell_path_index = "hint"
-unchecked_get_index = "off"
-pipe_spacing = "off"
+redundant_nu_subprocess = "hint"
+spread_list_to_external = "off"
 catch_builtin_error_try = "hint"
-nu_parse_error = "off"
-list_param_to_variadic = "off"
+pipe_spacing = "off"
 unhandled_external_error = "off"
 max_positional_params = "off"
 check_typed_flag_before_use = "hint"
-redundant_nu_subprocess = "hint"
 error_make_for_non_fatal = "off"
+unchecked_cell_path_index = "hint"
+nu_parse_error = "off"
+list_param_to_variadic = "off"
+unchecked_get_index = "off"
