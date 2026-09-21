@@ -342,12 +342,16 @@ url = "*.bat"
 run = "code"
 
 [[plugin.prepend_previewers]]
-mime = "application/{xml,sql}"
-run = "code"
+mime = "{text/x-nushell,application/x-nuon}"
+run = "piper -- def main [path: path] {open --raw $path | nu-highlight | bat -p -n --color always --terminal-width $env.w }"
 
 [[plugin.prepend_previewers]]
-mime = "{text/x-nushell,application/x-nuon}"
-run = "piper -- def main [path: path] {open --raw $path | nu-highlight}"
+mime = "application/{xml,sql,mbox,javascript,wine-extension-ini,json}"
+run = "piper -- def main [path: path] {bat -p -n --color always --terminal-width $env.w $path}"
+
+[[plugin.prepend_previewers]]
+mime = "text/*"
+run = "piper -- def main [path: path] {bat -p -n --color always --terminal-width $env.w $path}"
 
 [[plugin.prepend_previewers]]
 mime = "application/java-archive"
