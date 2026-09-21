@@ -15,7 +15,7 @@ export def main []: nothing -> table {
       open $in # nu-lint-ignore: catch_builtin_error_try
     }
 
-  $patch ++= open ../helix-patch/http-patch.json # nu-lint-ignore: catch_builtin_error_try
+  $patch ++= open ../helix-patch/http-patch.jsonc # nu-lint-ignore: catch_builtin_error_try
     | par-each --keep-order {
       print --stderr $"get http patch ($in)"
       http $in # nu-lint-ignore: catch_builtin_error_try

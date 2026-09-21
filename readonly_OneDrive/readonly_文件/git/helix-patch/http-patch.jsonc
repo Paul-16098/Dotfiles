@@ -1,0 +1,14 @@
+[
+	// global language servers
+	"https://github.com/NikSneMC/helix/commit/a6484f23f336341a139d9dab6c1e1d47f1a587b3.patch",
+	// fix: lsp: correctly clear workspace diagnostics on LSP(s)
+	"https://github.com/helix-editor/helix/pull/16071.patch",
+	// Add the official Typescript Language Server and make it the default
+	"https://github.com/helix-editor/helix/pull/16026.patch",
+	// feat: add breadcrumb plumbing
+	"https://github.com/helix-editor/helix/pull/15573.patch",
+	// Add support for labels in custom menu keymaps
+	"https://github.com/helix-editor/helix/pull/3958.patch",
+	// lsp: run code actions on save for all servers
+	"https://github.com/helix-editor/helix/pull/16207.patch",
+]
