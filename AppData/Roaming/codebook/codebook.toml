@@ -19,6 +19,7 @@ words = [
     "numd",
     "nushell",
     "ollama",
+    "pacman",
     "pnpm",
     "pnpx",
     "polars",
@@ -31,5 +32,6 @@ words = [
     "topgrade",
     "whois",
     "winget",
+    "wsl",
     "yazi",
 ]
