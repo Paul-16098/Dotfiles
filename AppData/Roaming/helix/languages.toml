@@ -20,9 +20,13 @@ config = {
   feature_citations = false  # enable citation completion (only on `citation` feature enabled)
 }
 
+[[language-server.vscode-json-language-server.config.json.schemas]]
+fileMatch = ["**/*.json", "**/*.jsonc"]
+schema = { allowTrailingCommas = true, allowComments = true }
+
 [[language]]
-name = "git-commit"
-file-types = [{ glob = "COMMIT_EDITMSG" }, { glob = "MERGE_MSG" }, { glob = "TAG_EDITMSG" }, { glob = '~\AppData\Local\Temp\.tmpm*' }]
+name = "git-ignore"
+file-types = [{ glob = ".git/info/sparse-checkout" }, { glob = ".gitignore_global" }, { glob = "git/ignore" }, { glob = ".git/info/exclude" }, { glob = ".ignore" }, { glob = "CODEOWNERS" }, { glob = ".config/helix/ignore" }, { glob = ".helix/ignore" }, { glob = ".*ignore" }, { glob = ".git-blame-ignore-revs" }]
 
 [[language]]
 name = "nu"
