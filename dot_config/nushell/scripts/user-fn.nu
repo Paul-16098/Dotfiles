@@ -175,7 +175,10 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
         | par-each --keep-order { if not ($in =~ 'Building grammars \(\d+/\d+\): .*') { } } | str join "\n" | echo.exe $in
       }
     ]
+    [wsl { wsl --update }]
+    [wsl-system { wsl -- pacman -S -y -u --noconfirm }]
     [git { git update-git-for-windows }]
+    [uv-tools { uv tool upgrade --all }]
     [
       'git repo'
       {
@@ -190,7 +193,7 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
           cd $p
           for gp in (glob **/.git) {
             cd ($gp | path dirname | tee { print $in })
-            git pull --no-pause
+            try { git pull --no-pause } catch { print $in.rendered }
           }
         }
       }
@@ -200,7 +203,7 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
 
 # for each app update job, check if the update is enabled in the config before spawning the job, the config should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}}
 # nu-lint-ignore: dont_mix_different_effects
-export def app-update [] {
+export def app-update [--dry-run (-n)] {
   # nu-lint-ignore: catch_builtin_error_try
   if (gh api $"repos/nushell/nushell/compare/(version | get commit_hash)...HEAD" | from json | get files.filename | any $it ends-with '.rs') {
     print --no-newline (char bel)
@@ -215,7 +218,11 @@ export def app-update [] {
   for item in ($job_list | enumerate) {
     pb set-idx $item.index $job_list_len
     print --stderr $"----- ($item.item.name)"
-    do --ignore-errors $item.item.fn
+    if $dry_run {
+      print --stderr $"dry run: (view source $item.item.fn)"
+    } else {
+      do --ignore-errors $item.item.fn
+    }
   }
   pb clear
 
