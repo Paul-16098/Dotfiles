@@ -15,11 +15,11 @@ export def main []: nothing -> table {
       open $in # nu-lint-ignore: catch_builtin_error_try
     }
 
-  $patch ++= open ../helix-patch/http-patch.jsonc # nu-lint-ignore: catch_builtin_error_try
+  $patch ++= open ../helix-patch/http-patch.yaml
     | par-each --keep-order {
       print --stderr $"get http patch ($in)"
       http $in # nu-lint-ignore: catch_builtin_error_try
     }
 
-  $patch | each { git apply - -vvv | complete } | tee {if ($in | any {$in.exit_code != 0}) {print --stderr (char bel)}}
+  $patch | each { git apply - -vvv | complete } | tee { if ($in | any { $in.exit_code != 0 }) { print --stderr (char bel) } }
 }
