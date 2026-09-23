@@ -1,0 +1,26 @@
+From b1abfecc7f298733973edf4e358af263bbedcfd5 Mon Sep 17 00:00:00 2001
+From: Paul-16098 <pl816098@gmail.com>
+Date: Wed, 23 Sep 2026 18:36:32 +0800
+Subject: [PATCH] feat: add `.git/info/sparse-checkout` to git-ignore
+ file-types
+
+---
+ languages.toml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/languages.toml b/languages.toml
+index 31685510..8148819e 100644
+--- a/languages.toml
++++ b/languages.toml
+@@ -2363,7 +2363,7 @@ source = { git = "https://github.com/mtoohey31/tree-sitter-gitattributes", rev =
+ [[language]]
+ name = "git-ignore"
+ scope = "source.gitignore"
+-file-types = [{ glob = ".gitignore_global" }, { glob = "git/ignore" }, { glob = ".git/info/exclude" }, { glob = ".ignore" }, { glob = "CODEOWNERS" }, { glob = ".config/helix/ignore" }, { glob = ".helix/ignore" }, { glob = ".*ignore" }, { glob = ".git-blame-ignore-revs" }]
++file-types = [{ glob = ".git/info/sparse-checkout" }, { glob = ".gitignore_global" }, { glob = "git/ignore" }, { glob = ".git/info/exclude" }, { glob = ".ignore" }, { glob = "CODEOWNERS" }, { glob = ".config/helix/ignore" }, { glob = ".helix/ignore" }, { glob = ".*ignore" }, { glob = ".git-blame-ignore-revs" }]
+ injection-regex = "git-ignore"
+ comment-token = "#"
+ grammar = "gitignore"
+-- 
+2.56.0.rc0.windows.1
+
