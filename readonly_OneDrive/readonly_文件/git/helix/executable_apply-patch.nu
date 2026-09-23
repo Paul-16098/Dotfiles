@@ -21,5 +21,5 @@ export def main []: nothing -> table {
       http $in # nu-lint-ignore: catch_builtin_error_try
     }
 
-  $patch | each { git apply - -vv --exclude book/** | complete } | tee { if ($in | any { $in.exit_code != 0 }) { print --stderr (char bel) } }
+  $patch | each { git am --no-gpg-sign --exclude book/** | complete } | tee { if ($in | any { $in.exit_code != 0 }) { print --stderr (char bel) } }
 }
