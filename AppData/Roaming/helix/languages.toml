@@ -42,6 +42,18 @@ formatter = { command = "topiary", args = ["format", "--language", "nu"] }
 "`" = "`"
 "<" = ">"
 
+[language.debugger]
+name = "nu-dap"
+transport = "stdio"
+command = "nu"
+args = ["--dap"]
+
+[[language.debugger.templates]]
+name = "launch script"
+request = "launch"
+completion = [{ name = "script", completion = "filename" }]
+args = { program = "{0}", runInTerminal = true }
+
 [[language]]
 name = "stub"
 scope = "text.stub"
