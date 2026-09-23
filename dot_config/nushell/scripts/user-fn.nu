@@ -584,6 +584,7 @@ If you wish to set tracking information for this branch you can do so with:
 }
 
 # git show wrapper to handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
+@complete external
 @category git
 export def --wrapped "git show" [...rest: string]: any -> string {
   try { ^git show ...$rest } catch {
@@ -754,7 +755,7 @@ wish to download is available for anonymous access.'
   }
 }
 # steamcmd wrapper to login
-export def "steamcmd" [
+export def steamcmd [
   --REPL # if set, run steamcmd in interactive mode, otherwise run with provided arguments, default is false
   ...args: string@"nu-complete steamcmd" # +COMMAND [ARG]...
 ]: nothing -> nothing {
@@ -807,8 +808,8 @@ export def reload-config []: nothing -> string {
     (
       $nu.vendor-autoload-dirs | par-each --keep-order {|dir|
         if ($dir | path exists) {
-          ls ($dir | path expand) | where ($it.type == "file") and ($it.name ends-with ".nu")
-          | par-each --keep-order {|path| $"source ($path.name)" }
+          cd $dir # nu-lint-ignore: catch_builtin_error_try
+          glob *.nu | par-each --keep-order {|path| $"source ($path)" }
         }
       }
     )
@@ -816,8 +817,8 @@ export def reload-config []: nothing -> string {
     (
       $nu.user-autoload-dirs | par-each --keep-order {|dir|
         if ($dir | path exists) {
-          ls ($dir | path expand) | where ($it.type == "file") and ($it.name ends-with ".nu")
-          | par-each --keep-order {|path| $"source ($path.name)" }
+          cd $dir # nu-lint-ignore: catch_builtin_error_try
+          glob *.nu | par-each --keep-order {|path| $"source ($path)" }
         }
       }
     )
@@ -847,7 +848,7 @@ export def "clip copy-image" [
       error make {
         msg: $"File not found: (ansi green)($path)(ansi reset)"
         label: {
-          text: "here"
+          text: here
           span: (metadata $path).span
         }
         help: "please provide a valid image file path"
@@ -857,13 +858,13 @@ export def "clip copy-image" [
       error make {
         msg: $"Path is not a file: (ansi green)($path)(ansi reset)"
         label: {
-          text: "here"
+          text: here
           span: (metadata $path).span
         }
         help: "please provide a valid image file path"
       }
     }
-    if not (ls $path --mime-type | get 0.type | str starts-with "image/") {
+    if not (ls $path --mime-type | get 0.type | str starts-with image/) {
       error make {
         msg: $"File is not an image: (ansi green)($path)(ansi reset)"
         label: {
@@ -873,11 +874,11 @@ export def "clip copy-image" [
         help: "please provide a valid image file path"
       }
     }
-    if (ls $path --mime-type | get 0.type) == "image/gif" {
+    if (ls $path --mime-type | get 0.type) == image/gif {
       error make {
         msg: $"GIF images are not supported: (ansi green)($path)(ansi reset)"
         label: {
-          text: "here"
+          text: here
           span: (metadata $path).span
         }
         help: "please provide a non-GIF image file path"
@@ -891,9 +892,12 @@ export def "clip copy-image" [
 
     print --stderr $"> ($comm)"
     pwsh -Sta -Command $comm | complete | if ($in.exit_code != 0) {
+      # nu-lint-ignore: add_label_to_error
       error make --unspanned {
         msg: $"Failed to copy image to clipboard: (ansi green)($path)(ansi reset)"
-        inner: [{msg: $in.stderr}]
+        inner: [
+          {msg: $in.stderr}
+        ]
       }
     } else {
       print --stderr $"Successfully copied image to clipboard: (ansi green)($path)(ansi reset)"
@@ -903,7 +907,7 @@ export def "clip copy-image" [
 }
 
 # get meme and copy to clipboard
-export def "meme" [
+export def meme [
   type: string@[fzf yazi nushell] = yazi # what tool to use to pick meme
 ]: nothing -> nothing {
   let meme_base_path = '~\OneDrive\文件\meme' | path expand
@@ -912,10 +916,10 @@ export def "meme" [
   mut meme_path: list<string> = []
   match $type {
     yazi => {
-      let chooser_file = mktemp --tmpdir "yazi-chooser_file.XXXXXX"
+      let chooser_file = mktemp --tmpdir yazi-chooser_file.XXXXXX
       let yazi_id = random int 1_000_000_000..9_999_999_999
 
-      y --chooser-file $chooser_file --client-id ($yazi_id) --watch-events | where kind == 'cd' | each {
+      y --chooser-file $chooser_file --client-id ($yazi_id) --watch-events | where kind == cd | each {
         if ($in.body.url | path expand) not-starts-with $meme_base_path {
           print --stderr $"Invalid meme path: (ansi green)($in.body.url | path expand)(ansi reset), must be under (ansi green)($meme_base_path)(ansi reset)"
           meme yazi
@@ -926,7 +930,7 @@ export def "meme" [
       rm --force --permanent $chooser_file # nu-lint-ignore: catch_builtin_error_try
     }
     fzf => {
-      $meme_path = ^fzf --multi --ansi --preview 'viu --sixel -w $env.FZF_PREVIEW_COLUMNS -h $env.FZF_PREVIEW_LINES {}' | lines
+      $meme_path = ^fzf --multi --ansi --preview 'viu --sixel -w $env.FZF_PREVIEW_COLUMNS -h $env.FZF_PREVIEW_LINES {}' | lines # nu-lint-ignore: remove_hat_not_builtin
     }
 
     nushell => {
@@ -986,7 +990,7 @@ export def '_atuin history list' [
 ]: nothing -> table {
   const FORMAT = "{user}\t{host}\t{directory}\t{time}\t{duration}\t{exit}\t{command}"
 
-  atuin history list --format $FORMAT --reverse $reverse | lines | first $limit | parse $FORMAT | into datetime time | into int exit | update command { nu-highlight } | str replace --regex '^(\d+)s$' '$1sec' duration | str replace --regex '^(\d+)m$' '$1min' duration | str replace --regex '^(\d+)h$' '$1hr' duration | into duration duration
+  atuin history list --format $FORMAT --reverse $reverse | lines | first $limit | parse $FORMAT | into datetime time | into int exit | update command { nu-highlight } | str replace --regex '^(\d+)s$' '$1sec' duration | str replace --regex '^(\d+)m$' '$1min' duration | str replace --regex '^(\d+)h$' '$1hr' duration | into duration duration # nu-lint-ignore: chained_str_transform
 }
 
 # a wrapper for netstat -ano to output a table with Proto, Local Address, Foreign Address, State and PID columns, also parse the PID to int and filter out the first 3 lines of the output
@@ -1264,7 +1268,7 @@ export def --wrapped '($command_name)' [...rest: string]: any -> any {
 # remove log on run hx
 @complete external
 export def hx --wrapped [...rest: string]: nothing -> nothing {
-  rm --force --permanent `C:\Users\pl816\AppData\Local\helix\helix.log`
+  rm --force --permanent `C:\Users\pl816\AppData\Local\helix\helix.log` # nu-lint-ignore: catch_builtin_error_try
   ^hx ...$rest # nu-lint-ignore: remove_hat_not_builtin
 }
 
