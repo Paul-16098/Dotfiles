@@ -88,6 +88,20 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
       { rustup up }
     ]
     [
+      nushell
+      {
+        if (
+          gh api $"repos/nushell/nushell/compare/(version | get commit_hash)...HEAD" | from json | get files.filename
+          | any $it ends-with '.rs' or $it == "Cargo.lock"
+        ) {
+          print --no-newline (char bel)
+          print "A new version of NuShell is available, updating."
+          start ~/.config/nushell/scripts/nu-selfupdate.ps1
+          exit --abort # nu-lint-ignore: exit_only_in_main
+        }
+      }
+    ]
+    [
       airshipper
       {
         airshipper upgrade
@@ -213,13 +227,6 @@ export def app-update [
   let cofg = $in | default {}
   let exclude: list<string> = $exclude | default [] # nu-lint-ignore: check_typed_flag_before_use
 
-  # nu-lint-ignore: catch_builtin_error_try
-  if (not ("nushell" in $exclude)) and (gh api $"repos/nushell/nushell/compare/(version | get commit_hash)...HEAD" | from json | get files.filename | any $it ends-with '.rs') {
-    print --no-newline (char bel)
-    print "A new version of NuShell is available, updating."
-    start ~/.config/nushell/scripts/nu-selfupdate.ps1
-    exit # nu-lint-ignore: exit_only_in_main
-  }
   use std-rfc/pb
 
   let job_list = app-update-job-list
