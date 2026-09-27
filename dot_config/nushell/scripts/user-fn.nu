@@ -1309,3 +1309,12 @@ export def google-translate [
     ($resp.sentences.trans | str join "") + "\n"
   }
 }
+
+# hook ollama req to view
+export def "ollama hook" []: nothing -> nothing {
+  with-env {OLLAMA_HOST: "127.0.0.1:11435"} {
+    try { ps name ollama | kill ...$in.pid --force }
+    job spawn { ollama serve }
+    mitmproxy --mode reverse:http://127.0.0.1:11435@11434
+  }
+}
