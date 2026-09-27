@@ -244,6 +244,9 @@ C-f = "search"
 A-up = "move_selection_lines_up"
 A-down = "move_selection_lines_down"
 
+"C-=" = "increment"
+"C-minus" = "decrement"
+
 [keys.select]
 # /remove default keybindings
 h = "no_op"
