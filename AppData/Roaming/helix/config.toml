@@ -12,8 +12,8 @@ end-of-line-diagnostics = "hint"
 color-modes = true
 rainbow-brackets = true
 
-[editor.breadcrumb]
-enable = true
+# [editor.breadcrumb]
+# enable = true
 
 [editor.gutters]
 layout = ["diagnostics", "code-action-hint", "line-numbers", "diff", "spacer"]

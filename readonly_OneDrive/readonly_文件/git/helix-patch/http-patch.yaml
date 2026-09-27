@@ -4,8 +4,6 @@
 - https://github.com/helix-editor/helix/pull/16071.patch
 # Add the official Typescript Language Server and make it the default
 - https://github.com/helix-editor/helix/pull/16026.patch
-# feat: add breadcrumb plumbing
-- https://github.com/helix-editor/helix/pull/15573.patch
 # Add support for labels in custom menu keymaps
 - https://github.com/helix-editor/helix/pull/3958.patch
 # lsp: run code actions on save for all servers
@@ -14,3 +12,13 @@
 # - "https://github.com/helix-editor/helix/pull/14593.patch"
 # feat: move selection lines up and down
 - https://github.com/helix-editor/helix/pull/14656.patch
+# dap: disconnect when terminate is unsupported
+- https://github.com/helix-editor/helix/pull/16300.patch
+# change column ordering by most important info
+- https://github.com/helix-editor/helix/pull/12574.patch
+# prompt: right arrow fills history hint for editing
+- https://github.com/helix-editor/helix/pull/16057.patch
+# conflicts: add conflict region parser to helix-core
+- https://github.com/helix-editor/helix/pull/15791.patch
+# feat: add breadcrumb plumbing
+- https://github.com/helix-editor/helix/pull/15573.patch
