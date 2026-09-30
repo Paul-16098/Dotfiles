@@ -95,9 +95,9 @@ require("mime-ext.local"):setup {
 require('spot'):setup {
 	metadata_section = {
 		enable = true,
-		hash_cmd = 'md5sum',      -- 其他哈希命令可能會更慢
-		hash_filesize_limit = 150, -- 以 MB 為單位，設定 0 表示停用
-		relative_time = true,     -- 2026-01-01 或 n 天前
+		hash_cmd = 'md5sum',          -- 其他哈希命令可能會更慢
+		hash_filesize_limit = 150,    -- 以 MB 為單位，設定 0 表示停用
+		relative_time = true,         -- 2026-01-01 或 n 天前
 		time_format = '%Y-%m-%d %H:%M', -- https://www.man7.org/linux/manpages/man3/strftime.3.html
 		show_compression = true, ---@type boolean
 	},
@@ -124,3 +124,5 @@ require("session"):setup {
 require("whoosh"):setup {
 	keys = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~/"
 }
+
+require("mime-ext"):setup()
