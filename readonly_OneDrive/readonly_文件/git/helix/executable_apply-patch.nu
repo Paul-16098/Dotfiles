@@ -4,6 +4,7 @@ export def main []: nothing -> table {
 
   git reset origin/HEAD --hard
   git clean -f
+  try { git am --abort }
 
   $patch ++= glob ../helix-patch/*.nu | each {
       print --stderr $"run patch script ($in)"
