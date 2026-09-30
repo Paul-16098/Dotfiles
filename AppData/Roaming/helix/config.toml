@@ -247,6 +247,10 @@ A-down = "move_selection_lines_down"
 "C-=" = "increment"
 "C-minus" = "decrement"
 
+A-z = ":toggle soft-wrap.enable"
+
+tab = "smart_tab"
+
 [keys.select]
 # /remove default keybindings
 h = "no_op"
@@ -343,3 +347,6 @@ A-up = "move_selection_lines_up"
 A-down = "move_selection_lines_down"
 
 C-S-t = [":| google-translate 'zh_cn'", "normal_mode"]
+
+tab = "indent"
+S-tab = "unindent"
