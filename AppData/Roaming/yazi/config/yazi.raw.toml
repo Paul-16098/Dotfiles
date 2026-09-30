@@ -300,11 +300,11 @@ run = "mime-ext.local"
 prio = "high"
 group = "mime"
 
-[[plugin.prepend_fetchers]]
-url = "remote://*"
-run = "mime-ext.remote"
-prio = "high"
-group = "mime"
+# [[plugin.prepend_fetchers]]
+# url = "remote://*"
+# run = "mime-ext.remote"
+# prio = "high"
+# group = "mime"
 # https://github.com/yazi-rs/plugins/tree/main/mime-ext.yazi />
 
 # </ https://github.com/yazi-rs/plugins/tree/main/git.yazi
