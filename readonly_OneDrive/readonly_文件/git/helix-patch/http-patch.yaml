@@ -21,4 +21,4 @@
 # conflicts: add conflict region parser to helix-core
 - https://github.com/helix-editor/helix/pull/15791.patch
 # feat: add breadcrumb plumbing
-- https://github.com/helix-editor/helix/pull/15573.patch
+# - https://github.com/helix-editor/helix/pull/15573.patch
