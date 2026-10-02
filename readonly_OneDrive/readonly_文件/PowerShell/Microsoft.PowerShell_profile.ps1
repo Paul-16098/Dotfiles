@@ -24,3 +24,5 @@ Set-PSReadLineKeyHandler -Chord "Ctrl+d" -BriefDescription "Exits the shell" -Sc
     [Microsoft.PowerShell.PSConsoleReadLine]::Insert(' exit')
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
 }
+
+Invoke-Expression "$(direnv hook pwsh)"
