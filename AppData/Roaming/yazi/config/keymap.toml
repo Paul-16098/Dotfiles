@@ -1,6 +1,11 @@
 #:schema https://yazi-rs.github.io/schemas/keymap.json
 
 [[mgr.keymap]]
+on = "v"
+run = "visual_mode"
+desc = "选择模式"
+
+[[mgr.keymap]]
 on = "<F5>"
 run = "refresh"
 desc = "刷新"
@@ -314,7 +319,7 @@ run = "tab_switch 9"
 
 [[mgr.keymap]]
 on = "<Esc>"
-run = "escape"
+run = ["unyank", "escape"]
 desc = "退出可視模式、清除選擇或取消搜索"
 
 [[mgr.keymap]]
