@@ -137,7 +137,7 @@ I = "no_op"
 A = "no_op"
 o = "no_op"
 O = "no_op"
-"." = "no_op"
+# "." = "no_op"
 u = "no_op"
 U = "no_op"
 A-u = "no_op"
@@ -149,7 +149,6 @@ d = "no_op"
 A-d = "no_op"
 c = "no_op"
 A-c = "no_op"
-C-a = "no_op"
 C-x = "no_op"
 Q = "no_op"
 q = "no_op"
@@ -207,7 +206,7 @@ C-home = "goto_file_start"
 C-end = "goto_file_end"
 C-pagedown = ":buffer-next"
 C-pageup = ":buffer-previous"
-"+".c.t = [":sh cargo hack --feature-powerset nextest run"]
+"+".c.t = ":sh cargo hack --feature-powerset nextest run"
 A-home = "move_parent_node_start"
 A-end = "move_parent_node_end"
 C-w = ":buffer-close"
@@ -250,6 +249,8 @@ A-down = "move_selection_lines_down"
 A-z = ":toggle soft-wrap.enable"
 
 tab = "smart_tab"
+C-a = ["select_all", "select_mode"]
+esc = ["keep_primary_selection"]
 
 [keys.select]
 # /remove default keybindings
@@ -350,3 +351,5 @@ C-S-t = [":| google-translate 'zh_cn'", "normal_mode"]
 
 tab = "indent"
 S-tab = "unindent"
+"C-/" = "toggle_comments"
+C-S-f = "select_regex"
