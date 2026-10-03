@@ -1,7 +1,7 @@
 #:schema https://yazi-rs.github.io/schemas/keymap.json
 
 [[mgr.keymap]]
-on = "v"
+on = "<C-v>"
 run = "visual_mode"
 desc = "选择模式"
 
