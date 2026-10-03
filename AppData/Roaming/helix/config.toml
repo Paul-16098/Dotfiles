@@ -252,6 +252,9 @@ tab = "smart_tab"
 C-a = ["select_all", "select_mode"]
 esc = ["keep_primary_selection"]
 
+C-A-up = "copy_selection_on_prev_line"
+C-A-down = "copy_selection_on_next_line"
+
 [keys.select]
 # /remove default keybindings
 h = "no_op"
