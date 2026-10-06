@@ -191,7 +191,7 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
     ]
     [wsl { wsl --update }]
     [wsl-system { wsl -- pacman -S -y -u --noconfirm }]
-    [git { git update-git-for-windows }]
+    [git { git update-git-for-windows --yes }]
     [uv-tools { uv tool upgrade --all }]
     [tldr { tldr --update }]
     [
