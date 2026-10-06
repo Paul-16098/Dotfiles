@@ -106,11 +106,13 @@ overlay use ('.' | path join user-aliases.nu)
 use ../nupm/modules/nupm
 $env.NU_LIB_DIRS = $env.NU_LIB_DIRS ++ [($env.NUPM_HOME | path join modules)]
 
+use jev.nu\jev\
+
 overlay new REPL
 
 alias 'ast md' = %from md
 @deprecated "use 'ast md' instead"
-def 'from md' []: string -> nothing { do {} error make "Use 'ast md' instead"  }
+def 'from md' []: string -> nothing { do {} error make "Use 'ast md' instead" }
 
 $env
 | reject --optional --ignore-case config FILE_PWD CURRENT_FILE PWD
