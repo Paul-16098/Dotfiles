@@ -248,6 +248,9 @@ export def app-update [
   }
   pb clear
 
+  use osc.nu osc777
+  osc777 app-update "all task done."
+
   print "All updates completed."
   null
 }
