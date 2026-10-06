@@ -17,3 +17,7 @@ path = "snippets/html.json"
 [[sources.paths]]
 scoop = ["nu"]
 path = "snippets/nushell.json"
+
+[[sources.paths]]
+scoop = ["javascript"]
+path = "snippets/javascript/javascript.json"
