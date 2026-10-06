@@ -1321,3 +1321,13 @@ export def "ollama hook" []: nothing -> nothing {
     mitmproxy --mode reverse:http://127.0.0.1:11435@11434
   }
 }
+
+# bat wrapped add arg to follow file
+@complete external
+export def bat --wrapped [
+  --follow: path # follow file
+  ...rest
+]: oneof<string, nothing> -> string {
+  if ($follow | is-not-empty) { tail -F $follow }
+  | ^bat ...$rest ...(if ($follow | is-not-empty) { [--file-name $follow --paging=never] } else { [] })
+}
