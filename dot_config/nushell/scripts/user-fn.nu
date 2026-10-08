@@ -205,7 +205,7 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
         for p in (
           [
             ~/tools/
-            ~/OneDrive/文件/git/
+            ~/Documents/git/
             ~\.config\nushell\scripts
             ~\AppData\Roaming\helix\external-snippets
           ] | path expand
