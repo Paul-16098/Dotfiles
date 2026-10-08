@@ -9,7 +9,7 @@ repos:
         verbose: true
         entry: nu
         args:
-          - .vscode/yazi-config-update.nu
+          - .script/yazi-config-update.nu
 
       - id: update-starship-config
         name: update-starship-config
@@ -19,7 +19,7 @@ repos:
         verbose: true
         entry: nu
         args:
-          - .vscode/update-starship.nu
+          - .script/update-starship.nu
 
       - id: update-doc
         name: update-doc
