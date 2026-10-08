@@ -1,10 +1,5 @@
 # nu-lint-ignore-file: dynamic_script_import
-# config
-# try {
-#   $env.config.buffer_editor = $env.EDITOR | split row ' ' | update 0 {
-#       which --all $in | get 0.path
-#     }
-# }
+$env.config.buffer_editor = [$env.EDITOR "{file}:{line}:{col}"]
 
 $env.config.table.missing_value_symbol = "∅"
 $env.config.max_last_result_size = 1mb
