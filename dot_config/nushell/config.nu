@@ -101,7 +101,13 @@ overlay use ('.' | path join user-aliases.nu)
 use ../nupm/modules/nupm
 $env.NU_LIB_DIRS = $env.NU_LIB_DIRS ++ [($env.NUPM_HOME | path join modules)]
 
-use jev.nu\jev\
+# jev
+$env.config.plugins.jev = {
+  base_url: "http://localhost:11434"
+  model: "clef-flash:latest"
+  jobs: 1
+  timeout_ms: 3600000
+}
 
 overlay new REPL
 
