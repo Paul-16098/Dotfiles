@@ -5,147 +5,23 @@ export def "config user-hooks" []: nothing -> nothing {
   run-external $env.config.buffer_editor ($self)
 }
 
-# in commandline edit, add ' ' before the command, so that it will be executed in the history
+use std/config *
 
 export-env {
-  $env.config = (
-    $env.config | upsert hooks.env_change.PWD {|config|
-      let o = $config | get --optional hooks.env_change.PWD
-      let val = [
-        # toolkit
-        # load
-        {
-          condition: {|old new|
-            let file_exists = "./toolkit.nu" | path exists
-            let file_active = overlay list | where name == "toolkit" | get --optional 0?.active | default false
+  # Initialize the PWD hook as an empty list if it doesn't exist
+  $env.config.hooks.env_change.PWD = $env.config.hooks.env_change.PWD? | default []
 
-            ($file_exists and not $file_active and not ($env.toolkit_load_hooks_is_notified? | default false))
-          }
-          code: {|old new|
-            $env.toolkit_load_hooks_is_notified = true
-            const CODE = " 
-            what-def toolkit.nu|print ($in|table --expand)
-            print 'use it?'
-            if not (input ask-yn true) {error make --unspanned 'User declined'}
-            overlay use toolkit.nu
-            "
-            commandline edit $CODE --accept
-          }
-        }
-        # hide
-        {
-          condition: {|old new|
-            let file_exists = "./toolkit.nu" | path exists
-            let file_active = overlay list | where name == "toolkit" | get --optional 0?.active | default false
-
-            (not $file_exists and $file_active and not ($env.toolkit_hide_hooks_is_notified? | default false))
-          }
-          code: {|old new|
-            $env.toolkit_hide_hooks_is_notified = true
-            const CODE = " overlay hide toolkit --keep-env [PWD]"
-            commandline edit $CODE --accept
-          }
-        }
-        # venv
-        # load
-        {
-          condition: {|old new|
-            let file_exists = "./.venv/Scripts/activate.nu" | path exists
-            let file_active = overlay list | where name == "activate" | get --optional 0?.active | default false
-
-            ($file_exists and not $file_active and not ($env.venv_load_hooks_is_notified? | default false))
-          }
-          code: {|old new|
-            $env.venv_load_hooks_is_notified = true
-            const CODE = " 
-            what-def ./.venv/Scripts/activate.nu|print ($in|table --expand)
-            print 'use it?'
-            if not (input ask-yn true) {error make --unspanned 'User declined'}
-            overlay use ./.venv/Scripts/activate.nu"
-            commandline edit $CODE --accept
-          }
-        }
-        # hide
-        {
-          condition: {|old new|
-            let file_exists = "./.venv/Scripts/activate.nu" | path exists
-            let file_active = overlay list | where name == "activate" | get --optional 0?.active | default false
-
-            (not $file_exists and $file_active and not ($env.venv_hide_hooks_is_notified? | default false))
-          }
-          code: {|old new|
-            $env.venv_hide_hooks_is_notified = true
-            const CODE = " overlay hide activate --keep-env [PWD]"
-            commandline edit $CODE --accept
-          }
-        }
-        # direnv
-        {
-          condition: {|old new|
-            (
-              which direnv | is-not-empty
-            ) and (
-              direnv status --json | from json
-              | get state.foundRC? | is-not-empty
-            )
-          }
-          code: {||
-            use std/util null_device
-
-            let direnv_status = direnv status --json | from json
-
-            if ($direnv_status | get state.foundRC.allowed?) != 0 {
-              print --stderr $"(ansi yellow)direnv: ($direnv_status | get state.foundRC.path? | default 'unknown env file') is allowed(ansi reset)\nRun ('direnv allow' | nu-highlight) to allow it."
-              return
-            }
-
-            direnv export json e> $null_device | from json | default {} | let load_env
-
-            if ($load_env | is-not-empty) {
-              print 'direnv: export' --no-newline --stderr
-              $load_env
-              | transpose k v
-              | each {
-                if not (($in | describe) == 'record<k: string, v: nothing>') {
-                  # DIRENV_* are internal variables, so we hide them from the log
-                  if ($in.k not-in [DIRENV_DIR DIRENV_WATCHES DIRENV_FILE DIRENV_DIFF]) {
-                    print $" +(ansi green)($in.k)(ansi reset)" --no-newline --stderr
-                  }
-                  $in
-                }
-                #  else {
-                #   print $" -(ansi red)($in.k)(ansi reset)" --no-newline --stderr
-                #   # $in
-                # }
-              } | transpose --as-record --header-row
-              | load-env
-            } else {
-              print $"(ansi yellow)direnv: no env to export(ansi reset)" --stderr
-            }
-          }
-        }
-
-        # pyproject.toml
-        {
-          condition: {|old new|
-            $new | path join pyproject.toml | path exists
-          }
-          code: {|old new|
-            print (open ./pyproject.toml | table --expand)
-            try { uv sync --check } catch {
-              print 'Yes/No?' --no-newline
-              if not (input ask-yn true) { error make --unspanned 'User declined' }
-              uv sync
-            }
-          }
-        }
-      ]
-
-      if $o == null {
-        $val
-      } else {
-        $o ++ $val
+  $env.config.hooks.env_change.PWD ++= [
+    {||
+      if (which direnv | is-empty) {
+        # If direnv isn't installed, do nothing
+        return
       }
+
+      try { direnv export json | from json } | default {} | update cells --columns [PATH] {
+        # If direnv changes the PATH, it will become a string and we need to re-convert it to a list
+        do (env-conversions).path.from_string $in
+      } | load-env
     }
-  )
+  ]
 }
