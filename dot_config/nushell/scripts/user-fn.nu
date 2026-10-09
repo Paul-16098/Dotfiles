@@ -180,7 +180,7 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
         chezmoi apply ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --force
 
         open ~\AppData\Roaming\yazi\config\plugins\yatline.yazi\main.lua
-        | tee { rm ~\AppData\Roaming\yazi\config\plugins\yatline.yazi\main.lua }
+        | tee { rm ~\AppData\Roaming\yazi\config\plugins\yatline.yazi\main.lua --permanent  }
         | str replace --all spec.is_search spec.is_view
         | save ~\AppData\Roaming\yazi\config\plugins\yatline.yazi\main.lua --force
       }
