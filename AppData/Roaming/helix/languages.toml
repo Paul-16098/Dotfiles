@@ -104,3 +104,7 @@ source = { git = "https://github.com/nushell/tree-sitter-nu", rev = "main" }
 [[grammar]]
 name = "just"
 source = { git = "https://codeberg.org/poliorcetics/tree-sitter-just", rev = "main" }
+
+[[grammar]]
+name = "python"
+source = { git = "https://github.com/ZeroIntensity/tree-sitter-python", rev = "lazy-import-syntax" }
