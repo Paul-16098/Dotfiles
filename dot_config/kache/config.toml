@@ -1,0 +1,4 @@
+[cache]
+cache_executables = true
+fallback = "sccache"
+explain_miss = true

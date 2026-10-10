@@ -1,0 +1,7 @@
+backend = "ollama"
+model = "hf.co/HauhauCS/Gemma4-12B-QAT-Uncensored-HauhauCS-Balanced:Q4_K_M"
+confirm_before_commit = true
+
+[[providers]]
+backend = "ollama"
+model = "hf.co/HauhauCS/Gemma4-12B-QAT-Uncensored-HauhauCS-Balanced:Q4_K_M"
