@@ -22,10 +22,10 @@ export def --wrapped whois [
         } | url build-query
       )
     )
-  } else if ($raw) {
+  } else if $raw {
     whois-cli ...$rest
   } else {
-    let process_output = (whois-cli --no-color ...$rest | complete)
+    let process_output = whois-cli --no-color ...$rest | complete
     if $process_output.exit_code != 0 {
       error make {
         msg: $"whois command failed with exit code ($process_output.exit_code)"
@@ -173,14 +173,14 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
         let old = ya pkg list | lines | parse "\t{name} ({hash})"
         ya pkg upgrade --discard o+e>| ignore
         let new = ya pkg list | lines | parse "\t{name} ({hash})"
-        let diff = ($old | difference $new | upsert new_hash {|row| $new | where name == $row.name | first | get hash })
+        let diff = $old | difference $new | upsert new_hash {|row| $new | where name == $row.name | first | get hash }
         print $"update ($diff | length) pkg:"
         print $diff
         rm ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --permanent # nu-lint-ignore: catch_builtin_error_try
         chezmoi apply ~/AppData/Roaming/yazi/config/plugins/piper.yazi/main.lua --force
 
         open ~\AppData\Roaming\yazi\config\plugins\yatline.yazi\main.lua
-        | tee { rm ~\AppData\Roaming\yazi\config\plugins\yatline.yazi\main.lua --permanent  }
+        | tee { rm ~\AppData\Roaming\yazi\config\plugins\yatline.yazi\main.lua --permanent }
         | str replace --all spec.is_search spec.is_view
         | save ~\AppData\Roaming\yazi\config\plugins\yatline.yazi\main.lua --force
       }
@@ -225,10 +225,7 @@ const APP_UPDATE_COMPLETE_EXCLUDE = []
 
 # for each app update job, check if the update is enabled in the config before spawning the job, the config should be a record with app names as keys and a record with status on/off as values, e.g. {app-update-nu: {status: on}, app-update-rustup: {status: off}}
 # nu-lint-ignore: dont_mix_different_effects
-export def app-update [
-  --dry-run (-n)
-  --exclude (-e): list<string>@$APP_UPDATE_COMPLETE_EXCLUDE
-]: oneof<record, nothing> -> nothing {
+export def app-update [--dry-run (-n) --exclude (-e): list<string>@$APP_UPDATE_COMPLETE_EXCLUDE]: oneof<record, nothing> -> nothing {
   let cofg = $in | default {}
   let exclude: list<string> = $exclude | default [] # nu-lint-ignore: check_typed_flag_before_use
 
@@ -238,7 +235,7 @@ export def app-update [
   let job_list_len = $job_list | length
   for item in ($job_list | enumerate) {
     pb set-idx $item.index $job_list_len
-    if ($item.item.name in $exclude) {
+    if $item.item.name in $exclude {
       continue
     }
     let this_cofg = $cofg | get --optional $item.item.name | default {}
@@ -265,7 +262,7 @@ export def app-update [
 def git-log-subject-highlight [remote_url: string]: string -> string {
   # Merge pull request #ID from ...
   # nu-lint-ignore: chained_str_transform
-  | str replace --regex '(?i)Merge pull request #(?<id>\d+) from (?<from>.+)' {|id from|
+  str replace --regex '(?i)Merge pull request #(?<id>\d+) from (?<from>.+)' {|id from|
     $"[PR (ansi green_bold)($"($remote_url)/pull/($id)" | ansi link --text $'#($id)')(ansi reset) from (ansi green_bold)($from)(ansi reset)]"
   }
   # nu-lint-ignore: chained_str_transform
@@ -342,12 +339,13 @@ export def --wrapped "git log" [
   | default $"(ansi dark_gray_italic)N/A(ansi reset)" author_email committer_email
   # highlight subject and add links to PRs and branches for merge commits
   | update subject { str trim | git-log-subject-highlight $remote_url }
-  | let git_log_res: table
+  | let git_log_res
 
   # if `--query_git_plugin`, query git plugin for commit body and add to the table, also handle the case when multiple commits are found for the same short commit id (which should not happen) and the case when no commit is found (which also should not happen), show error in both cases
   # if $query_git_plugin {
   if false {
-    $git_log_res | upsert body {|row|
+    $git_log_res
+    | upsert body {|row|
       # query git --page-size 10 $"SELECT commit_id as commit,title as subject,message as body,author_name,author_email,datetime as committer_date from commits where commit_id like '($row.commit)%' ORDER BY committer_date DESC"
       | let res
       $res | if ($in | length) > 1 {
@@ -444,7 +442,7 @@ export def --wrapped "git pull" [
   }
 
   # Fetch first so remote-tracking refs are fresh before we compare HEADs.
-  let fetch_out = (git fetch | complete)
+  let fetch_out = git fetch | complete
   log debug $"git fetch output: ($fetch_out)"
   if $fetch_out.exit_code != 0 {
     error make --unspanned {
@@ -458,7 +456,7 @@ export def --wrapped "git pull" [
     }
   }
 
-  let head_info = (git rev-parse --verify HEAD | complete)
+  let head_info = git rev-parse --verify HEAD | complete
   log debug $"git rev-parse HEAD output: ($head_info)"
   if $head_info.exit_code != 0 {
     print --stderr $"There is no tracking information for the current branch.
@@ -474,7 +472,7 @@ If you wish to set tracking information for this branch you can do so with:
     return
   }
 
-  let current_branch_info = (git branch --show-current | complete)
+  let current_branch_info = git branch --show-current | complete
   log debug $"git branch --show-current output: ($current_branch_info)"
   let current_branch = if $current_branch_info.exit_code == 0 {
     $current_branch_info.stdout | str trim
@@ -490,7 +488,7 @@ If you wish to set tracking information for this branch you can do so with:
     }
   }
 
-  let upstream_info = (git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}" | complete)
+  let upstream_info = git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}" | complete
   log debug $"git rev-parse @{upstream} output: ($upstream_info)"
   # Prefer explicit upstream; no fall back.
   let upstream_ref = if $upstream_info.exit_code == 0 {
@@ -511,9 +509,9 @@ If you wish to set tracking information for this branch you can do so with:
     }
   }
 
-  let old_commit = ($head_info.stdout | str trim)
+  let old_commit = $head_info.stdout | str trim
   log debug $"Current commit: ($old_commit), Upstream ref: ($upstream_ref)"
-  let new_commit_info = (git rev-parse $upstream_ref | complete)
+  let new_commit_info = git rev-parse $upstream_ref | complete
   log debug $"git rev-parse $upstream_ref output: ($new_commit_info)"
   if $new_commit_info.exit_code != 0 {
     error make {
@@ -527,7 +525,7 @@ If you wish to set tracking information for this branch you can do so with:
     }
     return
   }
-  let new_commit = ($new_commit_info.stdout | str trim)
+  let new_commit = $new_commit_info.stdout | str trim
   log debug $"Upstream commit: ($new_commit)"
 
   if $old_commit == $new_commit {
@@ -608,7 +606,13 @@ export def --wrapped "git show" [...rest: string]: any -> string {
   }
 }
 
-def "complete git status-or-diff" [buffer: string]: nothing -> table<value: string, display: string, description: string, style: record<fg: string, attr: string>> { do $env.config.completions.external.completer [git diff ($buffer | split row ' ' | reject 0)] } # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
+def "complete git status-or-diff" [buffer: string]: nothing -> table<value: string, display: string, description: string, style: record<fg: string, attr: string>> {
+  do $env.config.completions.external.completer [
+    git
+    diff
+    ($buffer | split row ' ' | reject 0)
+  ]
+} # nu-lint-ignore: unused_helper_functions, list_param_to_variadic
 
 # a wrapper for git status and git show, if no arguments, run git status, otherwise run git show with the provided arguments, also handle the case when git show is interrupted by user (exit code 141) to avoid showing error message
 @complete "complete git status-or-diff"
@@ -725,7 +729,8 @@ export def get-dll [
         }
       }
     }
-  } | flatten
+  }
+  | flatten
 }
 
 # my custom pause function
@@ -741,32 +746,17 @@ export def pause []: nothing -> nothing {
 
 def "nu-complete steamcmd" []: nothing -> record {
   {
-    options: {
-      sort: false
-    }
+    options: {sort: false}
     completions: [
-      {
-        value: '+login'
-        description: 'Login to Steam: login <username> [<password>] [<Steam guard code>]'
-      }
+      {value: '+login' description: 'Login to Steam: login <username> [<password>] [<Steam guard code>]'}
       {
         value: '"+login anonymous"'
         description: 'you may login anonymously using "login anonymous" if the content you
 wish to download is available for anonymous access.'
       }
-      {
-        value: '+runscript'
-        description: 'Executing a sequence of commands via a script file'
-      }
-      {
-        value: '+workshop_download_item'
-        description: 'download an item using the workshop system: workshop_download_item <appid> <PublishedFileId>'
-      }
-
-      {
-        value: '+help'
-        description: 'Displays help information about SteamCMD commands.'
-      }
+      {value: '+runscript' description: 'Executing a sequence of commands via a script file'}
+      {value: '+workshop_download_item' description: 'download an item using the workshop system: workshop_download_item <appid> <PublishedFileId>'}
+      {value: '+help' description: 'Displays help information about SteamCMD commands.'}
     ]
   }
 }
@@ -784,7 +774,7 @@ export def --wrapped --env y [
   --watch-events # if set, watch for local and remote events
   ...args # nu-lint-ignore: add_type_hints_arguments
 ]: nothing -> oneof<nothing, table<kind: string, receiver: string, sender: string, body: record>> {
-  if ("YAZI_LEVEL" in $env and not $skip_check_is_yazi) {
+  if "YAZI_LEVEL" in $env and not $skip_check_is_yazi {
     error make {
       msg: "You are already running yazi."
       labels: [
@@ -801,9 +791,11 @@ export def --wrapped --env y [
   }
   if $watch_events {
     yazi ...$args --local-events 'cd,hover,rename,bulk,@yank,move,trash,delete,theme,hi,hey,bye' --remote-events 'cd,hover,rename,bulk,@yank,move,trash,delete,theme,hi,hey,bye'
-    | lines | par-each --keep-order {
+    | lines
+    | par-each --keep-order {
       split column --number 4 ',' kind receiver sender body | update body? { from json }
-    } | flatten
+    }
+    | flatten
   } else {
     yazi ...$args
   }
@@ -819,7 +811,6 @@ export def reload-config []: nothing -> string {
     ' let _pwd = pwd'
     'source ($nu.env-path)'
     'source ($nu.config-path)'
-
     '# load vendor autoloads'
     (
       $nu.vendor-autoload-dirs | par-each --keep-order {|dir|
@@ -838,7 +829,6 @@ export def reload-config []: nothing -> string {
         }
       }
     )
-
     'cd $_pwd'
     'unlet $_pwd'
   ] | flatten | flatten | str join "\n"
@@ -852,7 +842,7 @@ def "nu-complete image" []: nothing -> record {
 export def "clip copy-image" [
   ...paths: path@"nu-complete image" # paths of images to copy to clipboard
 ]: nothing -> nothing {
-  if ($nu.os-info.name != windows) {
+  if $nu.os-info.name != windows {
     error make 'only windows is supported for copying images to clipboard'
   }
 
@@ -948,11 +938,9 @@ export def meme [
     fzf => {
       $meme_path = ^fzf --multi --ansi --preview 'viu --sixel -w $env.FZF_PREVIEW_COLUMNS -h $env.FZF_PREVIEW_LINES {}' | lines # nu-lint-ignore: remove_hat_not_builtin
     }
-
     nushell => {
       $meme_path = ls | input list --multi | default {name: []} | get name
     }
-
     $_ => {
       error make {
         msg: $"Invalid meme type: (ansi green)($type)(ansi reset)"
@@ -977,7 +965,11 @@ export def highlight [
   --regex (-r) # if set, treat highlight_text as regex pattern, otherwise treat it as plain text, default is false
   ...highlight_text: string # text to highlight in output, can not include regex special characters
 ]: string -> string {
-  let highlight_regex = ($highlight_text | if not $regex { str escape-regex } else { $in } | str join '|')
+  let highlight_regex = (
+    $highlight_text
+    | if not $regex { str escape-regex } else { $in }
+    | str join '|'
+  )
   $in | str replace --all --regex $"\(($highlight_regex)\)" $"(ansi $color_code)$1(ansi reset)"
 }
 # alternative buffer wrapper, use callback to run commands in alternative buffer and get the output, the callback should return the output as a string, the alternative buffer will be cleared after the callback is executed
@@ -1006,13 +998,28 @@ export def '_atuin history list' [
 ]: nothing -> table {
   const FORMAT = "{user}\t{host}\t{directory}\t{time}\t{duration}\t{exit}\t{command}"
 
-  atuin history list --format $FORMAT --reverse $reverse | lines | first $limit | parse $FORMAT | into datetime time | into int exit | update command { nu-highlight } | str replace --regex '^(\d+)s$' '$1sec' duration | str replace --regex '^(\d+)m$' '$1min' duration | str replace --regex '^(\d+)h$' '$1hr' duration | into duration duration # nu-lint-ignore: chained_str_transform
+  atuin history list --format $FORMAT --reverse $reverse
+  | lines
+  | first $limit
+  | parse $FORMAT
+  | str replace --regex '^(\d+)s$' '$1sec' duration # nu-lint-ignore: chained_str_transform
+  | str replace --regex '^(\d+)m$' '$1min' duration
+  | str replace --regex '^(\d+)h$' '$1hr' duration
+  | record apply {
+    time: { into datetime }
+    exit: { into int }
+    command: { nu-highlight }
+    duration: { into duration }
+  }
 }
 
 # a wrapper for netstat -ano to output a table with Proto, Local Address, Foreign Address, State and PID columns, also parse the PID to int and filter out the first 3 lines of the output
 export def netstat-ano-wrapped []: nothing -> table {
   if $nu.os-info.name == windows {
-    netstat -a -n -o | lines | skip 3 | str trim
+    netstat -a -n -o
+    | lines
+    | skip 3
+    | str trim
     | parse --regex '^(?P<Proto>UDP|TCP)\s+(?P<Local Address>\S+)\s+(?P<Foreign Address>\S+)\s+(?P<State>LISTENING|ESTABLISHED|TIME_WAIT|)\s+(?P<PID>\d+)$'
     | into int PID
   } else {
@@ -1021,10 +1028,7 @@ export def netstat-ano-wrapped []: nothing -> table {
 }
 
 # a wrapper for ps command to filter processes by port, only implemented for windows, use netstat -ano to get the PID of the process listening on the specified port, then use ps to get the process information, also pass the rest arguments to ps command
-export def "ps port" [
-  port: int
-  --long (-l)
-]: nothing -> table {
+export def "ps port" [port: int --long (-l)]: nothing -> table {
   let pid: list<int> = if $nu.os-info.name == windows {
     netstat-ano-wrapped | where 'Local Address' ends-with $":($port)" | get PID
   } else {
@@ -1158,7 +1162,8 @@ export def 'input ask-yn' [default_choice?: bool]: nothing -> oneof<bool, nothin
     if ($default_choice | is-not-empty) {
       if $default_choice { 'y' } else { 'n' }
     } else { '' }
-  ) | str lowercase
+  )
+  | str lowercase
   | if $in == y {
     return true
   } else if $in == n {
@@ -1176,7 +1181,7 @@ export def "ast get-last-command" [input?: string]: [nothing -> string string ->
     $input
   } else { $in }
 
-  if ('shape_pipe' in (ast $command --flatten | get shape)) {
+  if 'shape_pipe' in (ast $command --flatten | get shape) {
     # get span that the commands after the first pipe
     let span = ast $command --flatten | skip until {|x| $x.shape == shape_pipe } | reject 0 | get span
     let span_start = $span.start | first
@@ -1204,7 +1209,7 @@ export def "ast remove-flag" [
     $input
   } else { $in }
 
-  if ($only_internal and $only_external) {
+  if $only_internal and $only_external {
     error make --unspanned "Cannot use --only-internal and --only-external at the same time"
   }
 
@@ -1255,8 +1260,8 @@ def "nu-complete add-wrapped-parse lang" []: nothing -> record<json: closure, js
 export def add-wrapped-parse [
   parse: string@"nu-complete add-wrapped-parse lang"
   command_name: string
-  ...command_args: string
   --ex-piper: closure
+  ...command_args: string
 ]: nothing -> string {
   let parse_fn = add-wrapped-parse-lang | get --optional $parse
   let command_args_str = $command_args | str join ' '
@@ -1264,7 +1269,10 @@ export def add-wrapped-parse [
     error make {
       msg: $"parse ($parse) is not exists"
       labels: [
-        {text: here span: (metadata $parse).span}
+        {
+          text: here
+          span: (metadata $parse).span
+        }
       ]
       help: 'Follow the auto complete.'
     }
@@ -1311,7 +1319,7 @@ export def google-translate [
     } | url build-query
   )"
 
-  if ($full) {
+  if $full {
     $resp
   } else {
     ($resp.sentences.trans | str join "") + "\n"
@@ -1335,5 +1343,7 @@ export def bat --wrapped [
   ...rest
 ]: oneof<string, nothing> -> string {
   if ($follow | is-not-empty) { tail -F $follow }
-  | ^bat ...$rest ...(if ($follow | is-not-empty) { [--file-name $follow --paging=never] } else { [] })
+  | ^bat ...$rest ...(
+    if ($follow | is-not-empty) { [--file-name $follow --paging=never] } else { [] }
+  )
 }
