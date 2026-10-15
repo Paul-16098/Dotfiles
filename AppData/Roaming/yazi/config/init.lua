@@ -121,8 +121,19 @@ require("session"):setup {
 	sync_yanked = true,
 }
 --- bookmark ---
+local bookmarks = {}
+for scheme, domains in pairs(vf) do
+	for domain, service in pairs(domains) do
+		ya.dbg(scheme, domain, service.kind)
+		if scheme == "rclone" then
+			table.insert(bookmarks, { tag = "[Auto]" .. scheme .. ": " .. domain, path = scheme .. "://" .. domain })
+		end
+	end
+end
+ya.dbg(bookmarks)
 require("whoosh"):setup {
-	keys = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~/"
+	keys = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~/",
+	bookmarks = bookmarks,
 }
 
 require("mime-ext"):setup()
