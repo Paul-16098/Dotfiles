@@ -1,13 +1,27 @@
-const self = path self
+const SELF = path self
 
 # Edit this config.
 export def "config user-keybindings" []: nothing -> nothing {
-  run-external $env.config.buffer_editor ($self)
+  run-external $env.config.buffer_editor ($SELF)
 }
 # https://www.nushell.sh/book/line_editor.html#keybindings:~:text=%24config.keybindings-,modifier,-%3A%20A%20key%20modifier
-const MODIFIER = [none control alt shift shift_alt alt_shift control_alt alt_control control_shift shift_control control_alt_shift control_shift_alt]
+const MODIFIER = [
+  none
+  control
+  alt
+  shift
+  shift_alt
+  alt_shift
+  control_alt
+  alt_control
+  control_shift
+  shift_control
+  control_alt_shift
+  control_shift_alt
+]
 const MODE = [emacs vi_normal vi_insert]
 
+# nu-lint-ignore: add_doc_comment_exported_fn
 export def add-keybindings [
   --mode (-m): list<string> = [emacs vi_normal vi_insert]
   --name (-n): string
@@ -16,7 +30,7 @@ export def add-keybindings [
   event: oneof<record, list<record>>
 ]: nothing -> record<name: oneof<string, nothing>, modifier: string, keycode: string, mode: list<string>, event: oneof<record, list<record>>> {
   {
-    name: $name
+    name: $name # nu-lint-ignore: check_typed_flag_before_use
     modifier: $modifier
     keycode: $keycode
     mode: $mode
@@ -24,6 +38,7 @@ export def add-keybindings [
   }
 }
 
+# nu-lint-ignore: add_doc_comment_exported_fn
 export def remove-keybindings [
   modifier: string@$MODIFIER
   keycode: string
@@ -31,7 +46,7 @@ export def remove-keybindings [
   --name (-n): string
 ]: nothing -> record<name: oneof<string, nothing>, modifier: string, keycode: string, mode: list<string>, event: nothing> {
   {
-    name: $name
+    name: $name # nu-lint-ignore: check_typed_flag_before_use
     modifier: $modifier
     keycode: $keycode
     mode: $mode
@@ -44,7 +59,7 @@ export def default-keybindings-to-config [wh_condition: closure]: nothing -> tab
   | update modifier {
     parse "KeyModifiers({modifier})" | get 0.modifier | if $in == "0x0" { "none" } else { $in }
     | if ($in | str contains "|") {
-      $in | str replace " | " "_"
+      $in | str replace " | " _
     } else {
       $in
     }
@@ -57,6 +72,8 @@ export def default-keybindings-to-config [wh_condition: closure]: nothing -> tab
     }
   }
 }
+
+# nu-lint-ignore: add_doc_comment_exported_fn
 export def remove-default-keybindings [wh_condition: closure]: nothing -> table<name: string, modifier: string, keycode: string, mode: list<string>, event: nothing> {
   default-keybindings-to-config $wh_condition | par-each {|kb|
     remove-keybindings $kb.modifier $kb.code $kb.mode
@@ -74,7 +91,7 @@ export-env {
         until: [
           {send: menu name: completion_menu}
           {send: menunext}
-          {edit: 'complete'}
+          {edit: complete}
         ]
       }
     )
@@ -82,16 +99,40 @@ export-env {
     (add-keybindings none Delete {edit: Delete})
     (
       add-keybindings none Down {
-        until: [{send: MenuDown} {send: executehostcommand cmd: " commandline edit --replace ''"}]
+        until: [
+          {send: MenuDown}
+          {send: executehostcommand cmd: " commandline edit --replace ''"}
+        ]
       }
     )
     (
       add-keybindings none Up {
-        until: [{send: MenuUp} {send: executehostcommand cmd: $" alternative-buffer {|| (_atuin_search_cmd '--shell-up-key-binding')}"}]
+        until: [
+          {send: MenuUp}
+          {
+            send: executehostcommand
+            cmd: $" alternative-buffer {|| (_atuin_search_cmd '--shell-up-key-binding')}"
+          }
+        ]
       }
     )
-    (add-keybindings none Left {until: [{send: MenuLeft} {send: Left}]})
-    (add-keybindings none Right {until: [{send: HistoryHintComplete} {send: MenuRight} {send: Right}]})
+    (
+      add-keybindings none Left {
+        until: [
+          {send: MenuLeft}
+          {send: Left}
+        ]
+      }
+    )
+    (
+      add-keybindings none Right {
+        until: [
+          {send: HistoryHintComplete}
+          {send: MenuRight}
+          {send: Right}
+        ]
+      }
+    )
     (add-keybindings none Enter {send: Enter})
     (add-keybindings none Esc {send: Esc})
     (add-keybindings none Home {edit: MoveToLineStart})
@@ -103,7 +144,10 @@ export-env {
     (add-keybindings CONTROL Left {edit: MoveWordLeft})
     (
       add-keybindings CONTROL Right {
-        until: [{send: HistoryHintWordComplete} {edit: MoveWordRight}]
+        until: [
+          {send: HistoryHintWordComplete}
+          {edit: MoveWordRight}
+        ]
       }
     )
     (add-keybindings CONTROL char_z {edit: Undo})
@@ -119,7 +163,14 @@ export-env {
     (add-keybindings SHIFT Down {edit: MoveLineDown select: true})
     # add custom keybindings
     (add-keybindings CONTROL char_a {edit: SelectAll})
-    (add-keybindings CONTROL char_c {until: [{edit: CopySelectionSystem} {send: CtrlC}]})
+    (
+      add-keybindings CONTROL char_c {
+        until: [
+          {edit: CopySelectionSystem}
+          {send: CtrlC}
+        ]
+      }
+    )
     (add-keybindings CONTROL char_v {edit: PasteSystem})
     (add-keybindings CONTROL char_x {edit: CutSelectionSystem})
 
@@ -128,17 +179,22 @@ export-env {
 
     (add-keybindings control_shift char_z {edit: Redo})
 
-    (add-keybindings --name "reload-config" none f5 {send: executehostcommand cmd: (reload-config)})
+    (add-keybindings --name reload-config none f5 {send: executehostcommand cmd: (reload-config)})
 
-    (add-keybindings --name "search-atuin-history" control "char_/" {send: executehostcommand cmd: $" alternative-buffer {|| (_atuin_search_cmd)}"})
+    (add-keybindings --name search-atuin-history control char_/ {send: executehostcommand cmd: $" alternative-buffer {|| (_atuin_search_cmd)}"})
 
     # why custom?
     # default ctrl+d is send CtrlD event, if commandline not null, it will del cursor word, but I want it always send "exit 0" command to host
-    (add-keybindings --name "exit-nu" control char_d {send: executehostcommand cmd: " exit 0"})
+    (add-keybindings --name exit-nu control char_d {send: executehostcommand cmd: " exit 0"})
 
-    (add-keybindings --name "clear-screen" control char_l {send: ClearScreen})
-    (add-keybindings --name "clear-scrollback" control_shift char_l {send: ClearScrollBack})
-    (add-keybindings --name "yazi-menu" control "char_\\" {send: executehostcommand cmd: " y"})
-    (add-keybindings --name help control char_h {send: executehostcommand cmd: " print '';try {help $'(commandline|ast get-last-command|ast remove-flag)'}"})
+    (add-keybindings --name clear-screen control char_l {send: ClearScreen})
+    (add-keybindings --name clear-scrollback control_shift char_l {send: ClearScrollBack})
+    (add-keybindings --name yazi-menu control char_\ {send: executehostcommand cmd: " y"})
+    (
+      add-keybindings --name help control char_h {
+        send: executehostcommand
+        cmd: " print '';try {help $'(commandline|ast get-last-command|ast remove-flag --only-internal)'}"
+      }
+    )
   ]
 }
