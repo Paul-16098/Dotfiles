@@ -1053,7 +1053,7 @@ export def 'ollama wrapper-if-not-run' [
   --log-to-stderr # if set, log the output of ollama server to stderr
 ]: any -> any {
   let id: oneof<int, nothing> = if (ps port 11434 | length) == 0 {
-    job spawn --description "ollama server for ollama wrapper-if-not-run" {
+    job spawn --auto-kill --description "ollama server for ollama wrapper-if-not-run" {
       ollama serve | tee { if $log_to_stderr { lines | each { print --stderr $in } } } | job send 0
     }
   } else { null }
@@ -1076,7 +1076,7 @@ export def 'ollama wrapper-if-not-run' [
 @complete external
 export def aic --wrapped [...rest: string]: nothing -> nothing {
   let id: oneof<int, nothing> = if (ps port 11434 | length) == 0 {
-    job spawn --description "ollama server for aic" {
+    job spawn --auto-kill --description "ollama server for aic" {
       ollama serve | job send 0
     }
   } else { null }
@@ -1095,7 +1095,7 @@ export def aic --wrapped [...rest: string]: nothing -> nothing {
 @complete external
 export def lazygit --wrapped [...rest: string]: nothing -> nothing {
   let id: oneof<int, nothing> = if (ps port 11434 | length) == 0 {
-    job spawn --description "ollama server for lazygit" {
+    job spawn --auto-kill --description "ollama server for lazygit" {
       ollama serve | job send 0
     }
   } else { null }
@@ -1331,7 +1331,7 @@ export def "ollama hook" []: nothing -> nothing {
   # nu-lint-ignore: string_may_be_bare
   with-env {OLLAMA_HOST: "127.0.0.1:11435"} {
     try { ps name ollama | kill ...$in.pid --force }
-    job spawn { ollama serve }
+    job spawn --auto-kill --description "ollama for ollama hook" { ollama serve }
     mitmproxy --mode reverse:http://127.0.0.1:11435@11434
   }
 }
