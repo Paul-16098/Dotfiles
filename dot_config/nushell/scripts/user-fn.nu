@@ -1335,8 +1335,9 @@ export def --wrapped "ollama hook" [
   # nu-lint-ignore: string_may_be_bare
   with-env {OLLAMA_HOST: "127.0.0.1:11435"} {
     try { ps name ollama | kill ...$in.pid --force }
-    job spawn --auto-kill --description "ollama for ollama hook" { ollama serve }
+    let id = job spawn --auto-kill --description "ollama for ollama hook" { ollama serve }
     mitmproxy ...$rest --mode reverse:http://127.0.0.1:11435@11434 ...(if $no_think { [-s .mitmproxy/mitmproxy-script/src/ai-no-think.py] })
+    job kill $id
   }
 }
 
