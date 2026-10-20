@@ -1204,6 +1204,7 @@ export def "ast remove-flag" [
   input?: string
   --only-internal # if set, only remove the internal flags, default is false
   --only-external # if set, only remove the external flags, default is false
+  --remove-external-smart # only remove external where start with `-`
 ]: [nothing -> string string -> string] {
   let command: string = if ($input | is-not-empty) {
     $input
@@ -1222,7 +1223,7 @@ export def "ast remove-flag" [
   }
 
   let ast = ast $command --flatten
-  let span = $ast | take while {|x| $x.shape in $allow } | get span
+  let span = $ast | take while {|x| ($x.shape in $allow) and (if $remove_external_smart { not $x.content starts-with '-' } else { true }) } | get span
 
   let span_start = $span.start | first
   let span_end = $span.end | last
