@@ -141,7 +141,7 @@ mime = "trash/**"
 use = ["open", "edit", "trash"]
 
 [[open.rules]]
-url = "**/sha256sum.txt"
+url = "**/{sha256sum.txt,SHA256SUMS.txt}"
 use = [
   "hash-check",
   "edit",
