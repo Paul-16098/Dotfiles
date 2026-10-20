@@ -332,11 +332,11 @@ run = "piper -- def main [path: path] {open --raw $path | nu-highlight | {bat-pr
 
 [[plugin.prepend_previewers]]
 mime = "application/{xml,sql,mbox,javascript,wine-extension-ini,json}"
-run = "piper -- def main [path: path] {{bat-previewer}$path}"
+run = "bat"
 
 [[plugin.prepend_previewers]]
 mime = "text/*"
-run = "piper -- def main [path: path] {{bat-previewer}$path}"
+run = "bat"
 
 [[plugin.prepend_previewers]]
 mime = "application/java-archive"

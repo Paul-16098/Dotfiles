@@ -137,3 +137,10 @@ require("whoosh"):setup {
 }
 
 require("mime-ext"):setup()
+
+--- bat
+
+require("bat"):setup({
+	style = "numbers,changes",
+	wrap = "character",
+})
