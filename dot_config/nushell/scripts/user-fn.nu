@@ -1328,12 +1328,15 @@ export def google-translate [
 }
 
 # hook ollama req to view
-export def "ollama hook" []: nothing -> nothing {
+export def --wrapped "ollama hook" [
+  --no-think # use mitmproxy script to add think=false etc.
+  ...rest # arg pass on mitmproxy
+]: nothing -> nothing {
   # nu-lint-ignore: string_may_be_bare
   with-env {OLLAMA_HOST: "127.0.0.1:11435"} {
     try { ps name ollama | kill ...$in.pid --force }
     job spawn --auto-kill --description "ollama for ollama hook" { ollama serve }
-    mitmproxy --mode reverse:http://127.0.0.1:11435@11434
+    mitmproxy ...$rest --mode reverse:http://127.0.0.1:11435@11434 ...(if $no_think { [-s .mitmproxy/mitmproxy-script/src/ai-no-think.py] })
   }
 }
 
