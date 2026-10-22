@@ -18,10 +18,10 @@ export-env {
         return
       }
 
-      try { direnv export json | from json } | default {} | update cells --columns [PATH] {
+      try { direnv export json | from json } | default {} | update cells {
         # If direnv changes the PATH, it will become a string and we need to re-convert it to a list
         do (env-conversions).path.from_string $in
-      } | load-env
+      } "PATH" | load-env
     }
   ]
 }
