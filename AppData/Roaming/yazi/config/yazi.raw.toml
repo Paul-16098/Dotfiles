@@ -149,7 +149,7 @@ use = [
 ]
 
 [[open.rules]]
-url = "**/*.sha"
+url = "**/*.{sha,DIGEST}"
 use = [
   "hash-check",
   "edit",
