@@ -304,13 +304,6 @@ run = "git"
 group = "git"
 # https://github.com/yazi-rs/plugins/tree/main/git.yazi />
 
-# previewers
-# </ https://github.com/AminurAlam/yazi-plugins/tree/main/preview-git.yazi
-[[plugin.prepend_previewers]]
-url = "**/.git/"
-run = "preview-git"
-# https://github.com/AminurAlam/yazi-plugins/tree/main/preview-git.yazi />
-
 # </ https://github.com/boydaihungst/mediainfo.yazi
 [[plugin.prepend_previewers]]
 mime = "{audio,video,image}/*"

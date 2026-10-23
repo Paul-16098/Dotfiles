@@ -141,3 +141,5 @@ require("bat"):setup({
 	style = "numbers,changes",
 	wrap = "character",
 })
+--- preview-git
+require('preview-git'):setup()
