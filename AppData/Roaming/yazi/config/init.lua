@@ -143,3 +143,5 @@ require("bat"):setup({
 })
 --- preview-git
 require('preview-git'):setup()
+--- preview-font
+require('preview-font'):setup {}
