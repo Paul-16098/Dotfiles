@@ -257,10 +257,10 @@ on = "f"
 run = "filter --smart"
 desc = "過濾文件"
 
-[[mgr.keymap]]
-on = ["F", "j"]
-run = "plugin jump-to-char"
-desc = "跳轉到字符"
+# [[mgr.keymap]]
+# on = ["F", "j"]
+# run = "plugin jump-to-char"
+# desc = "跳轉到字符"
 
 [[mgr.keymap]]
 on = ["F", "r"]

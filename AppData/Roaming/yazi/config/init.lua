@@ -141,6 +141,18 @@ require("bat"):setup({
 	style = "numbers,changes",
 	wrap = "character",
 })
+
+--- fchar
+require('fchar'):setup {
+	-- if true: f -> file, File, FILE
+	insensitive = true,
+	-- if true: f -> file, .file, @file, #file, ...file
+	skip_symbols = false,
+	-- if {"yazi-"}: f -> file, yazi-file
+	skip_prefix = {},
+	aliases = {},
+	keys = { start = { "F", "j" } },
+}
 --- preview-git
 require('preview-git'):setup()
 --- preview-font
