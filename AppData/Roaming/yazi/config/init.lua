@@ -90,7 +90,7 @@ require("mime-ext.local"):setup {
 	-- 如果 MIME 類型不在檔案名稱和副檔名資料庫中，則回退到 Yazi 預設的 `mime.local` 插件，該插件使用 `file(1)`
 	fallback_file1 = true,
 }
-
+require("mime-ext"):setup()
 --- sopt ---
 require('spot'):setup {
 	metadata_section = {
@@ -135,9 +135,6 @@ require("whoosh"):setup {
 	keys = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~/",
 	bookmarks = bookmarks,
 }
-
-require("mime-ext"):setup()
-
 --- bat
 
 require("bat"):setup({
