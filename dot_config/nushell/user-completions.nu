@@ -29,7 +29,7 @@ export extern eget [
 ]
 
 # everything cli | Everything 命令行工具
-export extern _es [
+export extern es [
   search?: string
   --regex (-r): string # search using regular expressions | 使用正则表达式搜索
   --case (-i) # match case | 区分大小写
@@ -99,13 +99,22 @@ export extern _es [
 # nu-lint-ignore: unused_helper_functions
 def "nu-complete bz-command" []: nothing -> list<record> {
   [
-    {value: "a" description: "Add files to archive | 添加文件到压缩包"}
-    {value: "x" description: "Extract files with paths | 解压并保留路径"}
-    {value: "t" description: "Test archive integrity | 测试压缩包完整性"}
-    {value: "d" description: "Delete files from archive | 从压缩包删除文件"}
-    {value: "c" description: "Create new archive (overwrite) | 新建/覆盖压缩包"}
-    {value: "rn" description: "Rename entries in archive | 重命名压缩包内文件"}
-    {value: "l" description: "List files in archive (bz only) | 列出压缩包内容"}
+    {value: a description: "Add files to archive | 添加文件到压缩包"}
+    {value: x description: "Extract files with paths | 解压并保留路径"}
+    {value: t description: "Test archive integrity | 测试压缩包完整性"}
+    {value: d description: "Delete files from archive | 从压缩包删除文件"}
+    {
+      value: c
+      description: "Create new archive (overwrite) | 新建/覆盖压缩包"
+    }
+    {
+      value: rn
+      description: "Rename entries in archive | 重命名压缩包内文件"
+    }
+    {
+      value: l
+      description: "List files in archive (bz only) | 列出压缩包内容"
+    }
   ]
 }
 
@@ -117,25 +126,61 @@ def "nu-complete bz-switch" []: nothing -> list<record> {
     {value: "-r-" description: "Disable recursion | 关闭递归"}
     {value: "-aoa" description: "Overwrite existing files | 覆盖已存在文件"}
     {value: "-aos" description: "Skip existing files | 跳过已存在文件"}
-    {value: "-aou" description: "Auto-rename on conflict | 冲突时自动重命名"}
-    {value: "-sfx:stub" description: "Create SFX with stub path | 使用指定 SFX 模板"}
+    {
+      value: "-aou"
+      description: "Auto-rename on conflict | 冲突时自动重命名"
+    }
+    {
+      value: "-sfx:stub"
+      description: "Create SFX with stub path | 使用指定 SFX 模板"
+    }
     {value: "-zopfli" description: "Use Zopfli encoder | 使用 Zopfli 编码"}
-    {value: "-p:password" description: "Set archive password | 设置压缩包密码"}
-    {value: "-o:dest" description: "Destination folder (extract) | 目标目录 (解压)"}
-    {value: "-storeroot:yes" description: "Store root as top-level folder | 存储根目录"}
-    {value: "-storeroot:no" description: "Do not store root folder | 不存储根目录"}
+    {
+      value: "-p:password"
+      description: "Set archive password | 设置压缩包密码"
+    }
+    {
+      value: "-o:dest"
+      description: "Destination folder (extract) | 目标目录 (解压)"
+    }
+    {
+      value: "-storeroot:yes"
+      description: "Store root as top-level folder | 存储根目录"
+    }
+    {
+      value: "-storeroot:no"
+      description: "Do not store root folder | 不存储根目录"
+    }
     {value: "-y" description: "Assume Yes on prompts | 自动确认"}
-    {value: "-ex:pattern" description: "Exclude patterns when compressing | 压缩时排除"}
-    {value: "-root:dir" description: "Set archive root folder | 指定归档根目录"}
-    {value: "-fmt:zip" description: "Archive format zip|zipx|exe|tar|tgz|lzh|iso|7z|gz|xz | 选择格式"}
+    {
+      value: "-ex:pattern"
+      description: "Exclude patterns when compressing | 压缩时排除"
+    }
+    {
+      value: "-root:dir"
+      description: "Set archive root folder | 指定归档根目录"
+    }
+    {
+      value: "-fmt:zip"
+      description: "Archive format zip|zipx|exe|tar|tgz|lzh|iso|7z|gz|xz | 选择格式"
+    }
     {value: "-v:100MB" description: "Volume size | 分卷大小"}
     {value: "-cmt:comment" description: "Set zip comment | 设定注释"}
     {value: "-cmtfile:path" description: "Comment from file | 注释文件路径"}
     {value: "-t:4" description: "CPU threads | 线程数"}
     {value: "-cp:65001" description: "Code page (e.g., UTF-8 65001) | 代码页"}
-    {value: "-target:auto" description: "Extract Here (Smart) | 智能解压到当前"}
-    {value: "-target:name" description: "Extract to archive-name folder | 解压到同名目录"}
-    {value: "-target:dlg" description: "Choose destination via dialog | 对话框选择目标"}
+    {
+      value: "-target:auto"
+      description: "Extract Here (Smart) | 智能解压到当前"
+    }
+    {
+      value: "-target:name"
+      description: "Extract to archive-name folder | 解压到同名目录"
+    }
+    {
+      value: "-target:dlg"
+      description: "Choose destination via dialog | 对话框选择目标"
+    }
     {value: "-date" description: "Insert timestamp in path | 路径包含时间"}
     {value: "-email" description: "Compress and email | 压缩后发送邮件"}
     {value: "-list:v" description: "Verbose list (command l) | 详细列表"}
@@ -161,15 +206,15 @@ export extern bz [
 def "nu-complete sudo-command" []: nothing -> list<record> {
   [
     {
-      value: "run"
+      value: run
       description: "Run command as administrator | 以管理员身份运行命令"
     }
     {
-      value: "config"
+      value: config
       description: "Show current sudo configuration | 显示当前 sudo 配置"
     }
     {
-      value: "help"
+      value: help
       description: "Show help for sudo | 显示 sudo 帮助"
     }
   ]
@@ -194,7 +239,10 @@ export extern sudo [
 ]
 # nu-lint-ignore: unused_helper_functions
 def "nu-complete ya pkg" []: nothing -> record {
-  {options: {completion_algorithm: fuzzy} completions: (ya pkg list | lines | parse "\t{name} ({hash})" | get name)}
+  {
+    options: {completion_algorithm: fuzzy}
+    completions: (ya pkg list | lines | parse "\t{name} ({hash})" | get name)
+  }
 }
 # delete yazi package | 删除 yazi 包
 export extern "ya pkg delete" [
@@ -268,8 +316,8 @@ export extern "gsudo !" [] # re-run last command as admin (shell-specific behavi
 # nu-lint-ignore: unused_helper_functions
 def "nu-complete-ext exe" []: nothing -> record {
   use complete-tools.nu complete-ext
-  complete-ext "exe"
+  complete-ext exe
 }
 
 # x64dbg completions | x64dbg 补全
-export extern "x96dbg" [file: path@"nu-complete-ext exe"]
+export extern x96dbg [file: path@"nu-complete-ext exe"]

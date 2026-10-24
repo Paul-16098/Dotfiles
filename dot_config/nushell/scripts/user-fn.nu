@@ -593,6 +593,7 @@ export def --wrapped "git show" [...rest: string]: any -> string {
   }
 }
 
+# nu-lint-ignore: unused_helper_functions
 def "complete git status-or-diff" [buffer: string]: nothing -> table<value: string, display: string, description: string, style: record<fg: string, attr: string>> {
   do $env.config.completions.external.completer [
     git
@@ -631,7 +632,7 @@ export def set-debug-env [
 
   for d in (
     [
-      ["env-name" "value"];
+      [env-name value];
       [RUST_LOG $rust_log_lv] # nu-lint-ignore: check_typed_flag_before_use
       [RUST_BACKTRACE $rust_backtrace] # nu-lint-ignore: check_typed_flag_before_use
       [NU_LOG_LEVEL $nu_log_lv] # nu-lint-ignore: check_typed_flag_before_use
@@ -657,7 +658,7 @@ def is-exe [exe_file: path]: nothing -> nothing {
     error make {
       msg: "Input file is not an .exe file"
       label: {
-        text: "here"
+        text: here
         span: (metadata $exe_file).span
       }
       help: "please provide a valid .exe file"
@@ -667,7 +668,7 @@ def is-exe [exe_file: path]: nothing -> nothing {
     error make {
       msg: $"File not found: ($exe_file)"
       label: {
-        text: "here"
+        text: here
         span: (metadata $exe_file).span
       }
       help: "please provide a valid .exe file path"
@@ -735,15 +736,27 @@ def "nu-complete steamcmd" []: nothing -> record {
   {
     options: {sort: false}
     completions: [
-      {value: '+login' description: 'Login to Steam: login <username> [<password>] [<Steam guard code>]'}
+      {
+        value: +login
+        description: 'Login to Steam: login <username> [<password>] [<Steam guard code>]'
+      }
       {
         value: '"+login anonymous"'
         description: 'you may login anonymously using "login anonymous" if the content you
 wish to download is available for anonymous access.'
       }
-      {value: '+runscript' description: 'Executing a sequence of commands via a script file'}
-      {value: '+workshop_download_item' description: 'download an item using the workshop system: workshop_download_item <appid> <PublishedFileId>'}
-      {value: '+help' description: 'Displays help information about SteamCMD commands.'}
+      {
+        value: +runscript
+        description: 'Executing a sequence of commands via a script file'
+      }
+      {
+        value: +workshop_download_item
+        description: 'download an item using the workshop system: workshop_download_item <appid> <PublishedFileId>'
+      }
+      {
+        value: +help
+        description: 'Displays help information about SteamCMD commands.'
+      }
     ]
   }
 }
