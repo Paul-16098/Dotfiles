@@ -111,7 +111,15 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
     [
       cargo-packages
       {
-        cargo install-update --all --git --filter=!name=nu ...($in.exclude? | default [] | par-each { $"--filter=!name=($in)" }) o+e>| lines | each { print $in }
+        cargo install-update --all --git --filter=!name=nu (
+          if $env.ZELLIJ? == '0' {
+            print --stderr "you are inside a zellij session not updata zellij"
+            "--filter=!name=zellij"
+          } else { "" }
+        ) ...(
+          $in.exclude? | default []
+          | par-each { $"--filter=!name=($in)" }
+        ) o+e>| lines | each { print $in } # nu-lint-ignore: each_nothing_to_for_loop
       }
     ]
     [
