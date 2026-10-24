@@ -1285,3 +1285,28 @@ export def bat --wrapped [
     if ($follow | is-not-empty) { [--file-name $follow --paging=never] } else { [] }
   )
 }
+
+export def clean []: nothing -> nothing {
+  uv cache prune
+
+  if $nu.os-info.name != windows {
+    error make 'only windows is support'
+  }
+
+  const TEMP_BASE = '~/AppData/Local/Temp'
+  cd $TEMP_BASE
+
+  (
+    (glob 'cargo-install*')
+    ++ (glob '**/*.log')
+    ++ (glob 'cargo-argfile.*')
+    ++ (glob 'RimSort_update_*_*')
+    ++ (glob '*-*-*-*-*.nu')
+    ++ (glob 'kache-rustc-artifact-*')
+    ++ (glob 'kache-rustc-*.args')
+    ++ (glob 'my-http-server-test-public-*')
+    ++ (glob 'trivy-*')
+    ++ (ls | where size == 0b | get name)
+  ) | tee { print $"clean ($in | length) entry" }
+  | par-each { try { rm --all --recursive --permanent $in } }
+}
