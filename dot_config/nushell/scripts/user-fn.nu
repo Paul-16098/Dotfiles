@@ -978,28 +978,6 @@ export def --env alternative-buffer [
   $out
 }
 
-# a wrapper for atuin history list command to output a table with date, duration, exit code and command, also parse the duration to a duration type and exit code to int, also highlight the command using nu-highlight
-export def '_atuin history list' [
-  --reverse
-  --limit (-n) = 100 # limit the number of history entries to show
-]: nothing -> table {
-  const FORMAT = "{user}\t{host}\t{directory}\t{time}\t{duration}\t{exit}\t{command}"
-
-  atuin history list --format $FORMAT --reverse $reverse
-  | lines
-  | first $limit
-  | parse $FORMAT
-  | str replace --regex '^(\d+)s$' '$1sec' duration # nu-lint-ignore: chained_str_transform
-  | str replace --regex '^(\d+)m$' '$1min' duration
-  | str replace --regex '^(\d+)h$' '$1hr' duration
-  | record apply {
-    time: { into datetime }
-    exit: { into int }
-    command: { nu-highlight }
-    duration: { into duration }
-  }
-}
-
 # a wrapper for netstat -ano to output a table with Proto, Local Address, Foreign Address, State and PID columns, also parse the PID to int and filter out the first 3 lines of the output
 export def netstat-ano-wrapped []: nothing -> table {
   if $nu.os-info.name == windows {
