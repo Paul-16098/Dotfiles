@@ -109,9 +109,21 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
       }
     ]
     [
+      update-kache
+      {
+        kache daemon stop
+
+        with-env {RUSTC_WRAPPER: '' KACHE_DISABLED: 1} {
+
+          cargo install-update kache --git
+        }
+        kache daemon start
+      }
+    ]
+    [
       cargo-packages
       {
-        cargo install-update --all --git --filter=!name=nu (
+        cargo install-update --all --git --filter=!name=nu --filter=!name=kache (
           if $env.ZELLIJ? == '0' {
             print --stderr "you are inside a zellij session not updata zellij"
             "--filter=!name=zellij"
