@@ -4,16 +4,15 @@ theme = "catppuccin_mocha"
 
 [editor]
 shell = ["nu", "--stdin", "--config", '~\.config\nushell\config.nu', "--env-config", '~\.config\nushell\env.nu', "--commands"]
-bufferline = "always"
 indent-guides.render = true
 indent-guides.skip-levels = 1
 soft-wrap.enable = true
-end-of-line-diagnostics = "hint"
-color-modes = true
-rainbow-brackets = true
 
-# [editor.breadcrumb]
-# enable = true
+[editor.spelling]
+languages = ["en_US"]
+
+[editor.breadcrumb]
+enable = true
 
 [editor.gutters]
 layout = ["diagnostics", "code-action-hint", "line-numbers", "diff", "spacer"]
@@ -29,9 +28,9 @@ left = [
   # "file-modification-indicator",
   #
   "spacer",
-  "version-control",
+  "branch",
 ]
-center = []
+# center = []
 right = [
   "diagnostics",
   "selections",
@@ -44,6 +43,9 @@ right = [
   "file-line-ending",
   "file-type",
 ]
+
+[editor.statusline.mode]
+color = true
 
 [editor.whitespace.render]
 space = "all"
@@ -61,13 +63,27 @@ newline = "⏎"
 tabpad = "·"  # Tabs will look like "→···" (depending on tab width)
 
 [editor.lsp]
-display-inlay-hints = true
-display-progress-messages = true
-auto-document-highlight = true
+[editor.lsp.progress]
+enable = true
 
-[editor.inline-diagnostics]
+[editor.lsp.inlay-hints]
+enable = true
+
+[editor.lsp.document-highlight]
+auto-trigger = true
+
+[editor.diagnostics.inline]
 cursor-line = "hint"
 other-lines = "warning"
+
+[editor.diagnostics.end-of-line]
+severity = "hint"
+
+[editor.bufferline]
+show = "always"
+
+[editor.rainbow-brackets]
+enable = true
 
 [editor.file-explorer]
 ignore = true
@@ -240,8 +256,8 @@ space.l = {
 }
 C-f = "search"
 
-A-up = "move_selection_lines_up"
-A-down = "move_selection_lines_down"
+# A-up = "move_selection_lines_up"
+# A-down = "move_selection_lines_down"
 
 "C-=" = "increment"
 "C-minus" = "decrement"
@@ -347,8 +363,8 @@ C-x = ["yank_to_clipboard", "delete_selection"]
 C-left = "extend_prev_word_end"
 C-right = "extend_next_word_start"
 
-A-up = "move_selection_lines_up"
-A-down = "move_selection_lines_down"
+# A-up = "move_selection_lines_up"
+# A-down = "move_selection_lines_down"
 
 C-S-t = [":| google-translate 'zh_cn'", "normal_mode"]
 
