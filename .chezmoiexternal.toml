@@ -1,3 +1,6 @@
 [".mitmproxy/mitmproxy-script"]
 type = "git-repo"
 url = "https://github.com/Paul-16098/mitmproxy-script.git"
+[".config/nvim"]
+type = "git-repo"
+url = "https://github.com/Paul-16098/nvim-config.git"
