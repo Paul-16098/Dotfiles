@@ -248,6 +248,11 @@ on = "g"
 run = "plugin whoosh jump_by_key"
 
 [[mgr.keymap]]
+desc = "Jump interactively"
+on = "<C-g>"
+run = "cd --interactive"
+
+[[mgr.keymap]]
 desc = "將 cwd 儲存到書籤"
 on = "G"
 run = "plugin whoosh save_cwd"
