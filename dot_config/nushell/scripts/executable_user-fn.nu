@@ -109,6 +109,15 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
       }
     ]
     [
+      carapace-selfupdate
+      {
+	mut base = 'carapace --selfupdate nightly '
+	$base += $base | commandline complete | last 
+	$base += $base | commandline complete | last
+	yes | run-external ($base | split row ' ')
+      }
+    ]
+    [
       update-kache
       {
         kache daemon stop
