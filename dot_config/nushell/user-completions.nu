@@ -4,30 +4,6 @@ export def "config user-completions" []: nothing -> nothing {
   run-external $env.config.buffer_editor ($self)
 }
 
-# https://github.com/zyedidia/eget
-export extern eget [
-  target?: string # target repository to download from | 要下载的目标仓库
-  --tag (-t): string # tagged release to use instead of latest | 使用指定标签版本而非最新版
-  --pre-release # include pre-releases when fetching the latest version | 获取最新版本时包含预发布版本
-  --source # download the source code for the target repo instead of a release | 下载目标仓库的源代码而非发布版本
-  --to: string # move to given location after extracting | 提取后移动到指定位置
-  --system (-s): string # target system to download for (use "all" for all choices) | 目标系统 (使用 "all" 表示所有选项)
-  --file (-f): string # glob to select files for extraction | 用于选择提取文件的通配符
-  --all # extract all candidate files | 提取所有候选文件
-  --quiet (-q) # only print essential output | 仅打印必要输出
-  --download-only (-d) # stop after downloading the asset (no extraction) | 下载资源后停止 (不提取)
-  --upgrade-only # only download if release is more recent than current version | 仅当发布版本比当前版本更新时才下载
-  --asset (-a): any # download a specific asset containing the given string (can be specified multiple times) | 下载包含指定字符串的特定资源 (可多次指定)
-  --sha256 # show the SHA-256 hash of the downloaded asset | 显示下载资源的 SHA-256 哈希值
-  --verify-sha256: string # verify the downloaded asset checksum against the one provided | 验证下载资源的校验和
-  --rate # show GitHub API rate limiting information | 显示 GitHub API 速率限制信息
-  --remove (-r) # remove the given file from $EGET_BIN or the current directory | 从 $EGET_BIN 或当前目录删除指定文件
-  --version (-v) # show version information | 显示版本信息
-  --help (-h) # show this help message | 显示帮助信息
-  --download-all (-D) # download all projects defined in the config file | 下载配置文件中定义的所有项目
-  --disable-ssl (-k) # disable SSL verification for download requests | 禁用下载请求的 SSL 验证
-]
-
 # everything cli | Everything 命令行工具
 export extern es [
   search?: string
