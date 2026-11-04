@@ -76,5 +76,10 @@ module "ast remove-flag" {
       "abc" | ast remove-flag --only-external --only-internal
     }
   }
+
+  @test 
+  export def "test 4" [] {
+    assert equal "gh api" ("gh api --help" | ast remove-flag --only-external --remove-external-smart)
+  }
 }
 export use "ast remove-flag"
