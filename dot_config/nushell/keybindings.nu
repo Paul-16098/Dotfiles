@@ -193,7 +193,7 @@ export-env {
     (
       add-keybindings --name help control char_h {
         send: executehostcommand
-        cmd: " print '';try {help $'(commandline|ast get-last-command|ast remove-flag --remove-external-smart)'}"
+        cmd: " print '';try {help $'(commandline | str substring 0..((commandline get-cursor) - 1)|ast get-last-command|ast remove-flag --remove-external-smart)'}"
       }
     )
   ]
