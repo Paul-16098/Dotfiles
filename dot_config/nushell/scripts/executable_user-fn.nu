@@ -202,6 +202,7 @@ def app-update-job-list []: nothing -> table<name: string, fn: closure> {
         | par-each --keep-order { if not ($in =~ 'Building grammars \(\d+/\d+\): .*') { } } | str join "\n" | echo.exe $in
       }
     ]
+    [neovim { bob update }]
     [wsl { wsl --update }]
     [wsl-system { wsl -- pacman -S -y -u --noconfirm }]
     [git { git update-git-for-windows --yes }]
