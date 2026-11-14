@@ -72,10 +72,6 @@ run = "Bandizip %s"
 desc = "Extract with Bandizip"
 for = "windows"
 
-[[opener.extract]]
-run = "ya pub augmented-extract --list %s"
-desc = "Extract here(augmented)"
-
 [[opener.nodejs]]
 run = 'start {nu} --commands "node %s;pause"'
 desc = "Run with Node.js"
