@@ -7,7 +7,7 @@
 
 
 ---- 增強指令 ----
-require("augment-command"):setup({
+require("augment-command.config"):setup({
 	open_file_after_creation = true,
 	smooth_scrolling = true,
 	enter_archives = false
