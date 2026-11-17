@@ -116,7 +116,9 @@ overlay new REPL
 
 alias 'ast md' = %from md
 @deprecated "use 'ast md' instead"
-def 'from md' []: string -> nothing { do {} error make "Use 'ast md' instead" }
+def 'from md' []: string -> nothing {
+	do {} error make "Use 'ast md' instead"
+}
 
 $env
 | reject --optional --ignore-case config FILE_PWD CURRENT_FILE PWD
