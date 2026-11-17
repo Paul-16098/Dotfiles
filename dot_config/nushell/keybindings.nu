@@ -73,13 +73,6 @@ export def default-keybindings-to-config [wh_condition: closure]: nothing -> tab
   }
 }
 
-# nu-lint-ignore: add_doc_comment_exported_fn
-export def remove-default-keybindings [wh_condition: closure]: nothing -> table<name: string, modifier: string, keycode: string, mode: list<string>, event: nothing> {
-  default-keybindings-to-config $wh_condition | par-each {|kb|
-    remove-keybindings $kb.modifier $kb.code $kb.mode
-  }
-}
-
 export-env {
   # remove default keybinding
   $env.config.keybindings = []
