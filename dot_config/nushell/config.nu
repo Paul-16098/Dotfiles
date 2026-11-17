@@ -1,6 +1,7 @@
 # nu-lint-ignore-file: dynamic_script_import
 $env.config.buffer_editor = [$env.EDITOR "{file}:{line}:{col}"]
 
+$env.config.use_kitty_protocol = true
 $env.config.table.missing_value_symbol = "∅"
 $env.config.max_last_result_size = 1mb
 $env.config.display_errors.exit_code = true
