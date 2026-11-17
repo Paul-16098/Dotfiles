@@ -13,11 +13,11 @@ $env.config.history.file_format = "sqlite"
 $env.config.history.sync_on_enter = false
 $env.config.history.isolation = true
 $env.config.color_config.string = {
-  if $in =~ '^#[a-fA-F\d]{6}' {
-    $in
-  } else {
-    'default'
-  }
+	if $in =~ '^#[a-fA-F\d]{6}' {
+		$in
+	} else {
+		'default'
+	}
 }
 $env.config.show_banner = "short"
 $env.config.rm.always_trash = true
@@ -29,10 +29,10 @@ $env.config.completions.partial = false
 $env.config.error_lines = 3
 $env.config.error_style = "nested"
 $env.config.hinter.closure = {|ctx|
-  if ($ctx.line | str length) == 0 {
-    null
-  } else {
-    let candidate = (
+	if ($ctx.line | str length) == 0 {
+		null
+	} else {
+		let candidate = (
       try {
         atuin search --cwd $ctx.cmd --limit 1 --cmd-only ($"^($ctx.line)")
         | lines
@@ -50,25 +50,22 @@ $env.config.hinter.closure = {|ctx|
         }
       )
 
-    if $candidate == null or not ($candidate | str starts-with $ctx.line) {
-      null
-    } else {
-      ($candidate | str substring (($ctx.line | str length))..)
-    }
-  }
+		if $candidate == null or not ($candidate | str starts-with $ctx.line) {
+			null
+		} else {
+			($candidate | str substring (($ctx.line | str length))..)
+		}
+	}
 }
 $env.config.abbreviations = {
-  ll: 'ls --long'
-
-  py: python
-
-  gl: 'git log'
-  glo: 'git log @{u}..'
-
-  gp: 'git pull'
-  gs: 'git status-or-diff'
-  gso: 'git show @{u}..'
-  gc: 'git clone'
+	ll: 'ls --long'
+	py: python
+	gl: 'git log'
+	glo: 'git log @{u}..'
+	gp: 'git pull'
+	gs: 'git status-or-diff'
+	gso: 'git show @{u}..'
+	gc: 'git clone'
 }
 $env.config.menus = $env.config.menus | where name == completion_menu
 
@@ -76,6 +73,7 @@ $env.LS_COLORS = (vivid generate molokai)
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 
 $env.TRANSIENT_PROMPT_COMMAND = { starship prompt --profile transient_prompt }
+
 # $env.TRANSIENT_PROMPT_COMMAND_RIGHT = ""
 
 source "~/.local/share/atuin/init.nu" # nu-lint-ignore: source_to_use
@@ -102,14 +100,16 @@ overlay use ('.' | path join user-aliases.nu)
 
 # nupm
 use ../nupm/modules/nupm
-$env.NU_LIB_DIRS = $env.NU_LIB_DIRS ++ [($env.NUPM_HOME | path join modules)]
+$env.NU_LIB_DIRS = $env.NU_LIB_DIRS ++ [
+	($env.NUPM_HOME | path join modules)
+]
 
 # jev
 $env.config.plugins.jev = {
-  base_url: "http://localhost:11434"
-  model: "clef-flash:latest"
-  jobs: 1
-  timeout_ms: 3600000
+	base_url: "http://localhost:11434"
+	model: "clef-flash:latest"
+	jobs: 1
+	timeout_ms: 3600000
 }
 
 overlay new REPL
