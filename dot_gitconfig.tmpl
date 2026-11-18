@@ -83,7 +83,7 @@
 
 [diff]
 	colorMoved = default
-
+	tool = {{ .GIT_TOOL }}
 [delta]
 	dark = true
 	hyperlinks = true
@@ -93,3 +93,7 @@
 	
 [merge]
 	conflictStyle = zdiff3
+	tool = {{ .GIT_TOOL }}
+
+[mergetool]
+	keepBackup = false

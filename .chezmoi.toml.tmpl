@@ -1,3 +1,4 @@
+{{ $GIT_TOOL := promptStringOnce . "git tool" "What is your editor for merge and diff" -}}
 {{ $EMAIL := promptStringOnce . "email" "What is your email address" -}}
 {{ $GH_NAME := promptStringOnce . "github_name" "What is your GitHub user name" -}}
 {{ $USE_SIGN := promptBoolOnce . "use_sign" "Do you want to sign your commits and tags" -}}
@@ -5,7 +6,7 @@
 [data]
 EMAIL = {{ $EMAIL | quote }}
 GH_NAME = {{ $GH_NAME | quote }}
-
+GIT_TOOL = {{ $GIT_TOOL | quote }}
 {{- if $USE_SIGN -}}
 {{ $SIGN_BY := promptChoiceOnce . "sign_by" "What you want to use for signing commits and tags" (list "gpg" "ssh") }}
 {{ $SIGN_KEY_ID := promptStringOnce . "sign_key_id" "Your GPG key ID if use GPG for signing else ssh key ID" }}
