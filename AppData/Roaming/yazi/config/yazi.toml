@@ -93,6 +93,11 @@ run = "lazydocker -f %s"
 desc = "Open with LazyDocker"
 block = true
 
+[[opener.lazygit]]
+run = "lazygit -p %d"
+desc = "Open with LazyGit"
+block = true
+
 [[opener.cargo-install]]
 run = "cargo install --path %d"
 desc = "Install Cargo Package"
@@ -267,6 +272,10 @@ use = [
   "edit",
   "reveal",
 ]
+
+[[open.rules]]
+url = "**/.git/"
+use = ["lazygit"]
 
 [[open.rules]]
 mime = "vfs/{absent,stale}"
