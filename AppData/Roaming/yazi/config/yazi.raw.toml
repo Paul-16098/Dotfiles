@@ -153,8 +153,8 @@ use = [
 ]
 
 [[open.rules]]
-use = ["inf-file", "edit", "reveal"]
 mime = "application/setupscript"
+use = ["inf-file", "edit", "reveal"]
 
 [[open.rules]]
 url = "**/*.bat"
