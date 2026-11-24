@@ -158,6 +158,14 @@ use = [
 ]
 
 [[open.rules]]
+url = "**/SHA512SUM"
+use = [
+  "hash-check",
+  "edit",
+  "reveal",
+]
+
+[[open.rules]]
 mime = "application/setupscript"
 use = ["inf-file", "edit", "reveal"]
 
