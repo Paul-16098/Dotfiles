@@ -1,5 +1,5 @@
 let rclone_vfs = {
-  rclone: (
+	rclone: (
     # nu-lint-ignore: catch_builtin_error_try
     rclone config dump | from json | record each {|k v|
       {
@@ -15,8 +15,9 @@ let rclone_vfs = {
   )
 }
 
-let vfs = try { open ~\AppData\Roaming\yazi\config\vfs.toml } | default {}
-  | merge deep --strategy overwrite $rclone_vfs
+let vfs = try { open ~\AppData\Roaming\yazi\config\vfs.toml }
+| default {}
+| merge deep --strategy overwrite $rclone_vfs
 $vfs | save ~\AppData\Roaming\yazi\config\vfs.toml --force # nu-lint-ignore: catch_builtin_error_try
 
 # let bookmarks = try { open ~\AppData\Roaming\yazi\config\bookmarks } | default '' | lines | parse --regex "(?<tag>.+)\t(?<path>.+)\t(?<key>.*)" # nu-lint-ignore: default_empty_string_masks_missing

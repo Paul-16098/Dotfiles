@@ -1,7 +1,7 @@
 # Edit this completions.
 export def "config user-aliases" []: nothing -> nothing {
-  const self = path self
-  run-external $env.config.buffer_editor ($self)
+	const self = path self
+	run-external $env.config.buffer_editor ($self)
 }
 
 export alias python = ^(uv python find)
