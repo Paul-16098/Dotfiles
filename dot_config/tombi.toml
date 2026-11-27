@@ -1,0 +1,4 @@
+[extensions."tombi-toml/cargo"]
+lsp.code-action.enabled = false
+lsp.completion.dependency-version.enabled = false
+lsp.inlay-hint.dependency-version.enabled = false
